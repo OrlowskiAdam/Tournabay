@@ -1,0 +1,53 @@
+stages:
+  - prepare
+  - deploy_developer
+  - deploy_production
+  - nginx
+
+prepare:
+  stage: prepare
+  tags:
+    - deployment
+  script:
+    - sudo apt install -y apt-transport-https ca-certificates curl software-properties-common || true
+    - sudo apt install -y npm || true
+
+deploy_developer:
+  stage: deploy_developer
+  tags:
+    - deployment
+  script:
+    - BUILD=$(pwd)
+    - npm install
+    - npm run build
+    - docker stop nginx || true
+    - cd /opt
+    - sudo rm -rf /opt/next.tournabay/build; sudo mkdir /opt/next.tournabay || true
+    - sudo chmod 777 -R /opt/next.tournabay
+    - mv $BUILD/build /opt/next.tournabay/
+    - sudo chmod 755 -R /opt/next.tournabay && sudo chown www-data:www-data -R /opt/next.tournabay
+    - docker start nginx || true
+  only:
+    - stage
+
+deploy_production:
+  stage: deploy_production
+  tags:
+    - deployment
+  script:
+    - BUILD=$(pwd)
+    - npm install
+    - npm run build
+    - docker rm -f nginx || true
+    - cd /opt
+    - sudo rm -rf /opt/tournabay/build; sudo mkdir /opt/tournabay || true
+    - sudo chmod 777 -R /opt/tournabay
+    - mv $BUILD/build /opt/tournabay/
+    - sudo chmod 755 -R /opt/tournabay && sudo chown www-data:www-data -R /opt/tournabay
+  only:
+    - master
+
+nginx:
+  stage: nginx
+  trigger:
+    project: n2149/nginx
