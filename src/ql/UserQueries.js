@@ -5,6 +5,7 @@ export const userDataQuery = gql`
     me {
       id
       osuId
+      avatarUrl
       provider
       roles {
         id
