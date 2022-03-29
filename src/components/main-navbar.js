@@ -1,12 +1,15 @@
 import PropTypes from "prop-types";
 import NextLink from "next/link";
-import { AppBar, Box, Button, Container, IconButton, Link, Toolbar } from "@mui/material";
+import { AppBar, Avatar, Box, Button, Container, IconButton, Link, Toolbar } from '@mui/material';
 import { Menu as MenuIcon } from "../icons/menu";
 import { Logo } from "./logo";
 import { OSU_AUTH_URL } from "../constants/constants";
+import useOsuAuth from "../hooks/useOsuAuth";
 
 export const MainNavbar = (props) => {
   const { onOpenSidebar } = props;
+  const { user } = useOsuAuth();
+  console.log(user);
 
   return (
     <AppBar
@@ -77,16 +80,20 @@ export const MainNavbar = (props) => {
                 Staff
               </Link>
             </NextLink>
-            <Button
-              component="a"
-              href={OSU_AUTH_URL}
-              size="medium"
-              sx={{ ml: 2 }}
-              // target="_blank"
-              variant="contained"
-            >
-              Login
-            </Button>
+            {user.isAuthenticated ? (
+              <Avatar sx={{ ml: 2 }} alt="User avatar" src={user.avatarUrl} />
+            ) : (
+              <Button
+                component="a"
+                href={OSU_AUTH_URL}
+                size="medium"
+                sx={{ ml: 2 }}
+                // target="_blank"
+                variant="contained"
+              >
+                Login
+              </Button>
+            )}
           </Box>
         </Toolbar>
       </Container>
