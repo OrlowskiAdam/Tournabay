@@ -1,7 +1,8 @@
-import { ACCESS_TOKEN } from '../constants/constants';
-import * as React from 'react';
-import { useRouter } from 'next/router';
-import { useEffect } from 'react';
+import { ACCESS_TOKEN } from "../constants/constants";
+import * as React from "react";
+import { useRouter } from "next/router";
+import { useEffect } from "react";
+import SplashScreen from "../components/SplashScreen";
 
 // TODO: Fix token storage
 const OsuOAuth2RedirectHandler = () => {
@@ -9,39 +10,14 @@ const OsuOAuth2RedirectHandler = () => {
   const { token } = router.query;
 
   useEffect(() => {
-    router.push('/');
-  }, [])
+    router.push("/");
+  }, []);
 
   if (token) {
     localStorage.setItem(ACCESS_TOKEN, token);
   }
 
-  return <>{token}</>;
-
+  return <SplashScreen />;
 };
-
-
-
-// export const getStaticProps = async (context) => {
-//   const { query } = context;
-//   const token = query.token;
-//   if (token) {
-//     localStorage.setItem(ACCESS_TOKEN, token);
-//     return {
-//       redirect: {
-//         destination: '/',
-//         permanent: false,
-//       },
-//     }
-//   }
-//
-//   return {
-//     redirect: {
-//       destination: '/',
-//       permanent: false,
-//     },
-//   }
-// }
-
 
 export default OsuOAuth2RedirectHandler;

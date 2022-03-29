@@ -8,104 +8,102 @@ import {
   ListItem,
   ListItemAvatar,
   ListItemText,
-  Typography
-} from '@mui/material';
-import { alpha } from '@mui/material/styles';
-import { MinusOutlined as MinusOutlinedIcon } from '../icons/minus-outlined';
-import { Logo } from './logo';
+  Typography,
+} from "@mui/material";
+import { alpha } from "@mui/material/styles";
+import { MinusOutlined as MinusOutlinedIcon } from "../icons/minus-outlined";
+import { Logo } from "./logo";
 
 const sections = [
   {
-    title: 'Menu',
+    title: "Menu",
     links: [
       {
-        title: 'Rules',
-        href: '#'
+        title: "Rules",
+        href: "#",
       },
       {
-        title: 'Links',
-        href: '#'
+        title: "Links",
+        href: "#",
       },
       {
-        title: 'Staff',
-        href: '#'
-      }
-    ]
+        title: "Staff",
+        href: "#",
+      },
+    ],
   },
   {
-    title: 'Policy',
+    title: "Policy",
     links: [
       {
-        title: 'Terms & Conditions',
-        href: '#'
+        title: "Terms & Conditions",
+        href: "#",
       },
       {
-        title: 'Privacy Policy',
-        href: '#'
+        title: "Privacy Policy",
+        href: "#",
       },
       {
-        title: 'Contact',
-        href: '#'
-      }
-    ]
+        title: "Contact",
+        href: "#",
+      },
+    ],
   },
   {
-    title: 'Social',
+    title: "Social",
     links: [
       {
-        title: 'Twitter',
-        href: '#'
+        title: "Twitter",
+        href: "#",
       },
       {
-        title: 'Twitch',
-        href: '#'
+        title: "Twitch",
+        href: "#",
       },
       {
-        title: 'Discord',
-        href: '#'
+        title: "Discord",
+        href: "#",
       },
       {
-        title: 'Forum',
-        href: '#'
-      }
-    ]
-  }
+        title: "Forum",
+        href: "#",
+      },
+    ],
+  },
 ];
 
 export const Footer = (props) => (
   <Box
     sx={{
-      backgroundColor: 'background.default',
-      borderTopColor: 'divider',
-      borderTopStyle: 'solid',
+      backgroundColor: "background.default",
+      borderTopColor: "divider",
+      borderTopStyle: "solid",
       borderTopWidth: 1,
       pb: 6,
       pt: {
         md: 15,
-        xs: 6
-      }
+        xs: 6,
+      },
     }}
-    {...props}>
+    {...props}
+  >
     <Container maxWidth="lg">
-      <Grid
-        container
-        spacing={3}
-      >
+      <Grid container spacing={3}>
         <Grid
           item
           md={3}
           sm={4}
           sx={{
-            display: 'flex',
-            flexDirection: 'column',
+            display: "flex",
+            flexDirection: "column",
             order: {
               md: 1,
-              xs: 4
-            }
+              xs: 4,
+            },
           }}
           xs={12}
         >
-          <Logo/>
+          <Logo />
         </Grid>
         {sections.map((section, index) => (
           <Grid
@@ -116,15 +114,12 @@ export const Footer = (props) => (
             sx={{
               order: {
                 md: index + 2,
-                xs: index + 1
-              }
+                xs: index + 1,
+              },
             }}
             xs={12}
           >
-            <Typography
-              color="textSecondary"
-              variant="overline"
-            >
+            <Typography color="textSecondary" variant="overline">
               {section.title}
             </Typography>
             <List disablePadding>
@@ -134,29 +129,25 @@ export const Footer = (props) => (
                   key={link.title}
                   sx={{
                     pb: 0,
-                    pt: 1
+                    pt: 1,
                   }}
                 >
                   <ListItemAvatar
                     sx={{
-                      alignItems: 'center',
-                      display: 'flex',
+                      alignItems: "center",
+                      display: "flex",
                       minWidth: 0,
-                      mr: 0.5
+                      mr: 0.5,
                     }}
                   >
-                    <MinusOutlinedIcon color="primary"/>
+                    <MinusOutlinedIcon color="primary" />
                   </ListItemAvatar>
                   <ListItemText
-                    primary={(
-                      <Link
-                        href={link.href}
-                        color="textPrimary"
-                        variant="subtitle2"
-                      >
+                    primary={
+                      <Link href={link.href} color="textPrimary" variant="subtitle2">
                         {link.title}
                       </Link>
-                    )}
+                    }
                   />
                 </ListItem>
               ))}

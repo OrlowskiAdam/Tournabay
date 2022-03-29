@@ -1,4 +1,4 @@
-import { createSvgIcon } from '@mui/material/utils';
+import { createSvgIcon } from "@mui/material/utils";
 
 export const FingerPrint = createSvgIcon(
   <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
@@ -17,4 +17,6 @@ export const FingerPrint = createSvgIcon(
       d="M10 10a1 1 0 011 1c0 2.236-.46 4.368-1.29 6.304a1 1 0 01-1.838-.789A13.952 13.952 0 009 11a1 1 0 011-1z"
       clipRule="evenodd"
     />
-  </svg>, 'Fingerprint');
+  </svg>,
+  "Fingerprint"
+);

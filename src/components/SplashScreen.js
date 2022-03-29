@@ -1,20 +1,20 @@
-import { Box } from '@mui/material';
+import { Box } from "@mui/material";
 
 const SlashScreen = () => (
   <Box
     sx={{
-      alignItems: 'center',
-      backgroundColor: 'background.paper',
-      display: 'flex',
-      flexDirection: 'column',
-      height: '100%',
-      justifyContent: 'center',
+      alignItems: "center",
+      backgroundColor: "background.paper",
+      display: "flex",
+      flexDirection: "column",
+      height: "100%",
+      justifyContent: "center",
       left: 0,
       p: 3,
-      position: 'fixed',
+      position: "fixed",
       top: 0,
-      width: '100%',
-      zIndex: 2000
+      width: "100%",
+      zIndex: 2000,
     }}
   >
     {/*<Logo />*/}

@@ -1,9 +1,12 @@
 {
-  "extends": "next/core-web-vitals",
+  "extends": ["next/core-web-vitals", "prettier"],
+  "plugins": ["prettier"],
   "rules": {
+    "prettier/prettier": "error",
     "@next/next/no-img-element": "off",
     "jsx-a11y/alt-text": "off",
     "react/display-name": "off",
+    "react-hooks/exhaustive-deps": "off",
     "react/jsx-max-props-per-line": [
       1,
       {

@@ -1,6 +1,6 @@
-import { createSlice } from '@reduxjs/toolkit';
-import { apolloClient } from '../apollo/apolloClient';
-import { userDataQuery } from '../ql/UserQueries';
+import { createSlice } from "@reduxjs/toolkit";
+import { apolloClient } from "../apollo/apolloClient";
+import { userDataQuery } from "../ql/UserQueries";
 
 const initialState = {
   user: {
@@ -11,12 +11,12 @@ const initialState = {
     provider: null,
     roles: [],
     isInitialized: false,
-    isAuthenticated: false
-  }
+    isAuthenticated: false,
+  },
 };
 
 const slice = createSlice({
-  name: 'user',
+  name: "user",
   initialState,
   reducers: {
     login: (state, action) => {
@@ -24,19 +24,19 @@ const slice = createSlice({
         user: {
           ...action.payload,
           isAuthenticated: true,
-          isInitialized: true
-        }
+          isInitialized: true,
+        },
       };
     },
     failedLogin: (state) => {
       state.user.isInitialized = true;
       state.user.isAuthenticated = false;
-    }
-  }
+    },
+  },
 });
 
 export const { reducer } = slice;
-export const getUser = state => state;
+export const getUser = (state) => state;
 
 // actions
 
