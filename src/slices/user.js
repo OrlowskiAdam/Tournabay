@@ -1,6 +1,6 @@
 import { createSlice } from '@reduxjs/toolkit';
 import { apolloClient } from '../apollo/apolloClient';
-import { gql } from '@apollo/client';
+import { userDataQuery } from '../ql/UserQueries';
 
 const initialState = {
   user: {
@@ -19,12 +19,16 @@ const slice = createSlice({
   name: 'user',
   initialState,
   reducers: {
-    login(state, action) {
-      state.user = action.payload;
-      state.user.isAuthenticated = true;
-      state.user.isInitialized = true;
+    login: (state, action) => {
+      return {
+        user: {
+          ...action.payload,
+          isAuthenticated: true,
+          isInitialized: true
+        }
+      };
     },
-    failedLogin(state) {
+    failedLogin: (state) => {
       state.user.isInitialized = true;
       state.user.isAuthenticated = false;
     }
@@ -32,33 +36,17 @@ const slice = createSlice({
 });
 
 export const { reducer } = slice;
+export const getUser = state => state;
 
 // actions
 
 export const me = () => async (dispatch) => {
-  const userDataQuery = gql`
-    query UserDataQuery {
-      me {
-        id
-        osuId
-        provider
-        roles {
-          id
-          name
-        }
-        username
-      }
-    }
-  `;
-  await apolloClient.query({ query: userDataQuery })
-                    .then((response) => {
-                      console.log(response.data.me);
-                      dispatch(slice.actions.login(response.data));
-                    })
-                    .catch((error) => {
-                      console.log(error.errors);
-                      dispatch(slice.actions.failedLogin());
-                    });
+  try {
+    let user = await apolloClient.query({ query: userDataQuery });
+    dispatch(slice.actions.login(user.data.me));
+  } catch (e) {
+    dispatch(slice.actions.failedLogin());
+  }
 };
 
 export default slice;

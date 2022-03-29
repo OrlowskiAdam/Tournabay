@@ -6,28 +6,16 @@ import { CssBaseline } from '@mui/material';
 import { ThemeProvider } from '@mui/material/styles';
 import { createEmotionCache } from '../utils/create-emotion-cache';
 import { createTheme } from '../theme';
-import { ApolloProvider, gql, useQuery } from '@apollo/client';
-import { useDispatch } from 'react-redux';
-import { apolloClient, getApolloClient } from '../apollo/apolloClient';
-import { useEffect } from 'react';
-import { me } from '../slices/user';
-import SplashScreen from '../components/SplashScreen';
-import useOsuAuth from '../hooks/useOsuAuth';
-import { reduxWrapper } from '../store/reduxWrapper';
+import { ApolloProvider } from '@apollo/client';
+import { Provider as ReduxProvider } from 'react-redux';
+import { apolloClient } from '../apollo/apolloClient';
+import store from '../store';
+import UserAuthentication from '../components/userAuthentication';
 
 const clientSideEmotionCache = createEmotionCache();
 
 const App = (props) => {
-  const { Component, emotionCache = clientSideEmotionCache, pageProps } = props;
-  const dispatch = useDispatch();
-  const { user } = useOsuAuth();
-
-  const getLayout = Component.getLayout ?? ((page) => page);
-
-  useEffect(() => {
-    dispatch(me());
-    console.log(user);
-  }, []);
+  const { emotionCache = clientSideEmotionCache } = props;
 
   return (
     <CacheProvider value={emotionCache}>
@@ -42,6 +30,7 @@ const App = (props) => {
       </Head>
       <LocalizationProvider dateAdapter={AdapterDateFns}>
         <ApolloProvider client={apolloClient}>
+          <ReduxProvider store={store}>
           <ThemeProvider
             theme={createTheme({
               direction: 'ltr',
@@ -50,12 +39,13 @@ const App = (props) => {
             })}
           >
             <CssBaseline/>
-            {user.isInitialized ? getLayout(<Component {...pageProps} />) : <SplashScreen/>}
+            <UserAuthentication {...props} />
           </ThemeProvider>
+          </ReduxProvider>
         </ApolloProvider>
       </LocalizationProvider>
     </CacheProvider>
   );
 };
 
-export default reduxWrapper.withRedux(App);
+export default App;
