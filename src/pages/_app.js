@@ -6,13 +6,28 @@ import { CssBaseline } from '@mui/material';
 import { ThemeProvider } from '@mui/material/styles';
 import { createEmotionCache } from '../utils/create-emotion-cache';
 import { createTheme } from '../theme';
+import { ApolloProvider, gql, useQuery } from '@apollo/client';
+import { useDispatch } from 'react-redux';
+import { apolloClient, getApolloClient } from '../apollo/apolloClient';
+import { useEffect } from 'react';
+import { me } from '../slices/user';
+import SplashScreen from '../components/SplashScreen';
+import useOsuAuth from '../hooks/useOsuAuth';
+import { reduxWrapper } from '../store/reduxWrapper';
 
 const clientSideEmotionCache = createEmotionCache();
 
 const App = (props) => {
   const { Component, emotionCache = clientSideEmotionCache, pageProps } = props;
+  const dispatch = useDispatch();
+  const { user } = useOsuAuth();
 
   const getLayout = Component.getLayout ?? ((page) => page);
+
+  useEffect(() => {
+    dispatch(me());
+    console.log(user);
+  }, []);
 
   return (
     <CacheProvider value={emotionCache}>
@@ -26,19 +41,21 @@ const App = (props) => {
         />
       </Head>
       <LocalizationProvider dateAdapter={AdapterDateFns}>
-        <ThemeProvider
-          theme={createTheme({
-            direction: 'ltr',
-            responsiveFontSizes: true,
-            mode: 'dark'
-          })}
-        >
-          <CssBaseline/>
-          {getLayout(<Component {...pageProps} />)}
-        </ThemeProvider>
+        <ApolloProvider client={apolloClient}>
+          <ThemeProvider
+            theme={createTheme({
+              direction: 'ltr',
+              responsiveFontSizes: true,
+              mode: 'dark'
+            })}
+          >
+            <CssBaseline/>
+            {user.isInitialized ? getLayout(<Component {...pageProps} />) : <SplashScreen/>}
+          </ThemeProvider>
+        </ApolloProvider>
       </LocalizationProvider>
     </CacheProvider>
   );
 };
 
-export default App;
+export default reduxWrapper.withRedux(App);

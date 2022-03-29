@@ -1,0 +1,42 @@
+# This file was generated based on ".graphqlconfig". Do not edit manually.
+
+schema {
+    query: Query
+    mutation: Mutation
+}
+
+"This directive allows results to be deferred during execution"
+directive @defer on FIELD
+
+type Mutation {
+    createUser: User
+}
+
+type Query {
+    getUserById(id: Int!): User
+    getUsers: [User]
+    me: User
+}
+
+type Role {
+    id: ID!
+    name: RoleName!
+}
+
+type User {
+    id: ID!
+    osuId: Int!
+    provider: AuthProvider
+    roles: [Role]!
+    username: String!
+}
+
+enum AuthProvider {
+    discord
+    osu
+}
+
+enum RoleName {
+    ROLE_ADMIN
+    ROLE_USER
+}

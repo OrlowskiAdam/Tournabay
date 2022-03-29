@@ -3,6 +3,7 @@ import NextLink from 'next/link';
 import { AppBar, Box, Button, Container, IconButton, Link, Toolbar } from '@mui/material';
 import { Menu as MenuIcon } from '../icons/menu';
 import { Logo } from './logo';
+import { OSU_AUTH_URL } from '../constants/constants';
 
 export const MainNavbar = (props) => {
   const { onOpenSidebar } = props;
@@ -102,7 +103,7 @@ export const MainNavbar = (props) => {
             </NextLink>
             <Button
               component="a"
-              href="#"
+              href={OSU_AUTH_URL}
               size="medium"
               sx={{ ml: 2 }}
               // target="_blank"
