@@ -51,15 +51,6 @@ const CreateTournament = () => {
       label: "Tournament data",
       content: <TournamentData onBack={handleBack} onNext={handleNext} />,
     },
-    // {
-    //   label: 'Description',
-    //   content: (
-    //     <JobDescriptionStep
-    //       onBack={handleBack}
-    //       onNext={handleComplete}
-    //     />
-    //   )
-    // }
   ];
 
   return (
