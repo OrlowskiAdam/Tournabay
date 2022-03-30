@@ -3,7 +3,6 @@ import PropTypes from "prop-types";
 import { alpha } from "@mui/material/styles";
 import { Box, Button, Card, Radio, Typography } from "@mui/material";
 import { ArrowRight as ArrowRightIcon } from "../../icons/arrow-right";
-import { Link } from "react-router-dom";
 
 const typeOptions = [
   {
@@ -63,7 +62,9 @@ export const TournamentFormatType = (props) => {
       <Button endIcon={<ArrowRightIcon fontSize="small" />} onClick={onNext} variant="contained">
         Continue
       </Button>
-      <Button sx={{ml: 2}} onClick={onBack}>Back</Button>
+      <Button sx={{ ml: 2 }} onClick={onBack}>
+        Back
+      </Button>
     </div>
   );
 };
