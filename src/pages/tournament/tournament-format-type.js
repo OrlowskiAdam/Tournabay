@@ -1,8 +1,9 @@
-import { useState } from "react";
 import PropTypes from "prop-types";
 import { alpha } from "@mui/material/styles";
 import { Box, Button, Card, Radio, Typography } from "@mui/material";
 import { ArrowRight as ArrowRightIcon } from "../../icons/arrow-right";
+import { useDispatch, useSelector } from "../../store";
+import { setTournamentTeamFormat } from "../../slices/tournamentWizard";
 
 const typeOptions = [
   {
@@ -19,10 +20,11 @@ const typeOptions = [
 
 export const TournamentFormatType = (props) => {
   const { onBack, onNext, ...other } = props;
-  const [type, setType] = useState(typeOptions[0].value);
+  const { tournament } = useSelector((state) => state.tournamentWizard);
+  const dispatch = useDispatch();
 
   const handleChange = (newType) => {
-    setType(newType);
+    dispatch(setTournamentTeamFormat(newType));
   };
 
   return (
@@ -38,7 +40,7 @@ export const TournamentFormatType = (props) => {
                 cursor: "pointer",
                 display: "flex",
                 p: 2,
-                ...(type === typeOption.value && {
+                ...(tournament.teamFormat === typeOption.value && {
                   borderColor: "primary.main",
                   borderWidth: 2,
                   backgroundColor: (theme) => alpha(theme.palette.primary.main, 0.08),
@@ -48,7 +50,7 @@ export const TournamentFormatType = (props) => {
               onClick={() => handleChange(typeOption.value)}
               variant="outlined"
             >
-              <Radio checked={type === typeOption.value} color="primary" />
+              <Radio checked={tournament.teamFormat === typeOption.value} color="primary" />
               <Box sx={{ ml: 2 }}>
                 <Typography variant="subtitle1">{typeOption.title}</Typography>
                 <Typography color="textSecondary" variant="body2">

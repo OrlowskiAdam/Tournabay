@@ -1,9 +1,9 @@
-import { useState } from "react";
 import PropTypes from "prop-types";
 import { alpha } from "@mui/material/styles";
 import { Box, Button, Card, Radio, Typography } from "@mui/material";
 import { ArrowRight as ArrowRightIcon } from "../../icons/arrow-right";
-import { Link } from "react-router-dom";
+import { useDispatch, useSelector } from "../../store";
+import { setTournamentScoreType } from "../../slices/tournamentWizard";
 
 const typeOptions = [
   {
@@ -25,10 +25,11 @@ const typeOptions = [
 
 export const TournamentScoreType = (props) => {
   const { onBack, onNext, ...other } = props;
-  const [type, setType] = useState(typeOptions[0].value);
+  const { tournament } = useSelector((state) => state.tournamentWizard);
+  const dispatch = useDispatch();
 
   const handleChange = (newType) => {
-    setType(newType);
+    dispatch(setTournamentScoreType(newType));
   };
 
   return (
@@ -54,7 +55,7 @@ export const TournamentScoreType = (props) => {
                 cursor: "pointer",
                 display: "flex",
                 p: 2,
-                ...(type === typeOption.value && {
+                ...(tournament.scoreType === typeOption.value && {
                   borderColor: "primary.main",
                   borderWidth: 2,
                   backgroundColor: (theme) => alpha(theme.palette.primary.main, 0.08),
@@ -64,7 +65,7 @@ export const TournamentScoreType = (props) => {
               onClick={() => handleChange(typeOption.value)}
               variant="outlined"
             >
-              <Radio checked={type === typeOption.value} color="primary" />
+              <Radio checked={typeOption.value === tournament.scoreType} color="primary" />
               <Box sx={{ ml: 2 }}>
                 <Typography variant="subtitle1">{typeOption.title}</Typography>
                 <Typography color="textSecondary" variant="body2">

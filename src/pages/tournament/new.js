@@ -10,7 +10,6 @@ import {
   Stepper,
   Typography,
   Avatar,
-  Card,
   Button,
 } from "@mui/material";
 import Head from "next/head";
@@ -21,10 +20,14 @@ import { useState } from "react";
 import { ArrowRight as ArrowRightIcon } from "../../icons/arrow-right";
 import { TournamentFormatType } from "./tournament-format-type";
 import { TournamentData } from "./tournament-data";
+import NextLink from "next/link";
+import useTournament from '../../hooks/useTournament';
 
 const CreateTournament = () => {
   const [activeStep, setActiveStep] = useState(0);
   const [complete, setComplete] = useState(false);
+  const tournament = useTournament();
+  console.log(tournament);
 
   const handleNext = () => {
     setActiveStep((prevActiveStep) => prevActiveStep + 1);
@@ -49,7 +52,9 @@ const CreateTournament = () => {
     },
     {
       label: "Tournament data",
-      content: <TournamentData onBack={handleBack} onNext={handleNext} />,
+      content: (
+        <TournamentData onBack={handleBack} onNext={handleNext} handleComplete={handleComplete} />
+      ),
     },
   ];
 
@@ -141,14 +146,16 @@ const CreateTournament = () => {
                   <Typography color="textSecondary" variant="body2">
                     You can now manage your newly created tournament
                   </Typography>
-                  <Button
-                    sx={{ mt: 4, mb: 4 }}
-                    endIcon={<ArrowRightIcon fontSize="small" />}
-                    onClick={() => {}}
-                    variant="contained"
-                  >
-                    Tournament dashboard
-                  </Button>
+                  <NextLink href={`/tournament/${tournament.id}/dashboard`} passHref>
+                    <Button
+                      component="a"
+                      endIcon={<ArrowRightIcon fontSize="small" />}
+                      sx={{ mt: 4, mb: 4 }}
+                      variant="contained"
+                    >
+                      Go back to dashboard
+                    </Button>
+                  </NextLink>
                 </Box>
               )}
             </Box>
