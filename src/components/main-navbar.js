@@ -10,7 +10,6 @@ import UserAvatar from "./user-avatar";
 export const MainNavbar = (props) => {
   const { onOpenSidebar } = props;
   const { user } = useOsuAuth();
-  console.log(user);
 
   return (
     <AppBar
@@ -60,8 +59,13 @@ export const MainNavbar = (props) => {
               },
             }}
           >
-            <NextLink href="#" passHref>
+            <NextLink href="/tournament/new" passHref>
               <Link color="textSecondary" underline="none" variant="subtitle2">
+                Create tournament
+              </Link>
+            </NextLink>
+            <NextLink href="#" passHref>
+              <Link color="textSecondary" sx={{ ml: 2 }} underline="none" variant="subtitle2">
                 Rules
               </Link>
             </NextLink>
