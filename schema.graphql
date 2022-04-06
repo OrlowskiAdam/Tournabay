@@ -8,19 +8,74 @@ schema {
 "This directive allows results to be deferred during execution"
 directive @defer on FIELD
 
+interface Tournament {
+  createdAt: String!
+  endDate: String!
+  gameMode: GameMode!
+  id: ID!
+  name: String!
+  owner: User!
+  scoreType: ScoreType!
+  startDate: String!
+  teamFormat: TeamFormat!
+  updatedAt: String!
+}
+
+union TournamentType = PlayerBasedTournament | TeamBasedTournament
+
 type Mutation {
+  "Tournament"
+  createTournament(tournamentInput: TournamentInput!): Tournament
+  "User"
   createUser: User
 }
 
+type Player {
+  id: ID!
+}
+
+type PlayerBasedTournament implements Tournament {
+  createdAt: String!
+  endDate: String!
+  gameMode: GameMode!
+  "Tournament properties"
+  id: ID!
+  name: String!
+  owner: User!
+  "Extended"
+  players: [Player]!
+  scoreType: ScoreType!
+  startDate: String!
+  teamFormat: TeamFormat!
+  updatedAt: String!
+}
+
 type Query {
+  "Tournament"
+  getTournament: TournamentType
   getUserById(id: Int!): User
   getUsers: [User]
+  "User"
   me: User
 }
 
 type Role {
   id: ID!
   name: RoleName!
+}
+
+type TeamBasedTournament implements Tournament {
+  createdAt: String!
+  endDate: String!
+  gameMode: GameMode!
+  "Tournament properties"
+  id: ID!
+  name: String!
+  owner: User!
+  scoreType: ScoreType!
+  startDate: String!
+  teamFormat: TeamFormat!
+  updatedAt: String!
 }
 
 type User {
@@ -37,7 +92,34 @@ enum AuthProvider {
   osu
 }
 
+enum GameMode {
+  CATCH_THE_BEAT
+  MANIA
+  STANDARD
+  TAIKO
+}
+
 enum RoleName {
   ROLE_ADMIN
   ROLE_USER
+}
+
+enum ScoreType {
+  ACCURACY
+  SCORE_V1
+  SCORE_V2
+}
+
+enum TeamFormat {
+  PLAYER_VS
+  TEAM_VS
+}
+
+input TournamentInput {
+  endDate: String!
+  gameMode: GameMode!
+  name: String!
+  scoreType: ScoreType!
+  startDate: String!
+  teamFormat: TeamFormat!
 }
