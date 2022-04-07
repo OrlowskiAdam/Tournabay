@@ -19,7 +19,7 @@ const slice = createSlice({
   initialState,
   reducers: {
     reset(state, action) {
-      state.tournament = initialState;
+      state.tournament = action.payload.tournament;
     },
     setTournamentId(state, action) {
       state.tournament.id = action.payload;
@@ -50,7 +50,7 @@ export const { reducer } = slice;
 // actions
 
 export const resetWizard = () => async (dispatch) => {
-  dispatch(slice.actions.reset());
+  dispatch(slice.actions.reset(initialState));
 };
 
 export const setTournamentId = (id) => async (dispatch) => {
@@ -100,20 +100,8 @@ export const createTournament = (tournamentData) => async (dispatch) => {
     teamFormat,
     owner,
   } = tournament.data;
-  return await dispatch(
-    setTournament({
-      id,
-      name,
-      createdAt,
-      updatedAt,
-      startDate,
-      endDate,
-      gameMode,
-      scoreType,
-      teamFormat,
-      owner,
-    })
-  );
+  console.log(tournament.data);
+  dispatch(setTournament(tournament.data.createTournament));
 };
 
 export default slice;
