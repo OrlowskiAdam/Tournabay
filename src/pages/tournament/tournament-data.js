@@ -11,6 +11,7 @@ import {
   setTournamentName,
   setTournamentStartDate,
 } from "../../slices/tournamentWizard";
+import useTournament from "../../hooks/useTournament";
 
 export const TournamentData = (props) => {
   const { onBack, onNext, handleComplete, ...other } = props;
@@ -29,10 +30,9 @@ export const TournamentData = (props) => {
     dispatch(setTournamentName(name));
   };
 
-  const handleTournamentCreation = async () => {
+  const handleTournamentCreation = () => {
     dispatch(createTournament(tournament)).then(() => {
       handleComplete();
-      dispatch(resetWizard());
     });
   };
 
