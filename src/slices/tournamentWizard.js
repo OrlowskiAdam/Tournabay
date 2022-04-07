@@ -82,26 +82,17 @@ export const setTournamentTeamFormat = (teamFormat) => async (dispatch) => {
 };
 
 export const createTournament = (tournamentData) => async (dispatch) => {
-  let tournament = await apolloClient.mutate({
-    mutation: createTournamentMutation,
-    variables: {
-      input: tournamentData,
-    },
-  });
-  const {
-    id,
-    name,
-    createdAt,
-    updatedAt,
-    startDate,
-    endDate,
-    gameMode,
-    scoreType,
-    teamFormat,
-    owner,
-  } = tournament.data;
-  console.log(tournament.data);
-  dispatch(setTournament(tournament.data.createTournament));
+  return apolloClient
+    .mutate({
+      mutation: createTournamentMutation,
+      variables: {
+        input: tournamentData,
+      },
+    })
+    .then((response) => {
+      dispatch(setTournament(response.data.createTournament));
+      dispatch(resetWizard());
+    });
 };
 
 export default slice;
