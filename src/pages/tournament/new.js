@@ -21,12 +21,12 @@ import { ArrowRight as ArrowRightIcon } from "../../icons/arrow-right";
 import { TournamentFormatType } from "./tournament-format-type";
 import { TournamentData } from "./tournament-data";
 import NextLink from "next/link";
-import useTournament from '../../hooks/useTournament';
+import useTournament from "../../hooks/useTournament";
 
 const CreateTournament = () => {
   const [activeStep, setActiveStep] = useState(0);
   const [complete, setComplete] = useState(false);
-  const tournament = useTournament();
+  const { tournament } = useTournament();
   console.log(tournament);
 
   const handleNext = () => {
