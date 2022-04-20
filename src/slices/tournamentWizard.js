@@ -1,7 +1,4 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { apolloClient } from "../apollo/apolloClient";
-import { createTournamentMutation } from "../ql/TournamentMutations";
-import { setTournament } from "./tournament";
 
 const initialState = {
   tournament: {
@@ -81,18 +78,6 @@ export const setTournamentTeamFormat = (teamFormat) => async (dispatch) => {
   dispatch(slice.actions.setTournamentTeamFormat(teamFormat));
 };
 
-export const createTournament = (tournamentData) => async (dispatch) => {
-  return apolloClient
-    .mutate({
-      mutation: createTournamentMutation,
-      variables: {
-        input: tournamentData,
-      },
-    })
-    .then((response) => {
-      dispatch(setTournament(response.data.createTournament));
-      dispatch(resetWizard());
-    });
-};
+export const createTournament = (tournamentData) => async (dispatch) => {};
 
 export default slice;

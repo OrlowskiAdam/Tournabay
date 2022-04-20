@@ -6,9 +6,7 @@ import { CssBaseline } from "@mui/material";
 import { ThemeProvider } from "@mui/material/styles";
 import { createEmotionCache } from "../utils/create-emotion-cache";
 import { createTheme } from "../theme";
-import { ApolloProvider } from "@apollo/client";
 import { Provider as ReduxProvider } from "react-redux";
-import { apolloClient } from "../apollo/apolloClient";
 import store from "../store";
 import UserAuthentication from "../components/userAuthentication";
 
@@ -24,20 +22,18 @@ const App = (props) => {
         <meta name="viewport" content="initial-scale=1, width=device-width" />
       </Head>
       <LocalizationProvider dateAdapter={AdapterDateFns}>
-        <ApolloProvider client={apolloClient}>
-          <ReduxProvider store={store}>
-            <ThemeProvider
-              theme={createTheme({
-                direction: "ltr",
-                responsiveFontSizes: true,
-                mode: "dark",
-              })}
-            >
-              <CssBaseline />
-              <UserAuthentication {...props} />
-            </ThemeProvider>
-          </ReduxProvider>
-        </ApolloProvider>
+        <ReduxProvider store={store}>
+          <ThemeProvider
+            theme={createTheme({
+              direction: "ltr",
+              responsiveFontSizes: true,
+              mode: "dark",
+            })}
+          >
+            <CssBaseline />
+            <UserAuthentication {...props} />
+          </ThemeProvider>
+        </ReduxProvider>
       </LocalizationProvider>
     </CacheProvider>
   );

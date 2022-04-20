@@ -1,6 +1,4 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { apolloClient } from "../apollo/apolloClient";
-import { createTournamentMutation } from "../ql/TournamentMutations";
 
 const initialState = {
   tournament: {

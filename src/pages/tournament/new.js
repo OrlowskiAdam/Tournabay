@@ -27,7 +27,6 @@ const CreateTournament = () => {
   const [activeStep, setActiveStep] = useState(0);
   const [complete, setComplete] = useState(false);
   const { tournament } = useTournament();
-  console.log(tournament);
 
   const handleNext = () => {
     setActiveStep((prevActiveStep) => prevActiveStep + 1);

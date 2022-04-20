@@ -1,6 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { apolloClient } from "../apollo/apolloClient";
-import { userDataQuery } from "../ql/UserQueries";
+import { userApi } from "../api/userApi";
 
 const initialState = {
   user: {
@@ -42,9 +41,9 @@ export const getUser = (state) => state;
 
 export const me = () => async (dispatch) => {
   try {
-    let user = await apolloClient.query({ query: userDataQuery });
-    dispatch(slice.actions.login(user.data.me));
-  } catch (e) {
+    const response = await userApi.me();
+    dispatch(slice.actions.login(response.data));
+  } catch (error) {
     dispatch(slice.actions.failedLogin());
   }
 };

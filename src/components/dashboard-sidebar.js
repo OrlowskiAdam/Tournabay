@@ -3,7 +3,6 @@ import NextLink from "next/link";
 import { useRouter } from "next/router";
 import PropTypes from "prop-types";
 import { Box, Button, Divider, Drawer, Typography, useMediaQuery } from "@mui/material";
-import OpenInNewIcon from "@mui/icons-material/OpenInNew";
 import { ChartBar as ChartBarIcon } from "../icons/chart-bar";
 import { Cog as CogIcon } from "../icons/cog";
 import { Lock as LockIcon } from "../icons/lock";
@@ -13,14 +12,15 @@ import { User as UserIcon } from "../icons/user";
 import { UserAdd as UserAddIcon } from "../icons/user-add";
 import { Users as UsersIcon } from "../icons/users";
 import { XCircle as XCircleIcon } from "../icons/x-circle";
+import AdminPanelSettingsIcon from "@mui/icons-material/AdminPanelSettings";
 import { Logo } from "./logo";
 import { NavItem } from "./nav-item";
 
-const items = [
+const items = (tournamentId) => [
   {
-    href: "/",
-    icon: <ChartBarIcon fontSize="small" />,
-    title: "Dashboard",
+    href: `/dashboard/tournament/${tournamentId}/roles`,
+    icon: <AdminPanelSettingsIcon fontSize="small" />,
+    title: "Roles",
   },
   {
     href: "/customers",
@@ -62,6 +62,7 @@ const items = [
 export const DashboardSidebar = (props) => {
   const { open, onClose } = props;
   const router = useRouter();
+  const { tournamentId } = router.query;
   const lgUp = useMediaQuery((theme) => theme.breakpoints.up("lg"), {
     defaultMatches: true,
     noSsr: false,
@@ -141,7 +142,7 @@ export const DashboardSidebar = (props) => {
           }}
         />
         <Box sx={{ flexGrow: 1 }}>
-          {items.map((item) => (
+          {items(tournamentId).map((item) => (
             <NavItem key={item.title} icon={item.icon} href={item.href} title={item.title} />
           ))}
         </Box>

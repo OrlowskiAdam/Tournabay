@@ -1,17 +1,15 @@
-import { useState } from "react";
 import PropTypes from "prop-types";
 import { Box, Button, TextField, Typography } from "@mui/material";
 import { ArrowRight as ArrowRightIcon } from "../../icons/arrow-right";
 import { MobileDatePicker } from "@mui/lab";
 import { useDispatch, useSelector } from "../../store";
 import {
-  createTournament,
-  resetWizard,
   setTournamentEndDate,
   setTournamentName,
   setTournamentStartDate,
 } from "../../slices/tournamentWizard";
-import useTournament from "../../hooks/useTournament";
+import { tournamentApi } from "../../api/tournamentApi";
+import { setTournament } from "../../slices/tournament";
 
 export const TournamentData = (props) => {
   const { onBack, onNext, handleComplete, ...other } = props;
@@ -31,9 +29,15 @@ export const TournamentData = (props) => {
   };
 
   const handleTournamentCreation = () => {
-    dispatch(createTournament(tournament)).then(() => {
-      handleComplete();
-    });
+    tournamentApi
+      .createTournament(tournament)
+      .then((response) => {
+        dispatch(setTournament(response.data));
+        handleComplete();
+      })
+      .catch((error) => {
+        console.error(error);
+      });
   };
 
   return (
