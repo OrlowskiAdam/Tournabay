@@ -1,9 +1,9 @@
 import PropTypes from "prop-types";
 import { alpha } from "@mui/material/styles";
 import { Box, Button, Card, Radio, Typography } from "@mui/material";
-import { ArrowRight as ArrowRightIcon } from "../../icons/arrow-right";
-import { useDispatch, useSelector } from "../../store";
-import { setTournamentScoreType } from "../../slices/tournamentWizard";
+import { ArrowRight as ArrowRightIcon } from "../../../icons/arrow-right";
+import { useDispatch, useSelector } from "../../../store";
+import { setTournamentScoreType } from "../../../slices/tournamentWizard";
 
 const typeOptions = [
   {

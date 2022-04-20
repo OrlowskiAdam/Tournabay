@@ -14,12 +14,13 @@ import {
 } from "@mui/material";
 import Head from "next/head";
 import { Box } from "@mui/system";
-import { TournamentScoreType } from "./tournament-score-type";
+import { TournamentScoreType } from "../../components/tournament/new/tournament-score-type";
 import { Check as CheckIcon } from "../../icons/check";
 import { useState } from "react";
 import { ArrowRight as ArrowRightIcon } from "../../icons/arrow-right";
-import { TournamentFormatType } from "./tournament-format-type";
-import { TournamentData } from "./tournament-data";
+import AddIcon from '@mui/icons-material/Add';
+import { TournamentFormatType } from "../../components/tournament/new/tournament-format-type";
+import { TournamentData } from "../../components/tournament/new/tournament-data";
 import NextLink from "next/link";
 import useTournament from "../../hooks/useTournament";
 
@@ -145,7 +146,7 @@ const CreateTournament = () => {
                   <Typography color="textSecondary" variant="body2">
                     You can now manage your newly created tournament
                   </Typography>
-                  <NextLink href={`/tournament/${tournament.id}/dashboard`} passHref>
+                  <NextLink href={`/dashboard/tournament/${tournament.id}`} passHref>
                     <Button
                       component="a"
                       endIcon={<ArrowRightIcon fontSize="small" />}

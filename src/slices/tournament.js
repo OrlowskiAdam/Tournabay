@@ -11,6 +11,7 @@ const initialState = {
     gameMode: null,
     scoreType: null,
     teamFormat: null,
+    roles: [],
     owner: null,
   },
 };

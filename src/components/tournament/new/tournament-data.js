@@ -1,15 +1,15 @@
 import PropTypes from "prop-types";
 import { Box, Button, TextField, Typography } from "@mui/material";
-import { ArrowRight as ArrowRightIcon } from "../../icons/arrow-right";
+import { ArrowRight as ArrowRightIcon } from "../../../icons/arrow-right";
 import { MobileDatePicker } from "@mui/lab";
-import { useDispatch, useSelector } from "../../store";
+import { useDispatch, useSelector } from "../../../store";
 import {
   setTournamentEndDate,
   setTournamentName,
   setTournamentStartDate,
-} from "../../slices/tournamentWizard";
-import { tournamentApi } from "../../api/tournamentApi";
-import { setTournament } from "../../slices/tournament";
+} from "../../../slices/tournamentWizard";
+import { tournamentApi } from "../../../api/tournamentApi";
+import { setTournament } from "../../../slices/tournament";
 
 export const TournamentData = (props) => {
   const { onBack, onNext, handleComplete, ...other } = props;

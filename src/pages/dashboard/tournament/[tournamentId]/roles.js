@@ -4,6 +4,8 @@ import Head from "next/head";
 import useTournament from "../../../../hooks/useTournament";
 import { Box, Button, Container, Grid, Typography } from "@mui/material";
 import { Link as RouterLink } from "react-router-dom";
+import AddIcon from "@mui/icons-material/Add";
+import RolesTable from "../../../../components/dashboard/tournament/roles/RolesTable";
 
 const TournamentRoles = () => {
   const { tournament } = useTournament();
@@ -20,20 +22,7 @@ const TournamentRoles = () => {
         }}
       >
         <Container maxWidth={false}>
-          <Grid container justifyContent="space-between" spacing={3}>
-            <Grid item>
-              <Typography color="textPrimary" variant="h5">
-                Order List
-              </Typography>
-            </Grid>
-            <Grid item>
-              <Box sx={{ m: -1 }}>
-                <Button color="primary" sx={{ m: 1 }} variant="contained">
-                  New Role
-                </Button>
-              </Box>
-            </Grid>
-          </Grid>
+          <RolesTable roles={tournament.roles} />
         </Container>
       </Box>
     </>

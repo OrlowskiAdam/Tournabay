@@ -1,10 +1,32 @@
-import "simplebar/dist/simplebar.min.css";
 import { forwardRef } from "react";
-import SimpleBar from "simplebar-react";
-import { styled } from "@mui/material/styles";
+import PropTypes from "prop-types";
+import PerfectScrollbar from "react-perfect-scrollbar";
+import { Box } from "@mui/system";
 
-const ScrollbarRoot = styled(SimpleBar)``;
+const Scrollbar = forwardRef((props, ref) => {
+  const { children, ...other } = props;
 
-export const Scrollbar = forwardRef((props, ref) => {
-  return <ScrollbarRoot ref={ref} {...props} />;
+  const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(
+    navigator.userAgent
+  );
+
+  if (isMobile) {
+    return (
+      <Box ref={ref} sx={{ overflowX: "auto" }}>
+        {children}
+      </Box>
+    );
+  }
+
+  return (
+    <PerfectScrollbar ref={ref} {...other}>
+      {children}
+    </PerfectScrollbar>
+  );
 });
+
+Scrollbar.propTypes = {
+  children: PropTypes.node,
+};
+
+export default Scrollbar;
