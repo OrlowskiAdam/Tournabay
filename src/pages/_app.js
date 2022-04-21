@@ -9,6 +9,7 @@ import { createTheme } from "../theme";
 import { Provider as ReduxProvider } from "react-redux";
 import store from "../store";
 import UserAuthentication from "../components/userAuthentication";
+import { Toaster } from "react-hot-toast";
 
 const clientSideEmotionCache = createEmotionCache();
 
@@ -30,6 +31,7 @@ const App = (props) => {
               mode: "dark",
             })}
           >
+            <Toaster position="top-center" reverseOrder={false} />
             <CssBaseline />
             <UserAuthentication {...props} />
           </ThemeProvider>
