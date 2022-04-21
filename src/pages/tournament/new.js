@@ -18,7 +18,7 @@ import { TournamentScoreType } from "../../components/tournament/new/tournament-
 import { Check as CheckIcon } from "../../icons/check";
 import { useState } from "react";
 import { ArrowRight as ArrowRightIcon } from "../../icons/arrow-right";
-import AddIcon from '@mui/icons-material/Add';
+import AddIcon from "@mui/icons-material/Add";
 import { TournamentFormatType } from "../../components/tournament/new/tournament-format-type";
 import { TournamentData } from "../../components/tournament/new/tournament-data";
 import NextLink from "next/link";
