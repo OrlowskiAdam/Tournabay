@@ -38,6 +38,18 @@ const slice = createSlice({
       );
       state.tournament.staffMembers = [...state.tournament.staffMembers, action.payload];
     },
+    addRole(state, action) {
+      state.tournament.roles = [...state.tournament.roles, action.payload];
+    },
+    removeRole(state, action) {
+      state.tournament.roles = state.tournament.roles.filter(
+        (role) => role.id !== action.payload.id
+      );
+    },
+    replaceRole(state, action) {
+      const roleIndex = state.tournament.roles.findIndex((role) => role.id === action.payload.id);
+      state.tournament.roles[roleIndex] = action.payload;
+    },
   },
 });
 
@@ -60,6 +72,18 @@ export const removeStaffMember = (staffMember) => async (dispatch) => {
 
 export const updateStaffMember = (staffMember) => async (dispatch) => {
   dispatch(slice.actions.replaceStaffMember(staffMember));
+};
+
+export const addRole = (role) => async (dispatch) => {
+  dispatch(slice.actions.addRole(role));
+};
+
+export const removeRole = (role) => async (dispatch) => {
+  dispatch(slice.actions.removeRole(role));
+};
+
+export const updateRole = (role) => async (dispatch) => {
+  dispatch(slice.actions.replaceRole(role));
 };
 
 export default slice;
