@@ -12,6 +12,7 @@ const initialState = {
     scoreType: null,
     teamFormat: null,
     roles: [],
+    staffMembers: [],
     owner: null,
   },
 };
@@ -23,6 +24,20 @@ const slice = createSlice({
     setTournament: (state, action) => {
       state.tournament = action.payload;
     },
+    addStaffMember(state, action) {
+      state.tournament.staffMembers = [...state.tournament.staffMembers, action.payload];
+    },
+    removeStaffMember(state, action) {
+      state.tournament.staffMembers = state.tournament.staffMembers.filter(
+        (member) => member.id !== action.payload
+      );
+    },
+    replaceStaffMember(state, action) {
+      state.tournament.staffMembers = state.tournament.staffMembers.filter(
+        (member) => member.id !== action.payload.id
+      );
+      state.tournament.staffMembers = [...state.tournament.staffMembers, action.payload];
+    },
   },
 });
 
@@ -33,6 +48,18 @@ export const getUser = (state) => state;
 
 export const setTournament = (tournament) => async (dispatch) => {
   dispatch(slice.actions.setTournament(tournament));
+};
+
+export const addStaffMember = (staffMember) => async (dispatch) => {
+  dispatch(slice.actions.addStaffMember(staffMember));
+};
+
+export const removeStaffMember = (staffMember) => async (dispatch) => {
+  dispatch(slice.actions.removeStaffMember(staffMember));
+};
+
+export const updateStaffMember = (staffMember) => async (dispatch) => {
+  dispatch(slice.actions.replaceStaffMember(staffMember));
 };
 
 export default slice;
