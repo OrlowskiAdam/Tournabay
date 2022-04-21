@@ -35,13 +35,7 @@ const AddStaffMemberForm = (props) => {
         dispatch(addStaffMember(response.data));
       })
       .catch((error) => {
-        if (error.response.status === 400) {
-          toast.error("This user is already a staff member in this tournament!");
-        } else if (error.response.status === 404) {
-          toast.error("User with provided ID does not exists!");
-        } else {
-          toast.error("Something unexpected happened!");
-        }
+        toast.error(error.response.data.message);
       })
       .finally(() => {
         toast.remove(toastLoadingId);
