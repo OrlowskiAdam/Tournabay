@@ -4,7 +4,7 @@ import { Box, Container } from "@mui/material";
 import RolesTable from "../../../../components/dashboard/tournament/roles/RolesTable";
 import useTournament from "../../../../hooks/useTournament";
 import Head from "next/head";
-import StaffTable from '../../../../components/dashboard/tournament/staff/StaffTable';
+import StaffTable from "../../../../components/dashboard/tournament/staff/StaffTable";
 
 const TournamentStaff = (props) => {
   const { tournament } = useTournament();
