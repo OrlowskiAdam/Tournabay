@@ -23,9 +23,9 @@ const items = (tournamentId) => [
     title: "Roles",
   },
   {
-    href: "/customers",
+    href: `/dashboard/tournament/${tournamentId}/staff`,
     icon: <UsersIcon fontSize="small" />,
-    title: "Customers",
+    title: "Staff",
   },
   {
     href: "/products",
