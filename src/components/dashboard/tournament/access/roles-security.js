@@ -37,7 +37,12 @@ const RolesSecurity = () => {
           multiple={true}
         />
       </Box>
-      <Button color="primary" sx={{ mt: 1, alignSelf: "flex-end" }} type="submit" variant="contained">
+      <Button
+        color="primary"
+        sx={{ mt: 1, alignSelf: "flex-end" }}
+        type="submit"
+        variant="contained"
+      >
         Save
       </Button>
     </Box>
