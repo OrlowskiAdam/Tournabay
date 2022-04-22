@@ -21,14 +21,16 @@ import AddRoleForm from "./AddRoleForm";
 import { tournamentRoleApi } from "../../../../api/tournamentRoleApi";
 import toast from "react-hot-toast";
 import { useDispatch } from "../../../../store";
-import { removeRole, replaceRolePosition } from "../../../../slices/tournament";
+import { removeRole, replaceRolesPosition } from "../../../../slices/tournament";
 import EditRole from "./EditRole";
 import ArrowUpwardIcon from "@mui/icons-material/ArrowUpward";
 import ArrowDownwardIcon from "@mui/icons-material/ArrowDownward";
+import SaveIcon from "@mui/icons-material/Save";
 
 const RolesTable = (props) => {
   const { roles, tournament } = props;
   const [isDialogOpen, setIsDialogOpen] = useState(false);
+  const [isPositionSaving, setIsPositionSaving] = useState(false);
   const dispatch = useDispatch();
 
   const handleDialogClose = () => {
@@ -39,12 +41,27 @@ const RolesTable = (props) => {
     setIsDialogOpen(true);
   };
 
-  // TODO: Fix role index being the same after moving
-  const moveRoleUpwards = (role) => {
-    const roleIndex = roles.findIndex((r) => r.id === role.id);
+  const moveRoleUpwards = (roleIndex) => {
     if (roleIndex === 0) return;
-    let upperRole = roles[roleIndex - 1];
-    dispatch(replaceRolePosition(role, upperRole));
+    dispatch(replaceRolesPosition(roleIndex, roleIndex - 1));
+  };
+
+  const moveRoleDownwards = (roleIndex) => {
+    if (roleIndex === roles.length - 1) return;
+    dispatch(replaceRolesPosition(roleIndex, roleIndex + 1));
+  };
+
+  const handleSaveRolesPosition = () => {
+    setIsPositionSaving(true);
+    const toastLoadingId = toast.loading("Changing roles position.");
+    tournamentRoleApi
+      .saveRolesPosition(tournament.id, roles)
+      .then(() => toast.success("Roles position saved!"))
+      .catch(() => toast.error("Error saving roles position."))
+      .finally(() => {
+        setIsPositionSaving(false);
+        toast.remove(toastLoadingId);
+      });
   };
 
   const tournamentRoles = [...roles];
@@ -62,15 +79,27 @@ const RolesTable = (props) => {
           }}
         >
           <CardHeader title="Tournament roles" />
-          <Button
-            color="primary"
-            sx={{ m: 2 }}
-            startIcon={<AddIcon />}
-            variant="contained"
-            onClick={handleDialogOpen}
-          >
-            New Role
-          </Button>
+          <Box>
+            <Button
+              color="primary"
+              sx={{ m: 1 }}
+              startIcon={<SaveIcon />}
+              variant="outlined"
+              disabled={isPositionSaving}
+              onClick={handleSaveRolesPosition}
+            >
+              Save positions
+            </Button>
+            <Button
+              color="primary"
+              sx={{ m: 2 }}
+              startIcon={<AddIcon />}
+              variant="contained"
+              onClick={handleDialogOpen}
+            >
+              New Role
+            </Button>
+          </Box>
         </Box>
         <Scrollbar>
           <TableContainer>
@@ -84,13 +113,14 @@ const RolesTable = (props) => {
                 </TableRow>
               </TableHead>
               <TableBody>
-                {sortedRolesByPosition.map((role) => (
+                {sortedRolesByPosition.map((role, index) => (
                   <RoleRow
                     key={role.id}
+                    index={index}
                     role={role}
                     tournament={tournament}
                     moveRoleUpwards={moveRoleUpwards}
-                    moveRoleDownwards={() => {}}
+                    moveRoleDownwards={moveRoleDownwards}
                   />
                 ))}
               </TableBody>
@@ -107,7 +137,7 @@ const RolesTable = (props) => {
 };
 
 const RoleRow = (props) => {
-  const { role, tournament, moveRoleUpwards, moveRoleDownwards } = props;
+  const { role, tournament, index, moveRoleUpwards, moveRoleDownwards } = props;
   const [isLoading, setIsLoading] = useState(false);
   const [isDialogOpen, setIsDialogOpen] = useState(false);
   const dispatch = useDispatch();
@@ -129,7 +159,7 @@ const RoleRow = (props) => {
     const toastLoadingId = toast.loading("Removing role.");
     tournamentRoleApi
       .removeRole(role.id, tournament.id)
-      .then((response) => {
+      .then(() => {
         toast.success(`${role.name} deleted!`);
         dispatch(removeRole(role));
       })
@@ -147,12 +177,16 @@ const RoleRow = (props) => {
       <TableCell>
         <Box sx={{ display: "flex", alignItems: "center" }}>
           <Box sx={{ mx: 1, display: "flex", alignItems: "center" }}>
-            <IconButton aria-label="move up" onClick={() => moveRoleUpwards(role)}>
-              <ArrowUpwardIcon />
-            </IconButton>
-            <IconButton aria-label="move down">
-              <ArrowDownwardIcon />
-            </IconButton>
+            {index !== 0 && (
+              <IconButton aria-label="move up" onClick={() => moveRoleUpwards(index)}>
+                <ArrowUpwardIcon />
+              </IconButton>
+            )}
+            {index !== tournament.roles.length - 1 && (
+              <IconButton aria-label="move down" onClick={() => moveRoleDownwards(index)}>
+                <ArrowDownwardIcon />
+              </IconButton>
+            )}
           </Box>
           {role.name}
         </Box>
@@ -178,7 +212,6 @@ const RoleRow = (props) => {
         )}
       </TableCell>
       <Dialog fullWidth maxWidth="sm" onClose={handleDialogClose} open={isDialogOpen}>
-        {/* Dialog renders its body even if not open */}
         {isDialogOpen && <EditRole role={role} closeModal={handleDialogClose} />}
       </Dialog>
     </TableRow>
@@ -193,6 +226,7 @@ RolesTable.propTypes = {
 };
 
 RoleRow.propTypes = {
+  index: PropTypes.number.isRequired,
   role: PropTypes.object.isRequired,
   tournament: PropTypes.object.isRequired,
   moveRoleUpwards: PropTypes.func.isRequired,
