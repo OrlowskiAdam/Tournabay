@@ -13,6 +13,10 @@ class TournamentRoleApi {
   removeRole(roleId, tournamentId) {
     return request.delete(`${API_URL}/tournament-role/remove/${roleId}/${tournamentId}`);
   }
+
+  saveRolesPosition(tournamentId, roles) {
+    return request.patch(`${API_URL}/tournament-role/save-position/${tournamentId}`, roles);
+  }
 }
 
 export const tournamentRoleApi = new TournamentRoleApi();
