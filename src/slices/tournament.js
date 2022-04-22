@@ -51,16 +51,14 @@ const slice = createSlice({
       const roleIndex = state.tournament.roles.findIndex((role) => role.id === action.payload.id);
       state.tournament.roles[roleIndex] = action.payload;
     },
-    replaceRolePosition(state, action) {
-      let { role1, role2 } = action.payload;
-      const role1Index = state.tournament.roles.findIndex(
-        (role) => role.id === action.payload.role1.id
-      );
-      const role2Index = state.tournament.roles.findIndex(
-        (role) => role.id === action.payload.role2.id
-      );
-      state.tournament.roles[role1Index].position = role2.position;
-      state.tournament.roles[role2Index].position = role1.position;
+    changeRolesPosition: (state, action) => {
+      const role1 = { ...state.tournament.roles[action.payload.role1Index] };
+      const role2 = { ...state.tournament.roles[action.payload.role2Index] };
+      const role1Position = role1.position;
+      role1.position = role2.position;
+      role2.position = role1Position;
+      state.tournament.roles[action.payload.role1Index] = role2;
+      state.tournament.roles[action.payload.role2Index] = role1;
     },
   },
 });
@@ -98,8 +96,8 @@ export const updateRole = (role) => async (dispatch) => {
   dispatch(slice.actions.replaceRole(role));
 };
 
-export const replaceRolePosition = (role1, role2) => async (dispatch) => {
-  dispatch(slice.actions.replaceRolePosition({ role1, role2 }));
+export const replaceRolesPosition = (role1Index, role2Index) => async (dispatch) => {
+  dispatch(slice.actions.changeRolesPosition({ role1Index, role2Index }));
 };
 
 export default slice;
