@@ -147,11 +147,7 @@ const StaffRow = (props) => {
           <Box sx={{ ml: 1 }}>
             {member.user.username}
             <Typography color="textSecondary" variant="body2">
-              <img
-                style={{ width: 30, height: "auto", borderRadius: "20px" }}
-                src={`https://www.countryflags.io/${member.user.countryCode}/flat/64.png`}
-                alt={member.user.countryCode}
-              />
+              {member.user.osuId}
             </Typography>
           </Box>
         </Box>
