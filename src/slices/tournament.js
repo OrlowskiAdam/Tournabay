@@ -13,6 +13,7 @@ const initialState = {
     teamFormat: null,
     roles: [],
     staffMembers: [],
+    permission: null,
     owner: null,
   },
 };
@@ -50,6 +51,17 @@ const slice = createSlice({
       const roleIndex = state.tournament.roles.findIndex((role) => role.id === action.payload.id);
       state.tournament.roles[roleIndex] = action.payload;
     },
+    replaceRolePosition(state, action) {
+      let { role1, role2 } = action.payload;
+      const role1Index = state.tournament.roles.findIndex(
+        (role) => role.id === action.payload.role1.id
+      );
+      const role2Index = state.tournament.roles.findIndex(
+        (role) => role.id === action.payload.role2.id
+      );
+      state.tournament.roles[role1Index].position = role2.position;
+      state.tournament.roles[role2Index].position = role1.position;
+    },
   },
 });
 
@@ -84,6 +96,10 @@ export const removeRole = (role) => async (dispatch) => {
 
 export const updateRole = (role) => async (dispatch) => {
   dispatch(slice.actions.replaceRole(role));
+};
+
+export const replaceRolePosition = (role1, role2) => async (dispatch) => {
+  dispatch(slice.actions.replaceRolePosition({ role1, role2 }));
 };
 
 export default slice;

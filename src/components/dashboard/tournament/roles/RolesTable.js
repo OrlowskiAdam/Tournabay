@@ -4,6 +4,7 @@ import {
   Card,
   CardHeader,
   Dialog,
+  IconButton,
   Table,
   TableBody,
   TableCell,
@@ -17,18 +18,18 @@ import Scrollbar from "../../../scrollbar";
 import { SeverityPill } from "../../../severity-pill";
 import { useState } from "react";
 import AddRoleForm from "./AddRoleForm";
-import { tournamentApi } from "../../../../api/tournamentApi";
 import { tournamentRoleApi } from "../../../../api/tournamentRoleApi";
-import useTournament from "../../../../hooks/useTournament";
 import toast from "react-hot-toast";
 import { useDispatch } from "../../../../store";
-import { removeRole } from "../../../../slices/tournament";
+import { removeRole, replaceRolePosition } from "../../../../slices/tournament";
 import EditRole from "./EditRole";
+import ArrowUpwardIcon from "@mui/icons-material/ArrowUpward";
+import ArrowDownwardIcon from "@mui/icons-material/ArrowDownward";
 
 const RolesTable = (props) => {
-  const { roles } = props;
+  const { roles, tournament } = props;
   const [isDialogOpen, setIsDialogOpen] = useState(false);
-  const { tournament } = useTournament();
+  const dispatch = useDispatch();
 
   const handleDialogClose = () => {
     setIsDialogOpen(false);
@@ -37,6 +38,17 @@ const RolesTable = (props) => {
   const handleDialogOpen = () => {
     setIsDialogOpen(true);
   };
+
+  // TODO: Fix role index being the same after moving
+  const moveRoleUpwards = (role) => {
+    const roleIndex = roles.findIndex((r) => r.id === role.id);
+    if (roleIndex === 0) return;
+    let upperRole = roles[roleIndex - 1];
+    dispatch(replaceRolePosition(role, upperRole));
+  };
+
+  const tournamentRoles = [...roles];
+  const sortedRolesByPosition = tournamentRoles.sort((a, b) => a.position - b.position);
 
   return (
     <>
@@ -65,15 +77,21 @@ const RolesTable = (props) => {
             <Table stickyHeader>
               <TableHead>
                 <TableRow>
-                  <TableCell>Role name</TableCell>
+                  <TableCell align="left">Role name</TableCell>
                   <TableCell>Hidden</TableCell>
                   <TableCell>Protected</TableCell>
                   <TableCell align="right">Action</TableCell>
                 </TableRow>
               </TableHead>
               <TableBody>
-                {roles.map((role) => (
-                  <RoleRow key={role.id} role={role} tournament={tournament} />
+                {sortedRolesByPosition.map((role) => (
+                  <RoleRow
+                    key={role.id}
+                    role={role}
+                    tournament={tournament}
+                    moveRoleUpwards={moveRoleUpwards}
+                    moveRoleDownwards={() => {}}
+                  />
                 ))}
               </TableBody>
             </Table>
@@ -89,7 +107,7 @@ const RolesTable = (props) => {
 };
 
 const RoleRow = (props) => {
-  const { role, tournament } = props;
+  const { role, tournament, moveRoleUpwards, moveRoleDownwards } = props;
   const [isLoading, setIsLoading] = useState(false);
   const [isDialogOpen, setIsDialogOpen] = useState(false);
   const dispatch = useDispatch();
@@ -126,7 +144,19 @@ const RoleRow = (props) => {
 
   return (
     <TableRow hover>
-      <TableCell>{role.name}</TableCell>
+      <TableCell>
+        <Box sx={{ display: "flex", alignItems: "center" }}>
+          <Box sx={{ mx: 1, display: "flex", alignItems: "center" }}>
+            <IconButton aria-label="move up" onClick={() => moveRoleUpwards(role)}>
+              <ArrowUpwardIcon />
+            </IconButton>
+            <IconButton aria-label="move down">
+              <ArrowDownwardIcon />
+            </IconButton>
+          </Box>
+          {role.name}
+        </Box>
+      </TableCell>
       <TableCell>{role.isHidden && <SeverityPill color="primary">Hidden</SeverityPill>}</TableCell>
       <TableCell>
         {role.isProtected && <SeverityPill color="success">Protected</SeverityPill>}
@@ -158,12 +188,15 @@ const RoleRow = (props) => {
 //TODO: Add TournamentRoleGuard
 
 RolesTable.propTypes = {
+  tournament: PropTypes.object.isRequired,
   roles: PropTypes.array.isRequired,
 };
 
 RoleRow.propTypes = {
   role: PropTypes.object.isRequired,
   tournament: PropTypes.object.isRequired,
+  moveRoleUpwards: PropTypes.func.isRequired,
+  moveRoleDownwards: PropTypes.func.isRequired,
 };
 
 export default RolesTable;

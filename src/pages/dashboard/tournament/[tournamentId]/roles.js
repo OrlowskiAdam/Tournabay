@@ -22,7 +22,7 @@ const TournamentRoles = () => {
         }}
       >
         <Container maxWidth={false}>
-          <RolesTable roles={tournament.roles} />
+          <RolesTable roles={tournament.roles} tournament={tournament} />
         </Container>
       </Box>
     </>
