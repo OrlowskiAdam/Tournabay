@@ -1,7 +1,8 @@
 import { DashboardLayout } from "../../../../components/dashboard-layout";
 import Head from "next/head";
-import TournamentGuard from "../../../../guards/TournamentGuard";
+import TournamentData from "../../../../guards/TournamentData";
 import useTournament from "../../../../hooks/useTournament";
+import TournamentGuard from "../../../../guards/TournamentGuard";
 
 const TournamentDashboard = () => {
   const { tournament } = useTournament();
@@ -18,9 +19,11 @@ const TournamentDashboard = () => {
 };
 
 TournamentDashboard.getLayout = (page) => (
-  <TournamentGuard>
-    <DashboardLayout>{page}</DashboardLayout>
-  </TournamentGuard>
+  <TournamentData>
+    <TournamentGuard>
+      <DashboardLayout>{page}</DashboardLayout>
+    </TournamentGuard>
+  </TournamentData>
 );
 
 export default TournamentDashboard;
