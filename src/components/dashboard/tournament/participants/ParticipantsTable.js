@@ -5,6 +5,7 @@ import {
   Card,
   CardHeader,
   Dialog,
+  Link,
   Table,
   TableBody,
   TableCell,
@@ -19,6 +20,7 @@ import Scrollbar from "../../../scrollbar";
 import { SeverityPill } from "../../../severity-pill";
 import AddStaffMemberForm from "./AddStaffMemberForm";
 import { useState } from "react";
+import NextLink from "next/link";
 import { getInitials } from "../../../../utils/get-initials";
 import { staffMemberApi } from "../../../../api/staffMemberApi";
 import toast from "react-hot-toast";
@@ -50,7 +52,7 @@ const ParticipantsTable = (props) => {
             flexWrap: "wrap",
           }}
         >
-          <CardHeader title="Participants" />
+          <CardHeader title="Staff members" />
           <Button
             color="primary"
             sx={{ m: 2 }}
@@ -58,7 +60,7 @@ const ParticipantsTable = (props) => {
             variant="contained"
             onClick={handleAddStaffMemberClick}
           >
-            Add participant
+            Add staff member
           </Button>
         </Box>
         <Scrollbar>
@@ -68,6 +70,7 @@ const ParticipantsTable = (props) => {
                 <TableRow>
                   <TableCell>Username</TableCell>
                   <TableCell>Discord</TableCell>
+                  <TableCell>Roles</TableCell>
                   <TableCell>Status</TableCell>
                   <TableCell>Joined At</TableCell>
                   <TableCell align="right">Action</TableCell>
@@ -75,7 +78,7 @@ const ParticipantsTable = (props) => {
               </TableHead>
               <TableBody>
                 {participants.map((participant) => (
-                  <ParticipantRow key={participant.id} participant={participant} />
+                  <StaffRow key={participant.id} participant={participant} />
                 ))}
               </TableBody>
             </Table>
@@ -151,6 +154,11 @@ const ParticipantRow = (props) => {
       </TableCell>
       <TableCell>{participant.discordId}</TableCell>
       <TableCell>
+        {participant.tournamentRoles.map((role) => (
+          <SeverityPill key={role.id}>{role.name}</SeverityPill>
+        ))}
+      </TableCell>
+      <TableCell>
         <SeverityPill>{participant.status}</SeverityPill>
       </TableCell>
       <TableCell>{participant.joinedAt}</TableCell>
@@ -170,7 +178,9 @@ const ParticipantRow = (props) => {
       </TableCell>
       <Dialog fullWidth maxWidth="sm" onClose={handleDialogClose} open={isDialogOpen}>
         {/* Dialog renders its body even if not open */}
-        {isDialogOpen && <EditStaffMember staffMember={participant} closeModal={handleDialogClose} />}
+        {isDialogOpen && (
+          <EditStaffMember staffMember={participant} closeModal={handleDialogClose} />
+        )}
       </Dialog>
     </TableRow>
   );
@@ -186,4 +196,4 @@ ParticipantRow.propTypes = {
   participant: PropTypes.object.isRequired,
 };
 
-export default ParticipantsTable;
+export default StaffTable;
