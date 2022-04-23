@@ -12,29 +12,33 @@ import { Users as UsersIcon } from "../icons/users";
 import { XCircle as XCircleIcon } from "../icons/x-circle";
 import AdminPanelSettingsIcon from "@mui/icons-material/AdminPanelSettings";
 import GppGoodIcon from "@mui/icons-material/GppGood";
+import PersonIcon from "@mui/icons-material/Person";
 import { Logo } from "./logo";
 import { NavItem } from "./nav-item";
+import useTournament from "../hooks/useTournament";
+import useStaffMember from "../hooks/useStaffMember";
+import { SeverityPill } from "./severity-pill";
 
-const items = (tournamentId) => [
+const items = (tournament) => [
   {
-    href: `/dashboard/tournament/${tournamentId}/roles`,
+    href: `/dashboard/tournament/${tournament.id}/roles`,
     icon: <AdminPanelSettingsIcon fontSize="small" />,
     title: "Roles",
   },
   {
-    href: `/dashboard/tournament/${tournamentId}/staff`,
+    href: `/dashboard/tournament/${tournament.id}/staff`,
     icon: <UsersIcon fontSize="small" />,
     title: "Staff",
   },
   {
-    href: `/dashboard/tournament/${tournamentId}/access`,
+    href: `/dashboard/tournament/${tournament.id}/access`,
     icon: <GppGoodIcon fontSize="small" />,
     title: "Access",
   },
   {
-    href: "/account",
-    icon: <UserIcon fontSize="small" />,
-    title: "Account",
+    href: `/dashboard/tournament/${tournament.id}/participants`,
+    icon: <PersonIcon fontSize="small" />,
+    title: "Participants",
   },
   {
     href: "/settings",
@@ -61,7 +65,8 @@ const items = (tournamentId) => [
 export const DashboardSidebar = (props) => {
   const { open, onClose } = props;
   const router = useRouter();
-  const { tournamentId } = router.query;
+  const { tournament } = useTournament();
+  const staffMember = useStaffMember();
   const lgUp = useMediaQuery((theme) => theme.breakpoints.up("lg"), {
     defaultMatches: true,
     noSsr: false,
@@ -118,19 +123,9 @@ export const DashboardSidebar = (props) => {
             >
               <div>
                 <Typography color="inherit" variant="subtitle1">
-                  Acme Inc
-                </Typography>
-                <Typography color="neutral.400" variant="body2">
-                  Your tier : Premium
+                  {tournament.name}
                 </Typography>
               </div>
-              <SelectorIcon
-                sx={{
-                  color: "neutral.500",
-                  width: 14,
-                  height: 14,
-                }}
-              />
             </Box>
           </Box>
         </div>
@@ -141,7 +136,7 @@ export const DashboardSidebar = (props) => {
           }}
         />
         <Box sx={{ flexGrow: 1 }}>
-          {items(tournamentId).map((item) => (
+          {items(tournament).map((item) => (
             <NavItem key={item.title} icon={item.icon} href={item.href} title={item.title} />
           ))}
         </Box>
