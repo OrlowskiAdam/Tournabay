@@ -2,14 +2,20 @@ import { Box, Button } from "@mui/material";
 import useTournament from "../../../../hooks/useTournament";
 import TournamentRolesAutocomplete from "../../../roles-autocomplete";
 import TournamentStaffMembersAutocomplete from "../../../staff-autocomplete";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { tournamentPermissionApi } from "../../../../api/tournamentPermissionApi";
+import toast from "react-hot-toast";
+import { useDispatch } from "../../../../store";
+import { updatePermission } from "../../../../slices/tournament";
 
 const RolesSecurity = () => {
   const { tournament } = useTournament();
   const [rolesValue, setRolesValue] = useState(tournament.permission.canTournamentRoleManageRoles);
   const [staffMembersValue, setStaffMembersValue] = useState(
-    tournament.permission.canTournamentRoleManageRoles
+    tournament.permission.canStaffMemberManageRoles
   );
+  const [isLoading, setIsLoading] = useState(false);
+  const dispatch = useDispatch();
 
   const handleRolesChange = (event, value) => {
     setRolesValue(value);
@@ -17,6 +23,27 @@ const RolesSecurity = () => {
 
   const handleStaffMemberChange = (event, value) => {
     setStaffMembersValue(value);
+  };
+
+  const handleSaveClick = () => {
+    setIsLoading(true);
+    const toastLoadingId = toast.loading("Updating roles permissions.");
+    tournamentPermissionApi
+      .updateRolesPermission(tournament.id, {
+        tournamentRoles: rolesValue,
+        staffMembers: staffMembersValue,
+      })
+      .then((response) => {
+        dispatch(updatePermission(response.data));
+        toast.success("Roles permissions updated successfully.");
+      })
+      .catch((error) => {
+        toast.error(error.response.data.message);
+      })
+      .finally(() => {
+        setIsLoading(false);
+        toast.remove(toastLoadingId);
+      });
   };
 
   return (
@@ -42,6 +69,8 @@ const RolesSecurity = () => {
         sx={{ mt: 1, alignSelf: "flex-end" }}
         type="submit"
         variant="contained"
+        disabled={isLoading}
+        onClick={handleSaveClick}
       >
         Save
       </Button>
