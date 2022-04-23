@@ -5,7 +5,6 @@ import {
   Card,
   CardHeader,
   Dialog,
-  Link,
   Table,
   TableBody,
   TableCell,
@@ -20,7 +19,6 @@ import Scrollbar from "../../../scrollbar";
 import { SeverityPill } from "../../../severity-pill";
 import AddStaffMemberForm from "./AddStaffMemberForm";
 import { useState } from "react";
-import NextLink from "next/link";
 import { getInitials } from "../../../../utils/get-initials";
 import { staffMemberApi } from "../../../../api/staffMemberApi";
 import toast from "react-hot-toast";
@@ -52,7 +50,7 @@ const StaffTable = (props) => {
             flexWrap: "wrap",
           }}
         >
-          <CardHeader title="Staff members" />
+          <CardHeader title="Participants" />
           <Button
             color="primary"
             sx={{ m: 2 }}
@@ -60,7 +58,7 @@ const StaffTable = (props) => {
             variant="contained"
             onClick={handleAddStaffMemberClick}
           >
-            Add staff member
+            Add participant
           </Button>
         </Box>
         <Scrollbar>
@@ -70,7 +68,6 @@ const StaffTable = (props) => {
                 <TableRow>
                   <TableCell>Username</TableCell>
                   <TableCell>Discord</TableCell>
-                  <TableCell>Roles</TableCell>
                   <TableCell>Status</TableCell>
                   <TableCell>Joined At</TableCell>
                   <TableCell align="right">Action</TableCell>
@@ -153,11 +150,6 @@ const StaffRow = (props) => {
         </Box>
       </TableCell>
       <TableCell>{member.discordId}</TableCell>
-      <TableCell>
-        {member.tournamentRoles.map((role) => (
-          <SeverityPill key={role.id}>{role.name}</SeverityPill>
-        ))}
-      </TableCell>
       <TableCell>
         <SeverityPill>{member.status}</SeverityPill>
       </TableCell>
