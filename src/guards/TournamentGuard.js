@@ -1,38 +1,24 @@
-import { useEffect, useState } from "react";
-import { tournamentApi } from "../api/tournamentApi";
-import { useDispatch } from "../store";
-import { setTournament } from "../slices/tournament";
-import SplashScreen from "../components/SplashScreen";
-import { useRouter } from "next/router";
+import useTournament from "../hooks/useTournament";
+import useOsuAuth from "../hooks/useOsuAuth";
+import NotFound from "../pages/404";
 
 const TournamentGuard = ({ children }) => {
-  const router = useRouter();
-  const { tournamentId } = router.query;
-  const dispatch = useDispatch();
-  const [isLoading, setIsLoading] = useState(true);
+  const { tournament } = useTournament();
+  const { user } = useOsuAuth();
 
-  useEffect(() => {
-    setIsLoading(true);
-    if (!tournamentId) {
-      console.error("TournamentGuard was used, but no tournamentId was provided");
-    } else {
-      tournamentApi
-        .getTournamentById(tournamentId)
-        .then((response) => {
-          dispatch(setTournament(response.data));
-        })
-        .catch((error) => {
-          console.error(error);
-        })
-        .finally(() => {
-          setIsLoading(false);
-        });
-    }
-  }, [tournamentId]);
+  const staffMember =
+    user && tournament.staffMembers.find((staffMember) => staffMember.user.id === user.id);
 
-  if (!tournamentId) return "TournamentGuard was not used correctly.";
-  if (isLoading) return <SplashScreen />;
-  return children;
+  if (!staffMember) return <NotFound />;
+  if (tournament.owner.id === user.id) return children;
+
+  if (
+    tournament.staffMembers.some(
+      (tournamentStaffMember) => tournamentStaffMember.id === staffMember.id
+    )
+  )
+    return children;
+  return <NotFound />;
 };
 
 export default TournamentGuard;
