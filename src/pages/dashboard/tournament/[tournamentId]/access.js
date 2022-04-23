@@ -1,9 +1,11 @@
-import TournamentGuard from "../../../../guards/TournamentGuard";
+import TournamentData from "../../../../guards/TournamentData";
 import { DashboardLayout } from "../../../../components/dashboard-layout";
 import Head from "next/head";
 import { Box, Button, Card, CardContent, CardHeader, Container } from "@mui/material";
 import useTournament from "../../../../hooks/useTournament";
 import RolesSecurity from "../../../../components/dashboard/tournament/access/roles-security";
+import TournamentGuard from "../../../../guards/TournamentGuard";
+import StaffSecurity from '../../../../components/dashboard/tournament/access/staff-security';
 
 const TournamentAccess = () => {
   const { tournament } = useTournament();
@@ -28,7 +30,7 @@ const TournamentAccess = () => {
           </Card>
           <Card sx={{ my: 2 }}>
             <CardContent>
-              <RolesSecurity />
+              <StaffSecurity />
             </CardContent>
           </Card>
           <Card sx={{ my: 2 }}>
@@ -43,9 +45,11 @@ const TournamentAccess = () => {
 };
 
 TournamentAccess.getLayout = (page) => (
-  <TournamentGuard>
-    <DashboardLayout>{page}</DashboardLayout>
-  </TournamentGuard>
+  <TournamentData>
+    <TournamentGuard>
+      <DashboardLayout>{page}</DashboardLayout>
+    </TournamentGuard>
+  </TournamentData>
 );
 
 export default TournamentAccess;
