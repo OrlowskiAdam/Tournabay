@@ -1,4 +1,4 @@
-import TournamentGuard from "../../../../guards/TournamentGuard";
+import TournamentData from "../../../../guards/TournamentData";
 import { DashboardLayout } from "../../../../components/dashboard-layout";
 import Head from "next/head";
 import useTournament from "../../../../hooks/useTournament";
@@ -6,6 +6,7 @@ import { Box, Button, Container, Grid, Typography } from "@mui/material";
 import { Link as RouterLink } from "react-router-dom";
 import AddIcon from "@mui/icons-material/Add";
 import RolesTable from "../../../../components/dashboard/tournament/roles/RolesTable";
+import TournamentGuard from '../../../../guards/TournamentGuard';
 
 const TournamentRoles = () => {
   const { tournament } = useTournament();
@@ -30,9 +31,11 @@ const TournamentRoles = () => {
 };
 
 TournamentRoles.getLayout = (page) => (
-  <TournamentGuard>
-    <DashboardLayout>{page}</DashboardLayout>
-  </TournamentGuard>
+  <TournamentData>
+    <TournamentGuard>
+      <DashboardLayout>{page}</DashboardLayout>
+    </TournamentGuard>
+  </TournamentData>
 );
 
 export default TournamentRoles;

@@ -1,10 +1,10 @@
-import TournamentGuard from "../../../../guards/TournamentGuard";
+import TournamentData from "../../../../guards/TournamentData";
 import { DashboardLayout } from "../../../../components/dashboard-layout";
 import { Box, Container } from "@mui/material";
-import RolesTable from "../../../../components/dashboard/tournament/roles/RolesTable";
 import useTournament from "../../../../hooks/useTournament";
 import Head from "next/head";
 import StaffTable from "../../../../components/dashboard/tournament/staff/StaffTable";
+import TournamentGuard from "../../../../guards/TournamentGuard";
 
 const TournamentStaff = (props) => {
   const { tournament } = useTournament();
@@ -30,9 +30,11 @@ const TournamentStaff = (props) => {
 };
 
 TournamentStaff.getLayout = (page) => (
-  <TournamentGuard>
-    <DashboardLayout>{page}</DashboardLayout>
-  </TournamentGuard>
+  <TournamentData>
+    <TournamentGuard>
+      <DashboardLayout>{page}</DashboardLayout>
+    </TournamentGuard>
+  </TournamentData>
 );
 
 export default TournamentStaff;
