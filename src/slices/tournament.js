@@ -64,6 +64,14 @@ const slice = createSlice({
     updatePermission(state, action) {
       state.tournament.permission = action.payload;
     },
+    addParticipant(state, action) {
+      state.tournament.participants = [...state.tournament.participants, action.payload];
+    },
+    removeParticipant(state, action) {
+      state.tournament.participants = state.tournament.participants.filter(
+        (participant) => participant.id !== action.payload.id
+      );
+    },
   },
 });
 
@@ -106,6 +114,14 @@ export const replaceRolesPosition = (role1Index, role2Index) => async (dispatch)
 
 export const updatePermission = (permission) => async (dispatch) => {
   dispatch(slice.actions.updatePermission(permission));
+};
+
+export const addParticipant = (participant) => async (dispatch) => {
+  dispatch(slice.actions.addParticipant(participant));
+};
+
+export const removeParticipant = (participant) => async (dispatch) => {
+  dispatch(slice.actions.removeParticipant(participant));
 };
 
 export default slice;

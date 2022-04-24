@@ -3,8 +3,8 @@ import { DashboardLayout } from "../../../../components/dashboard-layout";
 import { Box, Container } from "@mui/material";
 import useTournament from "../../../../hooks/useTournament";
 import Head from "next/head";
-import StaffTable from "../../../../components/dashboard/tournament/staff/StaffTable";
 import TournamentGuard from "../../../../guards/TournamentGuard";
+import ParticipantsTable from "../../../../components/dashboard/tournament/participants/ParticipantsTable";
 
 const TournamentParticipants = (props) => {
   const { tournament } = useTournament();
@@ -22,7 +22,7 @@ const TournamentParticipants = (props) => {
         }}
       >
         <Container maxWidth={false}>
-          <StaffTable participants={tournament.participants} />
+          <ParticipantsTable participants={tournament.participants} />
         </Container>
       </Box>
     </>

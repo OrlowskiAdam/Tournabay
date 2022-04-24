@@ -6,8 +6,8 @@ class ParticipantApi {
     return request.post(`${API_URL}/participant/add/${osuId}/${tournamentId}`);
   }
 
-  deleteParticipants(tournamentId, ids) {
-    return request.post(`${API_URL}/participant/delete/${tournamentId}`, ids);
+  deleteParticipant(tournamentId, participantId) {
+    return request.post(`${API_URL}/participant/delete/${participantId}/${tournamentId}`);
   }
 
   setParticipantsStatus(tournamentId, body) {
