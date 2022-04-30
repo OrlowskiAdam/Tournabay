@@ -50,7 +50,7 @@ const StaffTable = (props) => {
             flexWrap: "wrap",
           }}
         >
-          <CardHeader title="Participants" />
+          <CardHeader title="Staff members" />
           <Button
             color="primary"
             sx={{ m: 2 }}
@@ -58,7 +58,7 @@ const StaffTable = (props) => {
             variant="contained"
             onClick={handleAddStaffMemberClick}
           >
-            Add participant
+            Add staff member
           </Button>
         </Box>
         <Scrollbar>
@@ -68,6 +68,7 @@ const StaffTable = (props) => {
                 <TableRow>
                   <TableCell>Username</TableCell>
                   <TableCell>Discord</TableCell>
+                  <TableCell>Roles</TableCell>
                   <TableCell>Status</TableCell>
                   <TableCell>Joined At</TableCell>
                   <TableCell align="right">Action</TableCell>
@@ -150,6 +151,11 @@ const StaffRow = (props) => {
         </Box>
       </TableCell>
       <TableCell>{member.discordId}</TableCell>
+      <TableCell>
+        {member.tournamentRoles.map((role) => (
+          <SeverityPill key={role.id}>{role.name}</SeverityPill>
+        ))}
+      </TableCell>
       <TableCell>
         <SeverityPill>{member.status}</SeverityPill>
       </TableCell>

@@ -6,12 +6,12 @@ class ParticipantApi {
     return request.post(`${API_URL}/participant/add/${osuId}/${tournamentId}`);
   }
 
-  deleteParticipants(tournamentId, ids) {
-    return request.post(`${API_URL}/participant/delete/${tournamentId}`, ids);
+  deleteParticipant(tournamentId, participantId) {
+    return request.post(`${API_URL}/participant/delete/${participantId}/${tournamentId}`);
   }
 
-  setParticipantsStatus(tournamentId, body) {
-    return request.put(`${API_URL}/participant/status/${tournamentId}`, body);
+  updateParticipant(participantId, tournamentId, body) {
+    return request.patch(`${API_URL}/participant/update/${participantId}/${tournamentId}`, body);
   }
 }
 

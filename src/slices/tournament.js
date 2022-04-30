@@ -15,6 +15,7 @@ const initialState = {
     staffMembers: [],
     permission: null,
     participants: [],
+    teams: [],
     owner: null,
   },
 };
@@ -35,10 +36,10 @@ const slice = createSlice({
       );
     },
     replaceStaffMember(state, action) {
-      state.tournament.staffMembers = state.tournament.staffMembers.filter(
-        (member) => member.id !== action.payload.id
+      const memberIndex = state.tournament.staffMembers.findIndex(
+        (member) => member.id === action.payload.id
       );
-      state.tournament.staffMembers = [...state.tournament.staffMembers, action.payload];
+      state.tournament.staffMembers[memberIndex] = action.payload;
     },
     addRole(state, action) {
       state.tournament.roles = [...state.tournament.roles, action.payload];
@@ -63,6 +64,20 @@ const slice = createSlice({
     },
     updatePermission(state, action) {
       state.tournament.permission = action.payload;
+    },
+    addParticipant(state, action) {
+      state.tournament.participants = [...state.tournament.participants, action.payload];
+    },
+    removeParticipant(state, action) {
+      state.tournament.participants = state.tournament.participants.filter(
+        (participant) => participant.id !== action.payload
+      );
+    },
+    replaceParticipant(state, action) {
+      const participantIndex = state.tournament.participants.findIndex(
+        (participant) => participant.id === action.payload.id
+      );
+      state.tournament.participants[participantIndex] = action.payload;
     },
   },
 });
@@ -106,6 +121,18 @@ export const replaceRolesPosition = (role1Index, role2Index) => async (dispatch)
 
 export const updatePermission = (permission) => async (dispatch) => {
   dispatch(slice.actions.updatePermission(permission));
+};
+
+export const addParticipant = (participant) => async (dispatch) => {
+  dispatch(slice.actions.addParticipant(participant));
+};
+
+export const removeParticipant = (participantId) => async (dispatch) => {
+  dispatch(slice.actions.removeParticipant(participantId));
+};
+
+export const updateParticipant = (participant) => async (dispatch) => {
+  dispatch(slice.actions.replaceParticipant(participant));
 };
 
 export default slice;

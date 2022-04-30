@@ -5,7 +5,7 @@ import { Box, Button, Card, CardContent, CardHeader, Container } from "@mui/mate
 import useTournament from "../../../../hooks/useTournament";
 import RolesSecurity from "../../../../components/dashboard/tournament/access/roles-security";
 import TournamentGuard from "../../../../guards/TournamentGuard";
-import StaffSecurity from '../../../../components/dashboard/tournament/access/staff-security';
+import StaffSecurity from "../../../../components/dashboard/tournament/access/staff-security";
 
 const TournamentAccess = () => {
   const { tournament } = useTournament();

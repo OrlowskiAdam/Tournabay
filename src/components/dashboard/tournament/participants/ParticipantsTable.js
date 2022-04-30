@@ -18,20 +18,21 @@ import PropTypes from "prop-types";
 import AddIcon from "@mui/icons-material/Add";
 import Scrollbar from "../../../scrollbar";
 import { SeverityPill } from "../../../severity-pill";
-import AddStaffMemberForm from "./AddStaffMemberForm";
 import { useState } from "react";
-import NextLink from "next/link";
 import { getInitials } from "../../../../utils/get-initials";
 import { staffMemberApi } from "../../../../api/staffMemberApi";
 import toast from "react-hot-toast";
 import { useDispatch } from "../../../../store";
-import { removeStaffMember } from "../../../../slices/tournament";
-import useTournament from "../../../../hooks/useTournament";
-import EditStaffMember from "./EditStaffMember";
+import { removeParticipant, removeStaffMember } from "../../../../slices/tournament";
+import AddParticipantForm from "./AddParticipantForm";
+import { participantApi } from "../../../../api/participantApi";
+import EditParticipant from "./EditParticipant";
 
 const ParticipantsTable = (props) => {
-  const { participants } = props;
+  const { tournament } = props;
+  const { participants } = tournament;
   const [isDialogOpen, setIsDialogOpen] = useState(false);
+  console.log(participants);
 
   const handleDialogClose = () => {
     setIsDialogOpen(false);
@@ -52,7 +53,7 @@ const ParticipantsTable = (props) => {
             flexWrap: "wrap",
           }}
         >
-          <CardHeader title="Staff members" />
+          <CardHeader title="Participants" />
           <Button
             color="primary"
             sx={{ m: 2 }}
@@ -60,7 +61,7 @@ const ParticipantsTable = (props) => {
             variant="contained"
             onClick={handleAddStaffMemberClick}
           >
-            Add staff member
+            Add participant
           </Button>
         </Box>
         <Scrollbar>
@@ -69,8 +70,8 @@ const ParticipantsTable = (props) => {
               <TableHead>
                 <TableRow>
                   <TableCell>Username</TableCell>
+                  {tournament.teamFormat === "TEAM_VS" && <TableCell>Team name</TableCell>}
                   <TableCell>Discord</TableCell>
-                  <TableCell>Roles</TableCell>
                   <TableCell>Status</TableCell>
                   <TableCell>Joined At</TableCell>
                   <TableCell align="right">Action</TableCell>
@@ -78,7 +79,11 @@ const ParticipantsTable = (props) => {
               </TableHead>
               <TableBody>
                 {participants.map((participant) => (
-                  <StaffRow key={participant.id} participant={participant} />
+                  <ParticipantRow
+                    key={participant.id}
+                    participant={participant}
+                    tournament={tournament}
+                  />
                 ))}
               </TableBody>
             </Table>
@@ -87,18 +92,17 @@ const ParticipantsTable = (props) => {
       </Card>
       <Dialog fullWidth maxWidth="sm" onClose={handleDialogClose} open={isDialogOpen}>
         {/* Dialog renders its body even if not open */}
-        {isDialogOpen && <AddStaffMemberForm closeModal={handleDialogClose} />}
+        {isDialogOpen && <AddParticipantForm closeModal={handleDialogClose} />}
       </Dialog>
     </>
   );
 };
 
 const ParticipantRow = (props) => {
-  const { participant } = props;
+  const { tournament, participant } = props;
   const dispatch = useDispatch();
   const [isLoading, setIsLoading] = useState(false);
   const [isDialogOpen, setIsDialogOpen] = useState(false);
-  const { tournament } = useTournament();
 
   const handleDialogClose = () => {
     setIsDialogOpen(false);
@@ -110,11 +114,11 @@ const ParticipantRow = (props) => {
 
   const handleDeleteClick = () => {
     setIsLoading(true);
-    const toastLoadingId = toast.loading("Removing staff member.");
-    staffMemberApi
-      .removeStaffMember(participant.id, tournament.id)
-      .then((response) => {
-        dispatch(removeStaffMember(participant.id));
+    const toastLoadingId = toast.loading("Removing participant.");
+    participantApi
+      .deleteParticipant(tournament.id, participant.id)
+      .then(() => {
+        dispatch(removeParticipant(participant.id));
         toast.success(`${participant.user.username} removed!`);
       })
       .catch((error) => {
@@ -152,12 +156,8 @@ const ParticipantRow = (props) => {
           </Box>
         </Box>
       </TableCell>
+      {tournament.teamFormat === "TEAM_VS" && <TableCell>{participant.teamName}</TableCell>}
       <TableCell>{participant.discordId}</TableCell>
-      <TableCell>
-        {participant.tournamentRoles.map((role) => (
-          <SeverityPill key={role.id}>{role.name}</SeverityPill>
-        ))}
-      </TableCell>
       <TableCell>
         <SeverityPill>{participant.status}</SeverityPill>
       </TableCell>
@@ -177,10 +177,7 @@ const ParticipantRow = (props) => {
         </Button>
       </TableCell>
       <Dialog fullWidth maxWidth="sm" onClose={handleDialogClose} open={isDialogOpen}>
-        {/* Dialog renders its body even if not open */}
-        {isDialogOpen && (
-          <EditStaffMember staffMember={participant} closeModal={handleDialogClose} />
-        )}
+        <EditParticipant participant={participant} closeModal={handleDialogClose} />
       </Dialog>
     </TableRow>
   );
@@ -189,11 +186,12 @@ const ParticipantRow = (props) => {
 //TODO: Add TournamentRoleGuard
 
 ParticipantsTable.propTypes = {
-  participants: PropTypes.array.isRequired,
+  tournament: PropTypes.array.isRequired,
 };
 
 ParticipantRow.propTypes = {
+  tournament: PropTypes.object.isRequired,
   participant: PropTypes.object.isRequired,
 };
 
-export default StaffTable;
+export default ParticipantsTable;

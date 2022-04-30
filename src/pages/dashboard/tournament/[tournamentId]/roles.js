@@ -6,7 +6,7 @@ import { Box, Button, Container, Grid, Typography } from "@mui/material";
 import { Link as RouterLink } from "react-router-dom";
 import AddIcon from "@mui/icons-material/Add";
 import RolesTable from "../../../../components/dashboard/tournament/roles/RolesTable";
-import TournamentGuard from '../../../../guards/TournamentGuard';
+import TournamentGuard from "../../../../guards/TournamentGuard";
 
 const TournamentRoles = () => {
   const { tournament } = useTournament();
