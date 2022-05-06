@@ -5,8 +5,7 @@ import useTournament from "../../../../hooks/useTournament";
 import Head from "next/head";
 import StaffTable from "../../../../components/dashboard/tournament/staff/StaffTable";
 import TournamentGuard from "../../../../guards/TournamentGuard";
-import ParticipantsTable
-  from '../../../../components/dashboard/tournament/participants/ParticipantsTable';
+import ParticipantsTable from "../../../../components/dashboard/tournament/participants/ParticipantsTable";
 
 const TournamentParticipants = (props) => {
   const { tournament } = useTournament();

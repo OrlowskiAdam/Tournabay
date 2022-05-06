@@ -13,7 +13,7 @@ import toast from "react-hot-toast";
 import { useDispatch } from "react-redux";
 import { staffMemberApi } from "../../../../api/staffMemberApi";
 import useTournament from "../../../../hooks/useTournament";
-import { addParticipant, addStaffMember } from '../../../../slices/tournament';
+import { addParticipant, addStaffMember } from "../../../../slices/tournament";
 import { participantApi } from "../../../../api/participantApi";
 
 const AddParticipantForm = (props) => {

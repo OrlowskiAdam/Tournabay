@@ -6,9 +6,8 @@ import useTournament from "../../../../hooks/useTournament";
 import RolesSecurity from "../../../../components/dashboard/tournament/access/roles-security";
 import TournamentGuard from "../../../../guards/TournamentGuard";
 import StaffSecurity from "../../../../components/dashboard/tournament/access/staff-security";
-import AccessSecurity from '../../../../components/dashboard/tournament/access/access-security';
-import ParticipantsSecurity
-  from '../../../../components/dashboard/tournament/access/participants-security';
+import AccessSecurity from "../../../../components/dashboard/tournament/access/access-security";
+import ParticipantsSecurity from "../../../../components/dashboard/tournament/access/participants-security";
 
 const TournamentAccess = () => {
   const { tournament } = useTournament();
