@@ -9,6 +9,14 @@ class TournamentPermissionApi {
   updateStaffMembersPermission(tournamentId, body) {
     return request.patch(`${API_URL}/permissions/staff/${tournamentId}`, body);
   }
+
+  updateAccessPermission(tournamentId, body) {
+    return request.patch(`${API_URL}/permissions/access/${tournamentId}`, body);
+  }
+
+  updateParticipantsPermission(tournamentId, body) {
+    return request.patch(`${API_URL}/permissions/participants/${tournamentId}`, body);
+  }
 }
 
 export const tournamentPermissionApi = new TournamentPermissionApi();

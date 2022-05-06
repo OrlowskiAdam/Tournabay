@@ -3,7 +3,8 @@ import NextLink from "next/link";
 import { useRouter } from "next/router";
 import PropTypes from "prop-types";
 import { Box, Divider, Drawer, Typography, useMediaQuery } from "@mui/material";
-import { Cog as CogIcon } from "../icons/cog";
+import GroupWorkIcon from "@mui/icons-material/GroupWork";
+import SettingsIcon from "@mui/icons-material/Settings";
 import { Lock as LockIcon } from "../icons/lock";
 import { Selector as SelectorIcon } from "../icons/selector";
 import { User as UserIcon } from "../icons/user";
@@ -19,48 +20,44 @@ import useTournament from "../hooks/useTournament";
 import useStaffMember from "../hooks/useStaffMember";
 import { SeverityPill } from "./severity-pill";
 
-const items = (tournament) => [
-  {
-    href: `/dashboard/tournament/${tournament.id}/roles`,
-    icon: <AdminPanelSettingsIcon fontSize="small" />,
-    title: "Roles",
-  },
-  {
-    href: `/dashboard/tournament/${tournament.id}/staff`,
-    icon: <UsersIcon fontSize="small" />,
-    title: "Staff",
-  },
-  {
-    href: `/dashboard/tournament/${tournament.id}/access`,
-    icon: <GppGoodIcon fontSize="small" />,
-    title: "Access",
-  },
-  {
-    href: `/dashboard/tournament/${tournament.id}/participants`,
-    icon: <PersonIcon fontSize="small" />,
-    title: "Participants",
-  },
-  {
-    href: "/settings",
-    icon: <CogIcon fontSize="small" />,
-    title: "Settings",
-  },
-  {
-    href: "/login",
-    icon: <LockIcon fontSize="small" />,
-    title: "Login",
-  },
-  {
-    href: "/register",
-    icon: <UserAddIcon fontSize="small" />,
-    title: "Register",
-  },
-  {
-    href: "/404",
-    icon: <XCircleIcon fontSize="small" />,
-    title: "Error",
-  },
-];
+const items = (tournament) => {
+  let navItems = [
+    {
+      href: `/dashboard/tournament/${tournament.id}/roles`,
+      icon: <AdminPanelSettingsIcon fontSize="small" />,
+      title: "Roles",
+    },
+    {
+      href: `/dashboard/tournament/${tournament.id}/staff`,
+      icon: <UsersIcon fontSize="small" />,
+      title: "Staff",
+    },
+    {
+      href: `/dashboard/tournament/${tournament.id}/access`,
+      icon: <GppGoodIcon fontSize="small" />,
+      title: "Access",
+    },
+    {
+      href: `/dashboard/tournament/${tournament.id}/participants`,
+      icon: <PersonIcon fontSize="small" />,
+      title: "Participants",
+    },
+    {
+      href: `/dashboard/tournament/${tournament.id}/settings`,
+      icon: <SettingsIcon fontSize="small" />,
+      title: "Settings",
+    },
+  ];
+  if (tournament.teamFormat === "TEAM_VS") {
+    const teamItem = {
+      href: `/dashboard/tournament/${tournament.id}/teams`,
+      icon: <GroupWorkIcon fontSize="small" />,
+      title: "Teams",
+    };
+    navItems.splice(4, 0, teamItem);
+  }
+  return navItems;
+};
 
 export const DashboardSidebar = (props) => {
   const { open, onClose } = props;

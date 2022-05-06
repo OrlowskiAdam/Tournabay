@@ -83,7 +83,6 @@ const slice = createSlice({
 });
 
 export const { reducer } = slice;
-export const getUser = (state) => state;
 
 // actions
 
