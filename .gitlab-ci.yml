@@ -36,14 +36,13 @@ deploy_production:
   script:
     - BUILD=$(pwd)
     - docker rm -f nginx || true
-    - sudo systemctl stop tournabay.service
-    - cd /opt
+    - sudo systemctl stop tournabay.service || true
     - sudo rm -rf /opt/tournabay || true
     - sudo mv $BUILD /opt/
-    - sudo ls -la /opt/tournabay
-    - sudo chmod 755 -R /opt/tournabay # && sudo chown www-data:www-data -R /opt/tournabay
+    - sudo chmod 755 -R /opt/tournabay && sudo chown root:root -R /opt/tournabay
     - cd tournabay
     - npm install
+    - npm run prettier
     - npm run build
     - sudo systemctl restart tournabay.service
   only:
