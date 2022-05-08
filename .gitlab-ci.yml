@@ -41,7 +41,7 @@ deploy_production:
     - sudo rm -rf /opt/tournabay || true
     - sudo mv $BUILD /opt/
     - sudo ls -la /opt/tournabay
-    - sudo chmod 755 -R /opt/tournabay# && sudo chown www-data:www-data -R /opt/tournabay
+    - sudo chmod 755 -R /opt/tournabay # && sudo chown www-data:www-data -R /opt/tournabay
     - cd tournabay
     - npm install
     - npm run build
