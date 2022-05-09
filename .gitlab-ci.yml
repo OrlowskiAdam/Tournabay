@@ -9,6 +9,7 @@ prepare:
   tags:
     - deployment
   script:
+    - uname -m
     - sudo apt update -y
     - sudo apt upgrade -y
     - sudo apt remove node -y || true
