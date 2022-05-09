@@ -9,7 +9,6 @@ prepare:
   tags:
     - deployment
   script:
-    - apt list nodejs
     - node -v
     - npm -v
     - sudo apt install -y apt-transport-https ca-certificates curl software-properties-common || true
