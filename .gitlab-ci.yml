@@ -40,9 +40,7 @@ deploy_production:
     - sudo rm -rf /opt/tournabay || true
     - sudo mv $BUILD /opt/tournabay
     - sudo chmod 755 -R /opt/tournabay && sudo chown root:root -R /opt/tournabay
-    - ls -la
-    - pwd
-    - cd tournabay
+    - cd /opt/tournabay
     - npm install
     - npm run prettier
     - npm run build
