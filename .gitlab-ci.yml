@@ -9,12 +9,10 @@ prepare:
   tags:
     - deployment
   script:
-    - uname -m
-    - sudo apt update -y
-    - sudo apt upgrade -y
-    - sudo apt remove node -y || true
-    - sudo apt remove nodejs -y || true
-#    - sudo apt install nodejs -y
+    - wget https://nodejs.org/dist/v16.15.0/node-v16.15.0-linux-armv7l.tar.xz
+    - tar -xzf node-v16.15.0-linux-armv7l.tar.gz
+    - cd node-v16.15.0-linux-armv7l
+    - sudo cp -R * /usr/local/
     - node -v
     - npm -v
     - sudo apt install -y apt-transport-https ca-certificates curl software-properties-common || true
