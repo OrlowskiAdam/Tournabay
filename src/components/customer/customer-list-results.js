@@ -1,5 +1,4 @@
 import { useState } from "react";
-import PerfectScrollbar from "react-perfect-scrollbar";
 import PropTypes from "prop-types";
 import { format } from "date-fns";
 import {
@@ -16,7 +15,6 @@ import {
   Typography,
 } from "@mui/material";
 import { getInitials } from "../../utils/get-initials";
-import { Scrollbar } from "../scrollbar";
 
 export const CustomerListResults = ({ customers, ...other }) => {
   const [selectedCustomerIds, setSelectedCustomerIds] = useState([]);
@@ -65,67 +63,65 @@ export const CustomerListResults = ({ customers, ...other }) => {
 
   return (
     <Card {...other}>
-      <Scrollbar>
-        <Table sx={{ minWidth: 700 }}>
-          <TableHead>
-            <TableRow>
+      <Table sx={{ minWidth: 700 }}>
+        <TableHead>
+          <TableRow>
+            <TableCell padding="checkbox">
+              <Checkbox
+                checked={selectedCustomerIds.length === customers.length}
+                color="primary"
+                indeterminate={
+                  selectedCustomerIds.length > 0 && selectedCustomerIds.length < customers.length
+                }
+                onChange={handleSelectAll}
+              />
+            </TableCell>
+            <TableCell>Name</TableCell>
+            <TableCell>Email</TableCell>
+            <TableCell>Location</TableCell>
+            <TableCell>Phone</TableCell>
+            <TableCell>Registration date</TableCell>
+          </TableRow>
+        </TableHead>
+        <TableBody>
+          {customers.slice(0, limit).map((customer) => (
+            <TableRow
+              hover
+              key={customer.id}
+              selected={selectedCustomerIds.indexOf(customer.id) !== -1}
+            >
               <TableCell padding="checkbox">
                 <Checkbox
-                  checked={selectedCustomerIds.length === customers.length}
-                  color="primary"
-                  indeterminate={
-                    selectedCustomerIds.length > 0 && selectedCustomerIds.length < customers.length
-                  }
-                  onChange={handleSelectAll}
+                  checked={selectedCustomerIds.indexOf(customer.id) !== -1}
+                  onChange={(event) => handleSelectOne(event, customer.id)}
+                  value="true"
                 />
               </TableCell>
-              <TableCell>Name</TableCell>
-              <TableCell>Email</TableCell>
-              <TableCell>Location</TableCell>
-              <TableCell>Phone</TableCell>
-              <TableCell>Registration date</TableCell>
+              <TableCell>
+                <Box
+                  sx={{
+                    alignItems: "center",
+                    display: "flex",
+                  }}
+                >
+                  <Avatar src={customer.avatarUrl} sx={{ mr: 2 }}>
+                    {getInitials(customer.name)}
+                  </Avatar>
+                  <Typography color="textPrimary" variant="body1">
+                    {customer.name}
+                  </Typography>
+                </Box>
+              </TableCell>
+              <TableCell>{customer.email}</TableCell>
+              <TableCell>
+                {`${customer.address.city}, ${customer.address.state}, ${customer.address.country}`}
+              </TableCell>
+              <TableCell>{customer.phone}</TableCell>
+              <TableCell>{format(customer.createdAt, "dd/MM/yyyy")}</TableCell>
             </TableRow>
-          </TableHead>
-          <TableBody>
-            {customers.slice(0, limit).map((customer) => (
-              <TableRow
-                hover
-                key={customer.id}
-                selected={selectedCustomerIds.indexOf(customer.id) !== -1}
-              >
-                <TableCell padding="checkbox">
-                  <Checkbox
-                    checked={selectedCustomerIds.indexOf(customer.id) !== -1}
-                    onChange={(event) => handleSelectOne(event, customer.id)}
-                    value="true"
-                  />
-                </TableCell>
-                <TableCell>
-                  <Box
-                    sx={{
-                      alignItems: "center",
-                      display: "flex",
-                    }}
-                  >
-                    <Avatar src={customer.avatarUrl} sx={{ mr: 2 }}>
-                      {getInitials(customer.name)}
-                    </Avatar>
-                    <Typography color="textPrimary" variant="body1">
-                      {customer.name}
-                    </Typography>
-                  </Box>
-                </TableCell>
-                <TableCell>{customer.email}</TableCell>
-                <TableCell>
-                  {`${customer.address.city}, ${customer.address.state}, ${customer.address.country}`}
-                </TableCell>
-                <TableCell>{customer.phone}</TableCell>
-                <TableCell>{format(customer.createdAt, "dd/MM/yyyy")}</TableCell>
-              </TableRow>
-            ))}
-          </TableBody>
-        </Table>
-      </Scrollbar>
+          ))}
+        </TableBody>
+      </Table>
       <TablePagination
         component="div"
         count={customers.length}

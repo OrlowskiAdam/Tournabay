@@ -22,6 +22,7 @@ import { getInitials } from "../../../../utils/get-initials";
 import toast from "react-hot-toast";
 import { useDispatch } from "../../../../store";
 import useTournament from "../../../../hooks/useTournament";
+import CreateTeamForm from "./CreateTeamForm";
 
 const TeamsTable = (props) => {
   const { teams } = props;
@@ -79,7 +80,7 @@ const TeamsTable = (props) => {
         </Scrollbar>
       </Card>
       <Dialog fullWidth maxWidth="sm" onClose={handleDialogClose} open={isDialogOpen}>
-        {/*{isDialogOpen && <AddStaffMemberForm closeModal={handleDialogClose} />}*/}
+        {isDialogOpen && <CreateTeamForm closeModal={handleDialogClose} />}
       </Dialog>
     </>
   );
@@ -160,7 +161,7 @@ const TeamRow = (props) => {
       </TableCell>
       <Dialog fullWidth maxWidth="sm" onClose={handleDialogClose} open={isDialogOpen}>
         {/* Dialog renders its body even if not open */}
-        {isDialogOpen && <EditStaffMember staffMember={member} closeModal={handleDialogClose} />}
+        {/*{isDialogOpen && <EditStaffMember staffMember={member} closeModal={handleDialogClose} />}*/}
       </Dialog>
     </TableRow>
   );

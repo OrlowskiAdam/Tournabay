@@ -2,7 +2,7 @@ import TournamentData from "../../../../guards/TournamentData";
 import TournamentGuard from "../../../../guards/TournamentGuard";
 import { DashboardLayout } from "../../../../components/dashboard-layout";
 import Head from "next/head";
-import { Box, Container } from "@mui/material";
+import { Box, Button, Container } from "@mui/material";
 import useTournament from "../../../../hooks/useTournament";
 import TeamSettings from "../../../../components/dashboard/tournament/settings/team-settings";
 
@@ -22,7 +22,7 @@ const TournamentSettings = () => {
         }}
       >
         <Container maxWidth={false}>
-          <TeamSettings />
+          <TeamSettings tournament={tournament} />
         </Container>
       </Box>
     </>

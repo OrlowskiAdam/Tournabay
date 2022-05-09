@@ -8,6 +8,7 @@ import {
   Select,
 } from "@mui/material";
 import { useState } from "react";
+import PropTypes from "prop-types";
 
 const selectValues = [
   {
@@ -44,11 +45,15 @@ const selectValues = [
   },
 ];
 
-const TeamSettings = () => {
-  const [baseTeamSize, setBaseTeamSize] = useState(2);
-  const [maxTeamSize, setMaxTeamSize] = useState(4);
+const TeamSettings = (props) => {
+  const { tournament } = props;
+  const [baseTeamSize, setBaseTeamSize] = useState(tournament.settings.baseTeamSize);
+  const [maxTeamSize, setMaxTeamSize] = useState(tournament.settings.maxTeamSize);
 
   const handleBaseTeamSizeChange = (e) => {
+    if (e.target.value > maxTeamSize) {
+      setMaxTeamSize(e.target.value);
+    }
     setBaseTeamSize(e.target.value);
   };
 
@@ -85,19 +90,20 @@ const TeamSettings = () => {
             label="Base team size"
             onChange={handleMaxTeamSizeChange}
           >
-            <MenuItem value={1}>1</MenuItem>
-            <MenuItem value={2}>2</MenuItem>
-            <MenuItem value={3}>3</MenuItem>
-            <MenuItem value={4}>4</MenuItem>
-            <MenuItem value={5}>5</MenuItem>
-            <MenuItem value={6}>6</MenuItem>
-            <MenuItem value={7}>7</MenuItem>
-            <MenuItem value={8}>8</MenuItem>
+            {selectValues.slice(baseTeamSize - 1, selectValues.length).map((value) => (
+              <MenuItem key={value.value} value={value.value}>
+                {value.label}
+              </MenuItem>
+            ))}
           </Select>
         </FormControl>
       </CardContent>
     </Card>
   );
+};
+
+TeamSettings.propTypes = {
+  tournament: PropTypes.object.isRequired,
 };
 
 export default TeamSettings;

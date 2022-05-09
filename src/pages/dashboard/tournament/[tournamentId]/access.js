@@ -8,6 +8,7 @@ import TournamentGuard from "../../../../guards/TournamentGuard";
 import StaffSecurity from "../../../../components/dashboard/tournament/access/staff-security";
 import AccessSecurity from "../../../../components/dashboard/tournament/access/access-security";
 import ParticipantsSecurity from "../../../../components/dashboard/tournament/access/participants-security";
+import SettingsSecurity from "../../../../components/dashboard/tournament/access/settings-security";
 
 const TournamentAccess = () => {
   const { tournament } = useTournament();
@@ -52,6 +53,11 @@ const TournamentAccess = () => {
               </CardContent>
             </Card>
           )}
+          <Card sx={{ my: 2 }}>
+            <CardContent>
+              <SettingsSecurity />
+            </CardContent>
+          </Card>
         </Container>
       </Box>
     </>
