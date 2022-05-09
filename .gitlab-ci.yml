@@ -9,8 +9,6 @@ prepare:
   tags:
     - deployment
   script:
-    - journalctl -u tournabay.service -b
-    - journalctl -u tournabayapi.service -b
     - sudo apt install -y apt-transport-https ca-certificates curl software-properties-common || true
     - sudo apt install -y npm || true
 
