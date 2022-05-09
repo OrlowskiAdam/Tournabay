@@ -9,6 +9,8 @@ prepare:
   tags:
     - deployment
   script:
+    - sudo apt update -y
+    - sudo apt upgrade -y
     - sudo apt remove node -y || true
     - sudo apt remove nodejs -y || true
 #    - sudo apt install nodejs -y
