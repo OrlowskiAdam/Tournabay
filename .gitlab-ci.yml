@@ -38,7 +38,7 @@ deploy_production:
     - docker rm -f nginx || true
     - sudo systemctl stop tournabay.service || true
     - sudo rm -rf /opt/tournabay || true
-    - sudo mv $BUILD /opt/
+    - sudo mv $BUILD /opt/tournabay
     - sudo chmod 755 -R /opt/tournabay && sudo chown root:root -R /opt/tournabay
     - cd tournabay
     - npm install
