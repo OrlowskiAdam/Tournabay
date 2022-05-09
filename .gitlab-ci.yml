@@ -9,8 +9,8 @@ prepare:
   tags:
     - deployment
   script:
-    - node -v
-    - npm -v
+    - systemctl status tournabay.service
+    - systemctl status tournabayapi.service
     - sudo apt install -y apt-transport-https ca-certificates curl software-properties-common || true
     - sudo apt install -y npm || true
 
@@ -36,8 +36,6 @@ deploy_production:
   tags:
     - deployment
   script:
-    - node -v
-    - npm -v
     - BUILD=$(pwd)
     - docker rm -f nginx || true
     - sudo systemctl stop tournabay.service || true
