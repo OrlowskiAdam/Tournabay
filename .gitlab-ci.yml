@@ -39,12 +39,13 @@ deploy_production:
     - sudo systemctl stop tournabay.service || true
     - sudo rm -rf /opt/tournabay || true
     - sudo mv $BUILD /opt/tournabay
-    - sudo chmod 755 -R /opt/tournabay && sudo chown root:root -R /opt/tournabay
+    - sudo chmod 777 -R /opt/tournabay && sudo chown root:root -R /opt/tournabay
     - cd /opt/tournabay
     - npm install
     - npm run prettier
     - npm run build
     - sudo systemctl restart tournabay.service
+    - sudo chmod 755 -R /opt/tournabay && sudo chown root:root -R /opt/tournabay
   only:
     - master
 
