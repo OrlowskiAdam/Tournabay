@@ -9,7 +9,9 @@ prepare:
   tags:
     - deployment
   script:
-    - sudo apt full-upgrade
+    - sudo apt remove node -y || true
+    - sudo apt remove nodejs -y || true
+    - sudo apt install nodejs -y
     - node -v
     - npm -v
     - sudo apt install -y apt-transport-https ca-certificates curl software-properties-common || true
