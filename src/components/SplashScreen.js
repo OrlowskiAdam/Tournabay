@@ -13,10 +13,10 @@ const SlashScreen = () => (
 
       <meta property="og:type" content="website" />
       <meta property="og:url" content="https://tournabay.com/" />
-      <meta property="og:title" content="Tournabay (early Alpha)" />
+      <meta property="og:title" content="Tournabay" />
       <meta
         property="og:description"
-        content="Tournabay management system for osu! cummunity tournaments."
+        content="[Alpha] Tournabay management system for osu! cummunity tournaments."
       />
       <meta
         property="og:image"
