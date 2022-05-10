@@ -23,10 +23,10 @@ const SlashScreen = () => (
 
       <meta property="twitter:card" content="summary_large_image" />
       <meta property="twitter:url" content="https://tournabay.com/" />
-      <meta property="twitter:title" content="Tournabay (early Alpha):splash:28" />
+      <meta property="twitter:title" content="Tournabay" />
       <meta
         property="twitter:description"
-        content="Tournabay management system for osu! cummunity tournaments.:splash:31"
+        content="Tournabay management system for osu! cummunity tournaments."
       />
       <meta property="twitter:image" content="https://i.imgur.com/0uLspAH.png" />
       <meta name="theme-color" content="#7582eb" />
