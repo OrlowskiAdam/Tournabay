@@ -1,7 +1,7 @@
 import SplashScreen from "./SplashScreen";
 import { useDispatch } from "react-redux";
 import useOsuAuth from "../hooks/useOsuAuth";
-import React, { useEffect, Suspense } from "react";
+import { useEffect } from "react";
 import { me } from "../slices/user";
 
 const UserAuthentication = (props) => {
@@ -15,11 +15,7 @@ const UserAuthentication = (props) => {
     dispatch(me());
   }, []);
 
-  return (
-    <Suspense fallback={"loading"}>
-      {user.isInitialized && getLayout(<Component {...pageProps} />)}
-    </Suspense>
-  );
+  return user.isInitialized ? getLayout(<Component {...pageProps} />) : <SplashScreen />;
 };
 
 export default UserAuthentication;
