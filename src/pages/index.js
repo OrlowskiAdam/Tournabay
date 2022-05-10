@@ -9,7 +9,7 @@ const HomePage = () => {
   return (
     <>
       <Head>
-        <title>Tournabay:index:12 </title>
+        <title>Tournabay </title>
         <meta name="title" content="Tournabay" />
         <meta
           name="description"
@@ -18,19 +18,19 @@ const HomePage = () => {
 
         <meta property="og:type" content="website" />
         <meta property="og:url" content="https://tournabay.com/" />
-        <meta property="og:title" content="Tournabay (early Alpha):index:21" />
+        <meta property="og:title" content="Tournabay (early Alpha)" />
         <meta
           property="og:description"
-          content="Tournabay management system for osu! cummunity tournaments.:index:24"
+          content="Tournabay management system for osu! cummunity tournaments."
         />
         <meta property="og:image" content="https://i.imgur.com/WL7SlzZ.png" />
 
         <meta property="twitter:card" content="summary" />
         <meta property="twitter:url" content="https://tournabay.com/" />
-        <meta property="twitter:title" content="Tournabay (early Alpha):index:33" />
+        <meta property="twitter:title" content="Tournabay (early Alpha)" />
         <meta
           property="twitter:description"
-          content="Tournabay management system for osu! cummunity tournaments.:index:36"
+          content="Tournabay management system for osu! cummunity tournaments."
         />
         <meta property="twitter:image" content="https://i.imgur.com/WL7SlzZ.png" />
       </Head>
