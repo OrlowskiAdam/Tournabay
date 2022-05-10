@@ -23,10 +23,7 @@ const HomePage = () => {
           property="og:description"
           content="Tournabay management system for osu! cummunity tournaments.:index:24"
         />
-        <meta
-          property="og:image"
-          content="https://i.imgur.com/WL7SlzZ.png"
-        />
+        <meta property="og:image" content="https://i.imgur.com/WL7SlzZ.png" />
 
         <meta property="twitter:card" content="summary" />
         <meta property="twitter:url" content="https://tournabay.com/" />
@@ -35,10 +32,7 @@ const HomePage = () => {
           property="twitter:description"
           content="Tournabay management system for osu! cummunity tournaments.:index:36"
         />
-        <meta
-          property="twitter:image"
-          content="https://i.imgur.com/WL7SlzZ.png"
-        />
+        <meta property="twitter:image" content="https://i.imgur.com/WL7SlzZ.png" />
       </Head>
       <Container maxWidth="lg">{user.username}</Container>
     </>

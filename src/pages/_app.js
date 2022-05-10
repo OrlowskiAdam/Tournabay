@@ -10,6 +10,13 @@ import { Provider as ReduxProvider } from "react-redux";
 import store from "../store";
 import UserAuthentication from "../components/userAuthentication";
 import { Toaster } from "react-hot-toast";
+import { Router } from "next/router";
+import nProgress from "nprogress";
+import React from "react";
+
+Router.events.on("routeChangeStart", nProgress.start);
+Router.events.on("routeChangeError", nProgress.done);
+Router.events.on("routeChangeComplete", nProgress.done);
 
 const clientSideEmotionCache = createEmotionCache();
 
