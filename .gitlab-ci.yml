@@ -41,7 +41,7 @@ deploy_production:
     - sudo mv $BUILD /opt/tournabay
     - sudo chmod 777 -R /opt/tournabay && sudo chown root:root -R /opt/tournabay
     - cd /opt/tournabay
-    - npm install
+    - npm install --legacy-peer-deps
     - npm run prettier
     - npm run build
     - sudo systemctl restart tournabay.service
