@@ -4,13 +4,11 @@ import { Head } from 'next/document';
 const SlashScreen = () => (
   <>
     <Head>
-      <!-- Primary Meta Tags -->
       <title>Tournabay (early Alpha)</title>
       <meta name="title" content="Tournabay"/>
       <meta name="description"
             content="(closed Alpha) Tournabay management system for osu! cummunity tournaments. This project is still in work and will be released in the near future."/>
 
-      <!-- Open Graph / Facebook -->
       <meta property="og:type" content="website"/>
       <meta property="og:url" content="https://tournabay.com/"/>
       <meta property="og:title" content="Tournabay (early Alpha)"/>
@@ -19,7 +17,6 @@ const SlashScreen = () => (
       <meta property="og:image"
             content="https://metatags.io/assets/meta-tags-16a33a6a8531e519cc0936fbba0ad904e52d35f34a46c97a2c9f6f7dd7d336f2.png"/>
 
-      <!-- Twitter -->
       <meta property="twitter:card" content="summary_large_image"/>
       <meta property="twitter:url" content="https://tournabay.com/"/>
       <meta property="twitter:title" content="Tournabay (early Alpha)"/>
