@@ -3,18 +3,18 @@ import * as React from "react";
 import { useRouter } from "next/router";
 import { useEffect } from "react";
 import SplashScreen from "../components/SplashScreen";
+import { useDispatch } from "../store";
+import { me } from "../slices/user";
 
 // TODO: Fix token storage
 const OsuOAuth2RedirectHandler = () => {
   const router = useRouter();
   const { token } = router.query;
-
-  useEffect(() => {
-    router.push("/");
-  }, []);
+  const dispatch = useDispatch();
 
   if (token) {
     localStorage.setItem(ACCESS_TOKEN, token);
+    router.push("/").then(() => dispatch(me()));
   }
 
   return <SplashScreen />;
