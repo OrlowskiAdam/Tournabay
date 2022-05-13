@@ -16,11 +16,14 @@ import { Cog as CogIcon } from "../icons/cog";
 import { UserCircle as UserCircleIcon } from "../icons/user-circle";
 import { SwitchHorizontalOutlined as SwitchHorizontalOutlinedIcon } from "../icons/switch-horizontal-outlined";
 import useOsuAuth from "../hooks/useOsuAuth";
+import { useDispatch } from "../store";
+import { logout } from "../slices/user";
 
 export const AccountPopover = (props) => {
   const { anchorEl, onClose, open, ...other } = props;
   const router = useRouter();
   const { user } = useOsuAuth();
+  const dispatch = useDispatch();
 
   return (
     <Popover
@@ -86,7 +89,13 @@ export const AccountPopover = (props) => {
           <ListItemIcon>
             <LogoutIcon fontSize="small" />
           </ListItemIcon>
-          <ListItemText primary={<Typography variant="body1">Logout</Typography>} />
+          <ListItemText
+            primary={
+              <Typography variant="body1" onClick={() => dispatch(logout())}>
+                Logout
+              </Typography>
+            }
+          />
         </MenuItem>
       </Box>
     </Popover>

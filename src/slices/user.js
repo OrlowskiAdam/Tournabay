@@ -1,5 +1,6 @@
 import { createSlice } from "@reduxjs/toolkit";
 import { userApi } from "../api/userApi";
+import { ACCESS_TOKEN } from '../constants/constants';
 
 const initialState = {
   user: {
@@ -31,6 +32,11 @@ const slice = createSlice({
       state.user.isInitialized = true;
       state.user.isAuthenticated = false;
     },
+    logout: (state) => {
+      localStorage.removeItem(ACCESS_TOKEN);
+      state.user = { ...initialState };
+      state.user.isInitialized = true;
+    },
   },
 });
 
@@ -46,6 +52,10 @@ export const me = () => async (dispatch) => {
   } catch (error) {
     dispatch(slice.actions.failedLogin());
   }
+};
+
+export const logout = () => async (dispatch) => {
+  dispatch(slice.actions.logout());
 };
 
 export default slice;
