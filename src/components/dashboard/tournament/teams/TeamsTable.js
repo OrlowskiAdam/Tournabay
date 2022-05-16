@@ -5,6 +5,7 @@ import {
   Card,
   CardHeader,
   Dialog,
+  Link,
   Table,
   TableBody,
   TableCell,
@@ -23,6 +24,7 @@ import toast from "react-hot-toast";
 import { useDispatch } from "../../../../store";
 import useTournament from "../../../../hooks/useTournament";
 import CreateTeamForm from "./CreateTeamForm";
+import KeyboardCapslockIcon from "@mui/icons-material/KeyboardCapslock";
 
 const TeamsTable = (props) => {
   const { teams } = props;
@@ -64,8 +66,8 @@ const TeamsTable = (props) => {
               <TableHead>
                 <TableRow>
                   <TableCell>Name</TableCell>
-                  <TableCell>Seed</TableCell>
                   <TableCell>Players</TableCell>
+                  <TableCell>Seed</TableCell>
                   <TableCell>Status</TableCell>
                   <TableCell align="right">Action</TableCell>
                 </TableRow>
@@ -128,20 +130,50 @@ const TeamRow = (props) => {
             display: "flex",
           }}
         >
-          <Avatar
-            src={`https://avatars.githubusercontent.com/u/49677123?v=4`}
-            sx={{
-              height: 42,
-              width: 42,
-            }}
-          >
-            {getInitials(team.name)}
-          </Avatar>
           <Box sx={{ ml: 1 }}>{team.name}</Box>
         </Box>
       </TableCell>
+      <TableCell>
+        {team.captain && (
+          <Box key={team.captain.id} sx={{ display: "flex", alignItems: "center" }}>
+            <Avatar
+              src={team.captain.user.avatarUrl}
+              sx={{
+                height: 18,
+                width: 18,
+                mr: 1,
+              }}
+            >
+              {getInitials(team.captain.user.username)}
+            </Avatar>
+            <Link href={`https://osu.ppy.sh/users/${team.captain.user.osuId}`} target="_blank">
+              {team.captain.user.username}
+            </Link>
+            <KeyboardCapslockIcon />
+          </Box>
+        )}
+        {team.participants
+          .filter((participant) => participant.id !== team.captain.id)
+          .map((participant) => (
+            <Box key={participant.id} sx={{ display: "flex", alignItems: "center" }}>
+              <Avatar
+                src={participant.user.avatarUrl}
+                sx={{
+                  height: 18,
+                  width: 18,
+                  mr: 1,
+                }}
+              >
+                {getInitials(participant.user.username)}
+              </Avatar>
+              <Link href={`https://osu.ppy.sh/users/${participant.user.osuId}`} target="_blank">
+                {participant.user.username}
+              </Link>
+              {team.captain?.id === participant.id && <KeyboardCapslockIcon />}
+            </Box>
+          ))}
+      </TableCell>
       <TableCell>{team.seed}</TableCell>
-      <TableCell>Captains + players go here</TableCell>
       <TableCell>
         <SeverityPill>{team.status}</SeverityPill>
       </TableCell>
