@@ -157,7 +157,7 @@ const ParticipantRow = (props) => {
           </Box>
         </Box>
       </TableCell>
-      {tournament.teamFormat === "TEAM_VS" && <TableCell>{participant.teamName}</TableCell>}
+      {tournament.teamFormat === "TEAM_VS" && <TableCell>{participant.team}</TableCell>}
       <TableCell>{participant.discordId}</TableCell>
       {tournament.teamFormat === "PLAYER_VS" && <TableCell>{participant.seed}</TableCell>}
       <TableCell>
