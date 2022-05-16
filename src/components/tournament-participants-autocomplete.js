@@ -53,7 +53,7 @@ const TournamentParticipantsAutocomplete = (props) => {
           return filtered;
         }}
         id="participant-autocomplete"
-        options={tournament.participants}
+        options={tournament.participants.filter((participant) => participant.team === null)}
         getOptionLabel={(option) => {
           return option.user.username;
         }}
