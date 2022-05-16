@@ -1,6 +1,6 @@
 import { createSlice } from "@reduxjs/toolkit";
 import { userApi } from "../api/userApi";
-import { ACCESS_TOKEN } from '../constants/constants';
+import { ACCESS_TOKEN } from "../constants/constants";
 
 const initialState = {
   user: {
