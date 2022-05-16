@@ -1,7 +1,6 @@
 import { ACCESS_TOKEN } from "../constants/constants";
 import * as React from "react";
 import { useRouter } from "next/router";
-import { useEffect } from "react";
 import SplashScreen from "../components/SplashScreen";
 import { useDispatch } from "../store";
 import { me } from "../slices/user";
@@ -15,6 +14,8 @@ const OsuOAuth2RedirectHandler = () => {
   if (token) {
     localStorage.setItem(ACCESS_TOKEN, token);
     router.push("/").then(() => dispatch(me()));
+  } else {
+    router.push("/");
   }
 
   return <SplashScreen />;
