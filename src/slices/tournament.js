@@ -79,6 +79,9 @@ const slice = createSlice({
       );
       state.tournament.participants[participantIndex] = action.payload;
     },
+    addTeam(state, action) {
+      state.tournament.teams = [...state.tournament.teams, action.payload];
+    },
   },
 });
 
@@ -132,6 +135,10 @@ export const removeParticipant = (participantId) => async (dispatch) => {
 
 export const updateParticipant = (participant) => async (dispatch) => {
   dispatch(slice.actions.replaceParticipant(participant));
+};
+
+export const addTeam = (team) => async (dispatch) => {
+  dispatch(slice.actions.addTeam(team));
 };
 
 export default slice;
