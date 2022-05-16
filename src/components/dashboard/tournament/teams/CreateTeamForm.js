@@ -15,8 +15,9 @@ import { useState } from "react";
 import toast from "react-hot-toast";
 import { useDispatch } from "react-redux";
 import useTournament from "../../../../hooks/useTournament";
-import FreeSoloCreateOptionDialog from "../../../free-solo-dialog";
 import { teamApi } from "../../../../api/teamApi";
+import { addTeam } from "../../../../slices/tournament";
+import TournamentParticipantsAutocomplete from "../../../tournament-participants-autocomplete";
 
 const seedValues = ["TOP", "HIGH", "MID", "LOW", "OUT", "UNKNOWN", "NONE"];
 const teamStatusValues = ["ACTIVE", "PENDING", "REJECTED", "OUT", "UNKNOWN"];
@@ -25,7 +26,7 @@ const CreateTeamForm = (props) => {
   const { tournament } = useTournament();
   const [teamName, setTeamName] = useState(null);
   const [participants, setParticipants] = useState([]);
-  const [seed, setSeed] = useState(seedValues[0]);
+  const [seed, setSeed] = useState(seedValues[seedValues.length - 1]);
   const [teamStatus, setTeamStatus] = useState(teamStatusValues[0]);
   const [requestLoading, setRequestLoading] = useState(false);
   const { closeModal } = props;
@@ -33,11 +34,30 @@ const CreateTeamForm = (props) => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    setRequestLoading(true);
-    const toastLoadingId = toast.loading("Adding staff member");
-    // api requests
-    toast.remove(toastLoadingId);
-    setRequestLoading(false);
+    const toastLoadingId = toast.loading("Adding team");
+    teamApi
+      .createTeam(tournament.id, {
+        name: teamName,
+        participantIds: participants.map((p) => p.id),
+        seed,
+        status: teamStatus,
+      })
+      .then((res) => {
+        toast.success("Team created successfully");
+        dispatch(addTeam(res.data));
+        closeModal();
+      })
+      .catch((err) => {
+        const errors = err.response.data.errors ?? undefined;
+        if (errors) {
+          toast.error(errors[0].defaultMessage);
+        } else {
+          toast.error(err.response.data.message);
+        }
+      })
+      .finally(() => {
+        toast.remove(toastLoadingId);
+      });
   };
 
   const handleChange = (e, v) => {
@@ -53,12 +73,8 @@ const CreateTeamForm = (props) => {
     setTeamStatus(e.target.value);
   };
 
-  const handleTeamCreation = () => {
-    teamApi.createTeam(1);
-  };
-
   return (
-    <form onSubmit={handleSubmit}>
+    <form>
       <Box sx={{ p: 3 }}>
         <TextField
           fullWidth
@@ -81,7 +97,7 @@ const CreateTeamForm = (props) => {
           it in Settings). The first participant will be the captain.
         </Typography>
         <FormGroup>
-          <FreeSoloCreateOptionDialog
+          <TournamentParticipantsAutocomplete
             tournament={tournament}
             value={participants}
             handleParticipantChange={handleChange}
@@ -139,7 +155,7 @@ const CreateTeamForm = (props) => {
           type="submit"
           variant="contained"
           disabled={requestLoading}
-          onClick={handleTeamCreation}
+          onClick={handleSubmit}
         >
           Add a new team
         </Button>
