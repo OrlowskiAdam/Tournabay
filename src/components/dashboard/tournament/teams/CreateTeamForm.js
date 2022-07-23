@@ -42,6 +42,7 @@ const CreateTeamForm = (props) => {
       toast.error("Captain cannot be empty!");
       return;
     }
+    setRequestLoading(true);
     let participantIds = participants.map((p) => p.id);
     participantIds = [...participantIds, captain.id];
     const body = {
@@ -69,6 +70,7 @@ const CreateTeamForm = (props) => {
       })
       .finally(() => {
         toast.remove(toastLoadingId);
+        setRequestLoading(false);
       });
   };
 
