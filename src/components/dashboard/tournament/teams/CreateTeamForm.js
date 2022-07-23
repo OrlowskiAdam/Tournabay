@@ -18,6 +18,7 @@ import useTournament from "../../../../hooks/useTournament";
 import { teamApi } from "../../../../api/teamApi";
 import { addTeam } from "../../../../slices/tournament";
 import TournamentParticipantsAutocomplete from "../../../tournament-participants-autocomplete";
+import TournamentParticipantAutocomplete from "../../../tournament-participant-autocomplete";
 
 const seedValues = ["TOP", "HIGH", "MID", "LOW", "OUT", "UNKNOWN", "NONE"];
 const teamStatusValues = ["ACTIVE", "PENDING", "REJECTED", "OUT", "UNKNOWN"];
@@ -25,6 +26,7 @@ const teamStatusValues = ["ACTIVE", "PENDING", "REJECTED", "OUT", "UNKNOWN"];
 const CreateTeamForm = (props) => {
   const { tournament } = useTournament();
   const [teamName, setTeamName] = useState(null);
+  const [captain, setCaptain] = useState(null);
   const [participants, setParticipants] = useState([]);
   const [seed, setSeed] = useState(seedValues[seedValues.length - 1]);
   const [teamStatus, setTeamStatus] = useState(teamStatusValues[0]);
@@ -35,13 +37,23 @@ const CreateTeamForm = (props) => {
   const handleSubmit = (e) => {
     e.preventDefault();
     const toastLoadingId = toast.loading("Adding team");
+    if (!captain) {
+      toast.remove(toastLoadingId);
+      toast.error("Captain cannot be empty!");
+      return;
+    }
+    let participantIds = participants.map((p) => p.id);
+    participantIds = [...participantIds, captain.id];
+    const body = {
+      name: teamName,
+      captainId: captain.id,
+      participantIds,
+      seed,
+      status: teamStatus,
+    };
+    console.log(body, "body");
     teamApi
-      .createTeam(tournament.id, {
-        name: teamName,
-        participantIds: participants.map((p) => p.id),
-        seed,
-        status: teamStatus,
-      })
+      .createTeam(tournament.id, body)
       .then((res) => {
         toast.success("Team created successfully");
         dispatch(addTeam(res.data));
@@ -60,9 +72,12 @@ const CreateTeamForm = (props) => {
       });
   };
 
-  const handleChange = (e, v) => {
-    console.log(v);
+  const handleParticipantsChange = (e, v) => {
     setParticipants(v);
+  };
+
+  const handleCaptainChange = (e, v) => {
+    setCaptain(v);
   };
 
   const handleSeedChange = (e) => {
@@ -92,16 +107,22 @@ const CreateTeamForm = (props) => {
           Roster
         </Typography>
         <Typography color="textSecondary" gutterBottom variant="body2">
-          Team is required to have at least {tournament.settings.baseTeamSize}{" "}
-          {tournament.settings.baseTeamSize === 1 ? "participant" : "participants"} (you can change
-          it in Settings). The first participant will be the captain.
+          Team is required to have at least {tournament.settings.baseTeamSize - 1}{" "}
+          {tournament.settings.baseTeamSize === 1 ? "participant" : "participants"} + 1 captain
+          (configurable in Settings).
         </Typography>
         <FormGroup>
+          <TournamentParticipantAutocomplete
+            tournament={tournament}
+            value={captain}
+            handleParticipantChange={handleCaptainChange}
+            label="Choose captain"
+          />
           <TournamentParticipantsAutocomplete
             tournament={tournament}
             value={participants}
-            handleParticipantChange={handleChange}
-            multiple={true}
+            handleParticipantChange={handleParticipantsChange}
+            label="Choose participants"
           />
         </FormGroup>
       </Box>
