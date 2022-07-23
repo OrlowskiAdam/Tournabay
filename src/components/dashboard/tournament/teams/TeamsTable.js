@@ -12,7 +12,6 @@ import {
   TableContainer,
   TableHead,
   TableRow,
-  Typography,
 } from "@mui/material";
 import PropTypes from "prop-types";
 import AddIcon from "@mui/icons-material/Add";
@@ -25,6 +24,9 @@ import { useDispatch } from "../../../../store";
 import useTournament from "../../../../hooks/useTournament";
 import CreateTeamForm from "./CreateTeamForm";
 import KeyboardCapslockIcon from "@mui/icons-material/KeyboardCapslock";
+import EditTeamDialog from "./EditTeamDialog";
+import { teamApi } from "../../../../api/teamApi";
+import { removeTeam } from "../../../../slices/tournament";
 
 const TeamsTable = (props) => {
   const { teams } = props;
@@ -104,21 +106,21 @@ const TeamRow = (props) => {
   };
 
   const handleDeleteClick = () => {
-    // setIsLoading(true);
-    // const toastLoadingId = toast.loading("Removing staff member.");
-    // staffMemberApi
-    //   .removeStaffMember(member.id, tournament.id)
-    //   .then((response) => {
-    //     dispatch(removeStaffMember(member.id));
-    //     toast.success(`${member.user.username} removed!`);
-    //   })
-    //   .catch((error) => {
-    //     toast.error(error.response.data.message);
-    //   })
-    //   .finally(() => {
-    //     toast.remove(toastLoadingId);
-    //     setIsLoading(false);
-    //   });
+    setIsLoading(true);
+    const toastLoadingId = toast.loading("Removing team...");
+    teamApi
+      .deleteTeam(tournament.id, team.id)
+      .then(() => {
+        dispatch(removeTeam(team.id));
+        toast.success(`${team.name} removed!`);
+      })
+      .catch((error) => {
+        toast.error(error.response.data.message);
+      })
+      .finally(() => {
+        toast.remove(toastLoadingId);
+        setIsLoading(false);
+      });
   };
 
   return (
@@ -192,8 +194,7 @@ const TeamRow = (props) => {
         </Button>
       </TableCell>
       <Dialog fullWidth maxWidth="sm" onClose={handleDialogClose} open={isDialogOpen}>
-        {/* Dialog renders its body even if not open */}
-        {/*{isDialogOpen && <EditStaffMember staffMember={member} closeModal={handleDialogClose} />}*/}
+        {isDialogOpen && <EditTeamDialog team={team} closeModal={handleDialogClose} />}
       </Dialog>
     </TableRow>
   );
