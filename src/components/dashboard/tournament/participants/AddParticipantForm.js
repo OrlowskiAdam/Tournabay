@@ -1,32 +1,23 @@
 import PropTypes from "prop-types";
-import {
-  Box,
-  Button,
-  Checkbox,
-  Divider,
-  FormControlLabel,
-  TextField,
-  Typography,
-} from "@mui/material";
+import { Box, Button, Divider, TextField } from "@mui/material";
 import { useState } from "react";
 import toast from "react-hot-toast";
 import { useDispatch } from "react-redux";
-import { staffMemberApi } from "../../../../api/staffMemberApi";
 import useTournament from "../../../../hooks/useTournament";
-import { addParticipant, addStaffMember } from "../../../../slices/tournament";
+import { addParticipant } from "../../../../slices/tournament";
 import { participantApi } from "../../../../api/participantApi";
 
 const AddParticipantForm = (props) => {
   const [osuId, setOsuId] = useState(null);
   const [requestLoading, setRequestLoading] = useState(false);
   const { tournament } = useTournament();
-  const { closeModal } = props;
+  const { closeModal, toastLabelLoading } = props;
   const dispatch = useDispatch();
 
   const handleSubmit = (e) => {
     e.preventDefault();
     setRequestLoading(true);
-    const toastLoadingId = toast.loading("Adding staff member");
+    const toastLoadingId = toast.loading(toastLabelLoading);
     participantApi
       .addParticipant(osuId, tournament.id)
       .then((response) => {
@@ -80,6 +71,7 @@ const AddParticipantForm = (props) => {
 
 AddParticipantForm.propTypes = {
   closeModal: PropTypes.func,
+  toastLabelLoading: PropTypes.string.isRequired,
 };
 
 export default AddParticipantForm;

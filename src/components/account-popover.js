@@ -14,7 +14,6 @@ import {
 import LogoutIcon from "@mui/icons-material/Logout";
 import { Cog as CogIcon } from "../icons/cog";
 import { UserCircle as UserCircleIcon } from "../icons/user-circle";
-import { SwitchHorizontalOutlined as SwitchHorizontalOutlinedIcon } from "../icons/switch-horizontal-outlined";
 import useOsuAuth from "../hooks/useOsuAuth";
 import { useDispatch } from "../store";
 import { logout } from "../slices/user";
