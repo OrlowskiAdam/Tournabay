@@ -1,14 +1,12 @@
-import * as React from "react";
-import TextField from "@mui/material/TextField";
-import Dialog from "@mui/material/Dialog";
-import Autocomplete from "@mui/material/Autocomplete";
-import AddParticipantForm from "./dashboard/tournament/participants/AddParticipantForm";
-import { Avatar } from "@mui/material";
-import { getInitials } from "../utils/get-initials";
-import PropTypes from "prop-types";
 import { useState } from "react";
+import { Autocomplete, Avatar, TextField } from "@mui/material";
+import { getInitials } from "../utils/get-initials";
+import * as React from "react";
+import PropTypes from "prop-types";
+import Dialog from "@mui/material/Dialog";
+import AddParticipantForm from "./dashboard/tournament/participants/AddParticipantForm";
 
-const TournamentParticipantsAutocomplete = (props) => {
+const TournamentParticipantAutocomplete = (props) => {
   const { tournament, label, value, handleParticipantChange } = props;
   const [open, toggleOpen] = useState(false);
 
@@ -17,15 +15,16 @@ const TournamentParticipantsAutocomplete = (props) => {
   };
 
   return (
-    <React.Fragment>
+    <>
       <Autocomplete
-        multiple
+        id="participant-autocomplete"
+        freeSolo
+        selectOnFocus
+        clearOnBlur
+        handleHomeEndKeys
         value={value}
         onChange={(event, newValue) => {
-          const doesParticipantExist = newValue.some((user) => {
-            return user.user.username === "Add new participant";
-          });
-          if (doesParticipantExist) {
+          if (newValue?.user?.username === "Add new participant") {
             setTimeout(() => {
               toggleOpen(true);
             });
@@ -53,14 +52,9 @@ const TournamentParticipantsAutocomplete = (props) => {
 
           return filtered;
         }}
-        id="participants-autocomplete"
-        options={tournament.participants}
         getOptionLabel={(option) => {
-          return option.user.username;
+          return option?.user?.username;
         }}
-        selectOnFocus
-        clearOnBlur
-        handleHomeEndKeys
         renderOption={(props, option) => (
           <li {...props}>
             <Avatar
@@ -72,23 +66,23 @@ const TournamentParticipantsAutocomplete = (props) => {
           </li>
         )}
         sx={{ mt: 1 }}
-        freeSolo
         renderInput={(params) => <TextField {...params} label={label} />}
+        options={tournament.participants}
       />
       <Dialog fullWidth maxWidth="sm" onClose={handleClose} open={open}>
         {open && (
           <AddParticipantForm closeModal={handleClose} toastLabelLoading="Adding participant" />
         )}
       </Dialog>
-    </React.Fragment>
+    </>
   );
 };
 
-TournamentParticipantsAutocomplete.propTypes = {
+TournamentParticipantAutocomplete.propTypes = {
   tournament: PropTypes.object.isRequired,
-  label: PropTypes.object.isRequired,
+  label: PropTypes.string.isRequired,
   value: PropTypes.array.isRequired,
   handleParticipantChange: PropTypes.func.isRequired,
 };
 
-export default TournamentParticipantsAutocomplete;
+export default TournamentParticipantAutocomplete;
