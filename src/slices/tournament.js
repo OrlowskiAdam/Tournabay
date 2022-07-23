@@ -81,6 +81,17 @@ const slice = createSlice({
     },
     addTeam(state, action) {
       state.tournament.teams = [...state.tournament.teams, action.payload];
+      state.tournament.participants = state.tournament.participants.map(
+        (participant) =>
+          action.payload.participants.find((p) => p.id === participant.id) || participant
+      );
+    },
+    removeTeam(state, action) {
+      state.tournament.teams = state.tournament.teams.filter((team) => team.id !== action.payload);
+    },
+    replaceTeam(state, action) {
+      const teamIndex = state.tournament.teams.findIndex((team) => team.id === action.payload.id);
+      state.tournament.teams[teamIndex] = action.payload;
     },
   },
 });
@@ -139,6 +150,14 @@ export const updateParticipant = (participant) => async (dispatch) => {
 
 export const addTeam = (team) => async (dispatch) => {
   dispatch(slice.actions.addTeam(team));
+};
+
+export const removeTeam = (teamId) => async (dispatch) => {
+  dispatch(slice.actions.removeTeam(teamId));
+};
+
+export const updateTeam = (team) => async (dispatch) => {
+  dispatch(slice.actions.replaceTeam(team));
 };
 
 export default slice;
