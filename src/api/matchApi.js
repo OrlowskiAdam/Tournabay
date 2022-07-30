@@ -5,6 +5,10 @@ class MatchApi {
   createMatch(tournamentId, body) {
     return request.post(`${API_URL}/match/create/${tournamentId}`, body);
   }
+
+  deleteMatch(matchId, tournamentId) {
+    return request.delete(`${API_URL}/match/delete/${matchId}/${tournamentId}`);
+  }
 }
 
 export const matchApi = new MatchApi();
