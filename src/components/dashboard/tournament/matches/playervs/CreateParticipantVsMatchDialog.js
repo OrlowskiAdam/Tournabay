@@ -26,17 +26,13 @@ const CreateParticipantVsMatchDialog = (props) => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    if (redParticipant.id === blueParticipant.id) {
-      toast.error("Blue participant and red participant are the same!");
-      return;
-    }
     const toastLoadingId = toast.loading("Creating new match");
     setRequestLoading(true);
     const refereesId = referees.map((p) => p.id);
     const commentatorsId = commentators.map((p) => p.id);
     const streamersId = streamers.map((p) => p.id);
-    const redParticipantId = redParticipant.id;
-    const blueParticipantId = blueParticipant.id;
+    const redParticipantId = redParticipant ? redParticipant.id : null;
+    const blueParticipantId = blueParticipant ? blueParticipant.id : null;
     const body = {
       startDate,
       isLive,
@@ -52,13 +48,13 @@ const CreateParticipantVsMatchDialog = (props) => {
       .then((response) => {
         toast.success("Match created successfully!");
         dispatch(addMatch(response.data));
+        closeModal();
       })
       .catch((error) => {
         notifyOnError(error);
       })
       .finally(() => {
         setRequestLoading(false);
-        closeModal();
         toast.remove(toastLoadingId);
       });
   };
