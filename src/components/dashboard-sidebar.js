@@ -5,20 +5,15 @@ import PropTypes from "prop-types";
 import { Box, Divider, Drawer, Typography, useMediaQuery } from "@mui/material";
 import GroupWorkIcon from "@mui/icons-material/GroupWork";
 import SettingsIcon from "@mui/icons-material/Settings";
-import { Lock as LockIcon } from "../icons/lock";
-import { Selector as SelectorIcon } from "../icons/selector";
-import { User as UserIcon } from "../icons/user";
-import { UserAdd as UserAddIcon } from "../icons/user-add";
 import { Users as UsersIcon } from "../icons/users";
-import { XCircle as XCircleIcon } from "../icons/x-circle";
 import AdminPanelSettingsIcon from "@mui/icons-material/AdminPanelSettings";
 import GppGoodIcon from "@mui/icons-material/GppGood";
 import PersonIcon from "@mui/icons-material/Person";
+import DragIndicatorIcon from "@mui/icons-material/DragIndicator";
 import { Logo } from "./logo";
 import { NavItem } from "./nav-item";
 import useTournament from "../hooks/useTournament";
 import useStaffMember from "../hooks/useStaffMember";
-import { SeverityPill } from "./severity-pill";
 
 const items = (tournament) => {
   let navItems = [
@@ -41,6 +36,11 @@ const items = (tournament) => {
       href: `/dashboard/tournament/${tournament.id}/participants`,
       icon: <PersonIcon fontSize="small" />,
       title: "Participants",
+    },
+    {
+      href: `/dashboard/tournament/${tournament.id}/matches`,
+      icon: <DragIndicatorIcon fontSize="small" />,
+      title: "Matches",
     },
     {
       href: `/dashboard/tournament/${tournament.id}/settings`,
