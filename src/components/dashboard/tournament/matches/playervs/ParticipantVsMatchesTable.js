@@ -22,8 +22,12 @@ import { useState } from "react";
 import PropTypes from "prop-types";
 import CreateParticipantVsMatchDialog from "./CreateParticipantVsMatchDialog";
 import { SeverityPill } from "../../../../severity-pill";
-import { UserCircle as UserCircleIcon } from "../../../../../icons/user-circle";
 import { getInitials } from "../../../../../utils/get-initials";
+import { matchApi } from '../../../../../api/matchApi';
+import { notifyOnError } from '../../../../../utils/error-response';
+import toast from 'react-hot-toast';
+import { removeMatch } from '../../../../../slices/tournament';
+import { useDispatch } from 'react-redux';
 
 const ParticipantVsMatchesTable = (props) => {
   const { matches } = props;
@@ -67,7 +71,7 @@ const ParticipantVsMatchesTable = (props) => {
                   <TableCell>Red</TableCell>
                   <TableCell></TableCell>
                   <TableCell>Blue</TableCell>
-                  <TableCell>Start date</TableCell>
+                  <TableCell>Starts at</TableCell>
                   <TableCell>Referees</TableCell>
                   <TableCell>Commentators</TableCell>
                   <TableCell>Streamers</TableCell>
@@ -93,6 +97,28 @@ const ParticipantVsMatchesTable = (props) => {
 
 const MatchRow = (props) => {
   const { match } = props;
+  const [isRequestLoading, setRequestLoading] = useState(false);
+  const dispatch = useDispatch();
+
+  const handleDeleteButton = () => {
+    setRequestLoading(true);
+    const toastLoadingId = toast.loading("Deleting match");
+    setRequestLoading(true);
+    matchApi
+      .deleteMatch(match.id, match.tournament)
+      .then((response) => {
+        dispatch(removeMatch(response.data.id));
+        toast.success("Match deleted successfully!");
+      })
+      .catch((error) => {
+        notifyOnError(error);
+      })
+      .finally(() => {
+        setRequestLoading(false);
+        toast.remove(toastLoadingId);
+      });
+  }
+
   return (
     <>
       <TableRow>
@@ -137,7 +163,7 @@ const MatchRow = (props) => {
             </Link>
           </Box>
         </TableCell>
-        <TableCell>{match.ldt}</TableCell>
+        <TableCell>{match.startDate} {match.startTime.substring(0, 5)}</TableCell>
         <TableCell>
           {match.referees.map((referee) => (
             <Box key={referee.id} sx={{ display: "flex", alignItems: "center", mb: 1 }}>
@@ -159,30 +185,47 @@ const MatchRow = (props) => {
         </TableCell>
         <TableCell>
           {match.commentators.map((commentator) => (
-            <li>{commentator.user.username}</li>
+            <Box key={commentator.id} sx={{ display: "flex", alignItems: "center", mb: 1 }}>
+              <Avatar
+                src={commentator.user.avatarUrl}
+                sx={{
+                  height: 20,
+                  width: 20,
+                  mr: 1,
+                }}
+              >
+                {getInitials(commentator.user.username)}
+              </Avatar>
+              <Link href={`https://osu.ppy.sh/users/${commentator.user.osuId}`} target="_blank">
+                {commentator.user.username}
+              </Link>
+            </Box>
           ))}
         </TableCell>
         <TableCell>
           {match.streamers.map((streamer) => (
-            <>
+            <Box key={streamer.id} sx={{ display: "flex", alignItems: "center", mb: 1 }}>
               <Avatar
                 src={streamer.user.avatarUrl}
                 sx={{
-                  height: 40,
-                  width: 40,
+                  height: 20,
+                  width: 20,
+                  mr: 1,
                 }}
               >
-                <UserCircleIcon fontSize="small" />
+                {getInitials(streamer.user.username)}
               </Avatar>
-              {streamer.user.username}
-            </>
+              <Link href={`https://osu.ppy.sh/users/${streamer.user.osuId}`} target="_blank">
+                {streamer.user.username}
+              </Link>
+            </Box>
           ))}
         </TableCell>
         <TableCell>{match.isLive && <SeverityPill color="error">LIVE</SeverityPill>}</TableCell>
         <TableCell align="right">
           <Box sx={{ display: "flex", justifyContent: "space-evenly" }}>
-            <Button variant="outlined">Edit</Button>
-            <Button variant="outlined" color="error">
+            <Button variant="outlined" disabled={isRequestLoading}>Edit</Button>
+            <Button variant="outlined" color="error" onClick={handleDeleteButton} disabled={isRequestLoading}>
               Delete
             </Button>
           </Box>
