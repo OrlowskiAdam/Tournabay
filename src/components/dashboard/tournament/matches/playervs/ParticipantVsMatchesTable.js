@@ -23,11 +23,12 @@ import PropTypes from "prop-types";
 import CreateParticipantVsMatchDialog from "./CreateParticipantVsMatchDialog";
 import { SeverityPill } from "../../../../severity-pill";
 import { getInitials } from "../../../../../utils/get-initials";
-import { matchApi } from '../../../../../api/matchApi';
-import { notifyOnError } from '../../../../../utils/error-response';
-import toast from 'react-hot-toast';
-import { removeMatch } from '../../../../../slices/tournament';
-import { useDispatch } from 'react-redux';
+import { matchApi } from "../../../../../api/matchApi";
+import { notifyOnError } from "../../../../../utils/error-response";
+import toast from "react-hot-toast";
+import { removeMatch } from "../../../../../slices/tournament";
+import { useDispatch } from "react-redux";
+import EditParticipantVsMatchDialog from "./EditParticipantVsMatchDialog";
 
 const ParticipantVsMatchesTable = (props) => {
   const { matches } = props;
@@ -97,6 +98,7 @@ const ParticipantVsMatchesTable = (props) => {
 
 const MatchRow = (props) => {
   const { match } = props;
+  const [isDialogOpen, setIsDialogOpen] = useState(false);
   const [isRequestLoading, setRequestLoading] = useState(false);
   const dispatch = useDispatch();
 
@@ -117,7 +119,7 @@ const MatchRow = (props) => {
         setRequestLoading(false);
         toast.remove(toastLoadingId);
       });
-  }
+  };
 
   return (
     <>
@@ -163,7 +165,9 @@ const MatchRow = (props) => {
             </Link>
           </Box>
         </TableCell>
-        <TableCell>{match.startDate} {match.startTime.substring(0, 5)}</TableCell>
+        <TableCell>
+          {match.startDate} {match.startTime.substring(0, 5)}
+        </TableCell>
         <TableCell>
           {match.referees.map((referee) => (
             <Box key={referee.id} sx={{ display: "flex", alignItems: "center", mb: 1 }}>
@@ -224,13 +228,29 @@ const MatchRow = (props) => {
         <TableCell>{match.isLive && <SeverityPill color="error">LIVE</SeverityPill>}</TableCell>
         <TableCell align="right">
           <Box sx={{ display: "flex", justifyContent: "space-evenly" }}>
-            <Button variant="outlined" disabled={isRequestLoading}>Edit</Button>
-            <Button variant="outlined" color="error" onClick={handleDeleteButton} disabled={isRequestLoading}>
+            <Button
+              variant="outlined"
+              disabled={isRequestLoading}
+              onClick={() => setIsDialogOpen(true)}
+            >
+              Edit
+            </Button>
+            <Button
+              variant="outlined"
+              color="error"
+              onClick={handleDeleteButton}
+              disabled={isRequestLoading}
+            >
               Delete
             </Button>
           </Box>
         </TableCell>
       </TableRow>
+      <Dialog fullWidth maxWidth="sm" onClose={() => setIsDialogOpen(false)} open={isDialogOpen}>
+        {isDialogOpen && (
+          <EditParticipantVsMatchDialog closeModal={() => setIsDialogOpen(false)} match={match} />
+        )}
+      </Dialog>
     </>
   );
 };
