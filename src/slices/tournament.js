@@ -97,6 +97,11 @@ const slice = createSlice({
     addMatch(state, action) {
       state.tournament.matches = [...state.tournament.matches, action.payload];
     },
+    removeMatch(state, action) {
+      state.tournament.matches = state.tournament.matches.filter(
+        (match) => match.id !== action.payload
+      );
+    }
   },
 });
 
@@ -167,5 +172,9 @@ export const updateTeam = (team) => async (dispatch) => {
 export const addMatch = (match) => async (dispatch) => {
   dispatch(slice.actions.addMatch(match));
 };
+
+export const removeMatch = (matchId) => async (dispatch) => {
+  dispatch(slice.actions.removeMatch(matchId));
+}
 
 export default slice;
