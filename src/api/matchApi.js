@@ -9,6 +9,10 @@ class MatchApi {
   deleteMatch(matchId, tournamentId) {
     return request.delete(`${API_URL}/match/delete/${matchId}/${tournamentId}`);
   }
+
+  updateMatch(matchId, tournamentId, body) {
+    return request.put(`${API_URL}/match/update/${matchId}/${tournamentId}`, body);
+  }
 }
 
 export const matchApi = new MatchApi();
