@@ -3,7 +3,7 @@ import { Autocomplete, Avatar, TextField } from "@mui/material";
 import { getInitials } from "../utils/get-initials";
 
 const TournamentStaffMembersAutocomplete = (props) => {
-  const { tournament, value, handleStaffChange, multiple } = props;
+  const { tournament, value, handleStaffChange, multiple, label = "Staff Members" } = props;
   return (
     <Autocomplete
       sx={{ my: 2 }}
@@ -26,7 +26,7 @@ const TournamentStaffMembersAutocomplete = (props) => {
       renderInput={(params) => (
         <TextField
           fullWidth
-          label="Staff Members"
+          label={label}
           name="accessStaffMember"
           variant="outlined"
           {...params}
@@ -41,6 +41,7 @@ TournamentStaffMembersAutocomplete.propTypes = {
   value: PropTypes.array.isRequired,
   handleStaffChange: PropTypes.func.isRequired,
   multiple: PropTypes.bool,
+  label: PropTypes.string,
 };
 
 export default TournamentStaffMembersAutocomplete;
