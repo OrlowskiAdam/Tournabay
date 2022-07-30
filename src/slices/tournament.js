@@ -16,6 +16,7 @@ const initialState = {
     permission: null,
     participants: [],
     teams: [],
+    matches: [],
     owner: null,
   },
 };
@@ -93,6 +94,9 @@ const slice = createSlice({
       const teamIndex = state.tournament.teams.findIndex((team) => team.id === action.payload.id);
       state.tournament.teams[teamIndex] = action.payload;
     },
+    addMatch(state, action) {
+      state.tournament.matches = [...state.tournament.matches, action.payload];
+    },
   },
 });
 
@@ -158,6 +162,10 @@ export const removeTeam = (teamId) => async (dispatch) => {
 
 export const updateTeam = (team) => async (dispatch) => {
   dispatch(slice.actions.replaceTeam(team));
+};
+
+export const addMatch = (match) => async (dispatch) => {
+  dispatch(slice.actions.addMatch(match));
 };
 
 export default slice;
