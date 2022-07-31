@@ -36,7 +36,7 @@ const TeamsTable = (props) => {
     setIsDialogOpen(false);
   };
 
-  const handleAddStaffMemberClick = () => {
+  const handleCreateTeamButton = () => {
     setIsDialogOpen(true);
   };
 
@@ -57,7 +57,7 @@ const TeamsTable = (props) => {
             sx={{ m: 2 }}
             startIcon={<AddIcon />}
             variant="contained"
-            onClick={handleAddStaffMemberClick}
+            onClick={handleCreateTeamButton}
           >
             Create team
           </Button>
