@@ -5,6 +5,7 @@ import useTournament from "../../../../hooks/useTournament";
 import Head from "next/head";
 import TournamentGuard from "../../../../guards/TournamentGuard";
 import ParticipantVsMatchesTable from "../../../../components/dashboard/tournament/matches/playervs/ParticipantVsMatchesTable";
+import TeamVsMatchesTable from "../../../../components/dashboard/tournament/matches/teamvs/TeamVsMatchesTable";
 
 const TournamentMatches = () => {
   const { tournament } = useTournament();
@@ -25,7 +26,7 @@ const TournamentMatches = () => {
           {tournament.teamFormat === "PLAYER_VS" ? (
             <ParticipantVsMatchesTable matches={tournament.matches} />
           ) : (
-            <></>
+            <TeamVsMatchesTable matches={tournament.matches} />
           )}
         </Container>
       </Box>
