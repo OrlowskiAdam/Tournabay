@@ -10,6 +10,7 @@ import AdminPanelSettingsIcon from "@mui/icons-material/AdminPanelSettings";
 import GppGoodIcon from "@mui/icons-material/GppGood";
 import PersonIcon from "@mui/icons-material/Person";
 import DragIndicatorIcon from "@mui/icons-material/DragIndicator";
+import PoolIcon from "@mui/icons-material/Pool";
 import { Logo } from "./logo";
 import { NavItem } from "./nav-item";
 import useTournament from "../hooks/useTournament";
@@ -41,6 +42,11 @@ const items = (tournament) => {
       href: `/dashboard/tournament/${tournament.id}/matches`,
       icon: <DragIndicatorIcon fontSize="small" />,
       title: "Matches",
+    },
+    {
+      href: `/dashboard/tournament/${tournament.id}/mappool`,
+      icon: <PoolIcon fontSize="small" />,
+      title: "Mappool",
     },
     {
       href: `/dashboard/tournament/${tournament.id}/settings`,

@@ -6,6 +6,7 @@ const initialState = {
     scoreType: "SCORE_V2",
     gameMode: "STANDARD",
     teamFormat: "PLAYER_VS",
+    maxStage: "RO128",
     startDate: new Date(),
     endDate: new Date(),
   },
@@ -38,6 +39,9 @@ const slice = createSlice({
     },
     setTournamentTeamFormat(state, action) {
       state.tournament.teamFormat = action.payload;
+    },
+    setTournamentMaxStage(state, action) {
+      state.tournament.maxStage = action.payload;
     },
   },
 });
@@ -76,6 +80,10 @@ export const setTournamentEndDate = (endDate) => async (dispatch) => {
 
 export const setTournamentTeamFormat = (teamFormat) => async (dispatch) => {
   dispatch(slice.actions.setTournamentTeamFormat(teamFormat));
+};
+
+export const setTournamentMaxStage = (maxStage) => async (dispatch) => {
+  dispatch(slice.actions.setTournamentMaxStage(maxStage));
 };
 
 export const createTournament = (tournamentData) => async (dispatch) => {};

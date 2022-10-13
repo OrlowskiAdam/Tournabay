@@ -11,6 +11,7 @@ const initialState = {
     gameMode: null,
     scoreType: null,
     teamFormat: null,
+    maxStage: null,
     roles: [],
     staffMembers: [],
     permission: null,

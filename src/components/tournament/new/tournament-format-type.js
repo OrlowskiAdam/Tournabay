@@ -1,9 +1,19 @@
 import PropTypes from "prop-types";
 import { alpha } from "@mui/material/styles";
-import { Box, Button, Card, Radio, Typography } from "@mui/material";
+import {
+  Box,
+  Button,
+  Card,
+  FormControl,
+  InputLabel,
+  MenuItem,
+  Radio,
+  Select,
+  Typography,
+} from "@mui/material";
 import { ArrowRight as ArrowRightIcon } from "../../../icons/arrow-right";
 import { useDispatch, useSelector } from "../../../store";
-import { setTournamentTeamFormat } from "../../../slices/tournamentWizard";
+import { setTournamentMaxStage, setTournamentTeamFormat } from "../../../slices/tournamentWizard";
 
 const typeOptions = [
   {
@@ -18,13 +28,19 @@ const typeOptions = [
   },
 ];
 
+const stages = ["RO128", "RO64", "RO32", "RO16"];
+
 export const TournamentFormatType = (props) => {
   const { onBack, onNext, ...other } = props;
   const { tournament } = useSelector((state) => state.tournamentWizard);
   const dispatch = useDispatch();
 
-  const handleChange = (newType) => {
+  const handleTeamFormatChange = (newType) => {
     dispatch(setTournamentTeamFormat(newType));
+  };
+
+  const handleMaxStageChange = (stageValue) => {
+    dispatch(setTournamentMaxStage(stageValue));
   };
 
   return (
@@ -47,7 +63,7 @@ export const TournamentFormatType = (props) => {
                   m: "-1px",
                 }),
               }}
-              onClick={() => handleChange(typeOption.value)}
+              onClick={() => handleTeamFormatChange(typeOption.value)}
               variant="outlined"
             >
               <Radio checked={tournament.teamFormat === typeOption.value} color="primary" />
@@ -60,6 +76,25 @@ export const TournamentFormatType = (props) => {
             </Card>
           </Box>
         ))}
+      </Box>
+      <Box sx={{ mt: 3 }}>
+        <Typography variant="h6">Max stage</Typography>
+        <FormControl size="medium" sx={{ minWidth: 150, m: 1 }}>
+          <InputLabel id="base-team-size">Max stage</InputLabel>
+          <Select
+            labelId="base-team-size"
+            id="base-team-size"
+            value={tournament.maxStage}
+            label="Base team size"
+            onChange={handleMaxStageChange}
+          >
+            {stages.map((stage) => (
+              <MenuItem key={stage} value={stage}>
+                {stage}
+              </MenuItem>
+            ))}
+          </Select>
+        </FormControl>
       </Box>
       <Button endIcon={<ArrowRightIcon fontSize="small" />} onClick={onNext} variant="contained">
         Continue

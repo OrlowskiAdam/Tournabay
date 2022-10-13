@@ -19,6 +19,27 @@ const background = {
 
 const divider = "#2D3748";
 
+const qualifier = {
+  main: "#F85E00",
+  light: "#FFB563",
+  dark: "#A41623",
+  contrastText: neutral[900],
+};
+
+const groupStage = {
+  main: "#DD2D4A",
+  light: "#F26A8D",
+  dark: "#880D1E",
+  contrastText: neutral[900],
+};
+
+const grandFinal = {
+  main: "#86A5D9",
+  light: "#26F0F1",
+  dark: "#5F4BB6",
+  contrastText: neutral[900],
+};
+
 const primary = {
   main: "#7582EB",
   light: "#909BEF",
@@ -178,6 +199,9 @@ export const darkThemeOptions = {
     success,
     text,
     warning,
+    qualifier,
+    groupStage,
+    grandFinal,
   },
   shadows: [
     "none",
