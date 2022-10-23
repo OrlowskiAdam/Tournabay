@@ -18,6 +18,7 @@ const initialState = {
     participants: [],
     teams: [],
     matches: [],
+    groups: [],
     owner: null,
   },
 };
@@ -109,6 +110,23 @@ const slice = createSlice({
       );
       state.tournament.matches[matchIndex] = action.payload;
     },
+    createGroup(state, action) {
+      state.tournament.groups = [...state.tournament.groups, action.payload];
+    },
+    setGroups(state, action) {
+      state.tournament.groups = action.payload;
+    },
+    replaceGroup(state, action) {
+      const groupIndex = state.tournament.groups.findIndex(
+        (group) => group.id === action.payload.id
+      );
+      state.tournament.groups[groupIndex] = action.payload;
+    },
+    removeGroup(state, action) {
+      state.tournament.groups = state.tournament.groups.filter(
+        (group) => group.id !== action.payload
+      );
+    },
   },
 });
 
@@ -186,6 +204,22 @@ export const removeMatch = (matchId) => async (dispatch) => {
 
 export const updateMatch = (match) => async (dispatch) => {
   dispatch(slice.actions.replaceMatch(match));
+};
+
+export const createGroup = (group) => async (dispatch) => {
+  dispatch(slice.actions.createGroup(group));
+};
+
+export const setGroups = (groups) => async (dispatch) => {
+  dispatch(slice.actions.setGroups(groups));
+};
+
+export const updateGroup = (group) => async (dispatch) => {
+  dispatch(slice.actions.replaceGroup(group));
+};
+
+export const removeGroup = (groupId) => async (dispatch) => {
+  dispatch(slice.actions.removeGroup(groupId));
 };
 
 export default slice;

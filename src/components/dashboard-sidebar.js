@@ -11,6 +11,7 @@ import GppGoodIcon from "@mui/icons-material/GppGood";
 import PersonIcon from "@mui/icons-material/Person";
 import DragIndicatorIcon from "@mui/icons-material/DragIndicator";
 import PoolIcon from "@mui/icons-material/Pool";
+import ViewModuleIcon from "@mui/icons-material/ViewModule";
 import { Logo } from "./logo";
 import { NavItem } from "./nav-item";
 import useTournament from "../hooks/useTournament";
@@ -37,6 +38,11 @@ const items = (tournament) => {
       href: `/dashboard/tournament/${tournament.id}/participants`,
       icon: <PersonIcon fontSize="small" />,
       title: "Participants",
+    },
+    {
+      href: `/dashboard/tournament/${tournament.id}/groups`,
+      icon: <ViewModuleIcon fontSize="small" />,
+      title: "Groups",
     },
     {
       href: `/dashboard/tournament/${tournament.id}/matches`,
