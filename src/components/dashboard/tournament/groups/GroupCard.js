@@ -26,11 +26,23 @@ const GroupCard = (props) => {
   };
 
   const teams = () => {
-    return group.teams.map((team) => <p>{team.name}</p>);
+    return group.teams.map((team) => (
+      <Box
+        key={team.id}
+        sx={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}
+      >
+        <p>{team?.team?.name}</p>
+        <p>
+          {team.wins} : {team.losses}
+        </p>
+      </Box>
+    ));
   };
 
   const participants = () => {
-    return group.participants.map((participant) => <p>{participant.name}</p>);
+    return group.participants.map((participant) => (
+      <p key={participant.id}>{participant?.participant?.user.username}</p>
+    ));
   };
 
   return (
@@ -72,7 +84,7 @@ const GroupCard = (props) => {
         <Divider />
         {tournament.teamFormat === "TEAM_VS" ? teams() : participants()}
       </Card>
-      <Dialog fullWidth maxWidth="lg" onClose={handleDialogClose} open={isDialogOpen}>
+      <Dialog fullWidth maxWidth="md" onClose={handleDialogClose} open={isDialogOpen}>
         {isDialogOpen && <EditGroupDialog group={group} closeModal={handleDialogClose} />}
       </Dialog>
     </>

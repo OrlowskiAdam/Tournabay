@@ -7,6 +7,7 @@ import { groupApi } from "../../../../api/groupApi";
 import { useDispatch } from "../../../../store";
 import { createGroup, setGroups } from "../../../../slices/tournament";
 import toast from "react-hot-toast";
+import { notifyOnError } from "../../../../utils/error-response";
 
 const GroupsGrid = (props) => {
   const { tournament } = props;
@@ -33,7 +34,7 @@ const GroupsGrid = (props) => {
         dispatch(setGroups(response.data));
         toast.success("Group deleted successfully");
       })
-      .catch((error) => console.error(error))
+      .catch((error) => notifyOnError(error))
       .finally(() => setIsLoading(false));
   };
 

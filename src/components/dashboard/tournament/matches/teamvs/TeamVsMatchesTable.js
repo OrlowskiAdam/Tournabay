@@ -29,6 +29,7 @@ import { removeMatch } from "../../../../../slices/tournament";
 import { useDispatch } from "react-redux";
 import CreateTeamVsMatchDialog from "./CreateTeamVsMatchDialog";
 import EditTeamVsMatchDialog from "./EditTeamVsMatchDialog";
+import MatchResultDialog from "../MatchResultDialog";
 
 const ParticipantVsMatchesTable = (props) => {
   const { matches } = props;
@@ -99,6 +100,7 @@ const ParticipantVsMatchesTable = (props) => {
 const MatchRow = (props) => {
   const { match } = props;
   const [isDialogOpen, setIsDialogOpen] = useState(false);
+  const [isResultDialogOpen, setIsResultDialogOpen] = useState(false);
   const [isRequestLoading, setRequestLoading] = useState(false);
   const dispatch = useDispatch();
 
@@ -124,9 +126,21 @@ const MatchRow = (props) => {
   return (
     <>
       <TableRow>
-        <TableCell>{match.redTeam.name}</TableCell>
-        <TableCell>vs.</TableCell>
-        <TableCell>{match.blueTeam.name}</TableCell>
+        <TableCell
+          sx={{ fontWeight: match.winner?.name === match.redTeam.name ? "bold" : "initial" }}
+        >
+          {match.redTeam.name}
+        </TableCell>
+        <TableCell>
+          {match.matchResult
+            ? `${match.matchResult.redScore} : ${match.matchResult.blueScore}`
+            : "vs."}
+        </TableCell>
+        <TableCell
+          sx={{ fontWeight: match.winner?.name === match.blueTeam.name ? "bold" : "initial" }}
+        >
+          {match.blueTeam.name}
+        </TableCell>
         <TableCell>
           {match.startDate} {match.startTime.substring(0, 5)}
         </TableCell>
@@ -189,28 +203,51 @@ const MatchRow = (props) => {
         </TableCell>
         <TableCell>{match.isLive && <SeverityPill color="error">LIVE</SeverityPill>}</TableCell>
         <TableCell align="right">
-          <Box sx={{ display: "flex", justifyContent: "space-evenly" }}>
-            <Button
-              variant="outlined"
-              disabled={isRequestLoading}
-              onClick={() => setIsDialogOpen(true)}
-            >
-              Edit
-            </Button>
-            <Button
-              variant="outlined"
-              color="error"
-              onClick={handleDeleteButton}
-              disabled={isRequestLoading}
-            >
-              Delete
-            </Button>
-          </Box>
+          {!match.isCompleted && (
+            <Box>
+              <Button
+                sx={{ m: 1 }}
+                color="success"
+                variant="outlined"
+                disabled={isRequestLoading}
+                onClick={() => setIsResultDialogOpen(true)}
+              >
+                Result
+              </Button>
+              <Button
+                sx={{ m: 1 }}
+                variant="outlined"
+                disabled={isRequestLoading}
+                onClick={() => setIsDialogOpen(true)}
+              >
+                Edit
+              </Button>
+              <Button
+                sx={{ m: 1 }}
+                variant="outlined"
+                color="error"
+                onClick={handleDeleteButton}
+                disabled={isRequestLoading}
+              >
+                Delete
+              </Button>
+            </Box>
+          )}
         </TableCell>
       </TableRow>
       <Dialog fullWidth maxWidth="sm" onClose={() => setIsDialogOpen(false)} open={isDialogOpen}>
         {isDialogOpen && (
           <EditTeamVsMatchDialog closeModal={() => setIsDialogOpen(false)} match={match} />
+        )}
+      </Dialog>
+      <Dialog
+        fullWidth
+        maxWidth="sm"
+        onClose={() => setIsResultDialogOpen(false)}
+        open={isResultDialogOpen}
+      >
+        {isResultDialogOpen && (
+          <MatchResultDialog closeModal={() => setIsResultDialogOpen(false)} match={match} />
         )}
       </Dialog>
     </>

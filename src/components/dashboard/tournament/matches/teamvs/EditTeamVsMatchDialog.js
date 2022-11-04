@@ -83,7 +83,7 @@ const EditTeamVsMatchDialog = (props) => {
       streamersLimit,
     };
     matchApi
-      .updateMatch(match.id, tournament.id, body)
+      .updateTeamVsMatch(match.id, tournament.id, body)
       .then((response) => {
         toast.success("Match updated successfully!");
         dispatch(updateMatch(response.data));

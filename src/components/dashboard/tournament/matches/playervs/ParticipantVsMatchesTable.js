@@ -29,6 +29,7 @@ import toast from "react-hot-toast";
 import { removeMatch } from "../../../../../slices/tournament";
 import { useDispatch } from "react-redux";
 import EditParticipantVsMatchDialog from "./EditParticipantVsMatchDialog";
+import MatchResultDialog from "../MatchResultDialog";
 
 const ParticipantVsMatchesTable = (props) => {
   const { matches } = props;
@@ -99,6 +100,7 @@ const ParticipantVsMatchesTable = (props) => {
 const MatchRow = (props) => {
   const { match } = props;
   const [isDialogOpen, setIsDialogOpen] = useState(false);
+  const [isResultDialogOpen, setIsResultDialogOpen] = useState(false);
   const [isRequestLoading, setRequestLoading] = useState(false);
   const dispatch = useDispatch();
 
@@ -227,28 +229,51 @@ const MatchRow = (props) => {
         </TableCell>
         <TableCell>{match.isLive && <SeverityPill color="error">LIVE</SeverityPill>}</TableCell>
         <TableCell align="right">
-          <Box sx={{ display: "flex", justifyContent: "space-evenly" }}>
-            <Button
-              variant="outlined"
-              disabled={isRequestLoading}
-              onClick={() => setIsDialogOpen(true)}
-            >
-              Edit
-            </Button>
-            <Button
-              variant="outlined"
-              color="error"
-              onClick={handleDeleteButton}
-              disabled={isRequestLoading}
-            >
-              Delete
-            </Button>
-          </Box>
+          {!match.isCompleted && (
+            <Box>
+              <Button
+                sx={{ m: 1 }}
+                variant="outlined"
+                color="success"
+                disabled={isRequestLoading}
+                onClick={() => setIsResultDialogOpen(true)}
+              >
+                Result
+              </Button>
+              <Button
+                sx={{ m: 1 }}
+                variant="outlined"
+                disabled={isRequestLoading}
+                onClick={() => setIsDialogOpen(true)}
+              >
+                Edit
+              </Button>
+              <Button
+                sx={{ m: 1 }}
+                variant="outlined"
+                color="error"
+                onClick={handleDeleteButton}
+                disabled={isRequestLoading}
+              >
+                Delete
+              </Button>
+            </Box>
+          )}
         </TableCell>
       </TableRow>
       <Dialog fullWidth maxWidth="sm" onClose={() => setIsDialogOpen(false)} open={isDialogOpen}>
         {isDialogOpen && (
           <EditParticipantVsMatchDialog closeModal={() => setIsDialogOpen(false)} match={match} />
+        )}
+      </Dialog>
+      <Dialog
+        fullWidth
+        maxWidth="sm"
+        onClose={() => setIsResultDialogOpen(false)}
+        open={isResultDialogOpen}
+      >
+        {isResultDialogOpen && (
+          <MatchResultDialog closeModal={() => setIsResultDialogOpen(false)} match={match} />
         )}
       </Dialog>
     </>

@@ -10,12 +10,19 @@ import { matchApi } from "../../../../../api/matchApi";
 import { addMatch } from "../../../../../slices/tournament";
 import { notifyOnError } from "../../../../../utils/error-response";
 import TeamAutocomplete from "../../../../team-autocomplete";
+import { getStages } from "../../../../../utils/get-stages";
+import StageAutocomplete from "../../../../stage-autocomplete";
+import GroupAutocomplete from "../../../../group-autocomplete";
+
+const stages = getStages;
 
 const CreateTeamVsMatchDialog = (props) => {
   const { tournament } = useTournament();
   const [redTeam, setRedTeam] = useState(null);
   const [blueTeam, setBlueTeam] = useState(null);
   const [startDate, setStartDate] = useState(new Date());
+  const [stage, setStage] = useState(stages[0]);
+  const [group, setGroup] = useState(null);
   const [referees, setReferees] = useState([]);
   const [commentators, setCommentators] = useState([]);
   const [streamers, setStreamers] = useState([]);
@@ -35,6 +42,8 @@ const CreateTeamVsMatchDialog = (props) => {
     const blueTeamId = blueTeam ? blueTeam.id : null;
     const body = {
       startDate,
+      stage,
+      groupId: group?.id,
       isLive,
       redTeamId,
       blueTeamId,
@@ -42,8 +51,9 @@ const CreateTeamVsMatchDialog = (props) => {
       commentatorsId,
       streamersId,
     };
+    console.log(body);
     matchApi
-      .createMatch(tournament.id, body)
+      .createTeamVsMatch(tournament.id, body)
       .then((response) => {
         toast.success("Match created successfully!");
         dispatch(addMatch(response.data));
@@ -82,6 +92,14 @@ const CreateTeamVsMatchDialog = (props) => {
     setStreamers(v);
   };
 
+  const handleStageChange = (e, v) => {
+    setStage(v);
+  };
+
+  const handleGroupChange = (e, v) => {
+    setGroup(v);
+  };
+
   return (
     <form>
       <Box sx={{ p: 3 }}>
@@ -104,7 +122,14 @@ const CreateTeamVsMatchDialog = (props) => {
           onChange={handleStartDateChange}
           renderInput={(inputProps) => <TextField {...inputProps} />}
         />
-        <br />
+        <StageAutocomplete stages={stages} value={stage} handleStageChange={handleStageChange} />
+        {stage === "GROUP_STAGE" && (
+          <GroupAutocomplete
+            groups={tournament.groups}
+            value={group}
+            handleGroupChange={handleGroupChange}
+          />
+        )}
         <TournamentStaffMembersAutocomplete
           tournament={tournament}
           value={referees}
