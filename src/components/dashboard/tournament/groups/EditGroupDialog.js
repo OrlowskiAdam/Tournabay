@@ -1,27 +1,30 @@
 import PropTypes from "prop-types";
 import {
+  Avatar,
   Box,
   Button,
   Divider,
-  IconButton,
+  IconButton, Link,
   Table,
   TableBody,
   TableCell,
   TableContainer,
   TableHead,
-  TableRow,
-} from "@mui/material";
+  TableRow
+} from '@mui/material';
 import { useState } from "react";
 import { useDispatch } from "react-redux";
 import useTournament from "../../../../hooks/useTournament";
 import TournamentTeamsAutocomplete from "../../../team-autocomplete";
 import { groupApi } from "../../../../api/groupApi";
-import { updateGroup } from "../../../../slices/tournament";
+import { removeMatch, updateGroup } from '../../../../slices/tournament';
 import toast from "react-hot-toast";
 import DeleteForeverIcon from "@mui/icons-material/DeleteForever";
 import AssessmentIcon from "@mui/icons-material/Assessment";
 import { notifyOnError } from "../../../../utils/error-response";
 import Scrollbar from "../../../scrollbar";
+import { getInitials } from '../../../../utils/get-initials';
+import { matchApi } from '../../../../api/matchApi';
 
 const EditGroupDialog = (props) => {
   const { group, closeModal } = props;
@@ -49,6 +52,24 @@ const EditGroupDialog = (props) => {
         toast.success("Team removed from group successfully");
       })
       .catch((error) => notifyOnError(error));
+  };
+
+  const handleMatchDelete = (matchId) => {
+    const toastLoadingId = toast.loading("Deleting match");
+    setRequestLoading(true);
+    matchApi
+      .deleteMatch(matchId, tournament.id)
+      .then((response) => {
+        dispatch(removeMatch(response.data.id));
+        toast.success("Match deleted successfully!");
+      })
+      .catch((error) => {
+        notifyOnError(error);
+      })
+      .finally(() => {
+        setRequestLoading(false);
+        toast.remove(toastLoadingId);
+      });
   };
 
   const teams = () => (
@@ -120,6 +141,7 @@ const EditGroupDialog = (props) => {
                     <TableCell></TableCell>
                     <TableCell>Blue</TableCell>
                     <TableCell>Start</TableCell>
+                    <TableCell>Referees</TableCell>
                     <TableCell align="right">Action</TableCell>
                   </TableRow>
                 </TableHead>
@@ -136,20 +158,42 @@ const EditGroupDialog = (props) => {
                       <TableCell>
                         {match.startDate} {match.startTime.substring(0, 5)}
                       </TableCell>
+                      <TableCell>
+                        {match.referees.map((referee) => (
+                          <Box
+                            key={referee.id}
+                            sx={{ display: "flex", alignItems: "center", mb: 1 }}
+                          >
+                            <Avatar
+                              src={referee.user.avatarUrl}
+                              sx={{
+                                height: 20,
+                                width: 20,
+                                mr: 1,
+                              }}
+                            >
+                              {getInitials(referee.user.username)}
+                            </Avatar>
+                            <Link href={`https://osu.ppy.sh/users/${referee.user.osuId}`} target="_blank">
+                              {referee.user.username}
+                            </Link>
+                          </Box>
+                        ))}
+                      </TableCell>
                       <TableCell align="right">
                         {!match.isCompleted && (
                           <Box>
                             <IconButton
+                              disabled
                               sx={{ mx: 0.5 }}
                               color="success"
-                              onClick={() => handleTeamDelete(match.id)}
                             >
                               <AssessmentIcon fontSize="small" />
                             </IconButton>
                             <IconButton
                               sx={{ mx: 0.5 }}
                               color="error"
-                              onClick={() => handleTeamDelete(match.id)}
+                              onClick={() => handleMatchDelete(match.id)}
                             >
                               <DeleteForeverIcon fontSize="small" />
                             </IconButton>

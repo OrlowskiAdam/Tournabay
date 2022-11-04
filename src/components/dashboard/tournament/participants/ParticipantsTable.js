@@ -93,7 +93,7 @@ const ParticipantsTable = (props) => {
       </Card>
       <Dialog fullWidth maxWidth="sm" onClose={handleDialogClose} open={isDialogOpen}>
         {/* Dialog renders its body even if not open */}
-        {isDialogOpen && <AddParticipantForm closeModal={handleDialogClose} />}
+        {isDialogOpen && <AddParticipantForm closeModal={handleDialogClose}  toastLabelLoading="Adding participant" />}
       </Dialog>
     </>
   );
@@ -157,7 +157,7 @@ const ParticipantRow = (props) => {
           </Box>
         </Box>
       </TableCell>
-      {tournament.teamFormat === "TEAM_VS" && <TableCell>{participant.team}</TableCell>}
+      {tournament.teamFormat === "TEAM_VS" && <TableCell>{participant.team?.name || participant.team}</TableCell>}
       <TableCell>{participant.discordId}</TableCell>
       {tournament.teamFormat === "PLAYER_VS" && <TableCell>{participant.seed}</TableCell>}
       <TableCell>

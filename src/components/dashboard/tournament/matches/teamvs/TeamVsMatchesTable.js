@@ -105,7 +105,6 @@ const MatchRow = (props) => {
   const dispatch = useDispatch();
 
   const handleDeleteButton = () => {
-    setRequestLoading(true);
     const toastLoadingId = toast.loading("Deleting match");
     setRequestLoading(true);
     matchApi
