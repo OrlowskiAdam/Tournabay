@@ -12,6 +12,9 @@ import PersonIcon from "@mui/icons-material/Person";
 import DragIndicatorIcon from "@mui/icons-material/DragIndicator";
 import PoolIcon from "@mui/icons-material/Pool";
 import ViewModuleIcon from "@mui/icons-material/ViewModule";
+import EqualizerIcon from "@mui/icons-material/Equalizer";
+import AddTaskIcon from "@mui/icons-material/AddTask";
+import CasinoIcon from "@mui/icons-material/Casino";
 import { Logo } from "./logo";
 import { NavItem } from "./nav-item";
 import useTournament from "../hooks/useTournament";
@@ -45,8 +48,18 @@ const items = (tournament) => {
       title: "Groups",
     },
     {
+      href: `/dashboard/tournament/${tournament.id}/qualification-rooms`,
+      icon: <EqualizerIcon fontSize="small" />,
+      title: "Qualification Rooms",
+    },
+    {
+      href: `/dashboard/tournament/${tournament.id}/qualification-results`,
+      icon: <AddTaskIcon fontSize="small" />,
+      title: "Qualification Results",
+    },
+    {
       href: `/dashboard/tournament/${tournament.id}/matches`,
-      icon: <DragIndicatorIcon fontSize="small" />,
+      icon: <CasinoIcon fontSize="small" />,
       title: "Matches",
     },
     {

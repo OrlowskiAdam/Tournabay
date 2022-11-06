@@ -1,11 +1,8 @@
 import { Box, Card, Dialog, Divider, IconButton } from "@mui/material";
 import PropTypes from "prop-types";
-import SearchIcon from "@mui/icons-material/Search";
 import DeleteForeverIcon from "@mui/icons-material/DeleteForever";
 import EditIcon from "@mui/icons-material/Edit";
 import { useState } from "react";
-import EditTeamDialog from "../teams/EditTeamDialog";
-import EditGroupDialog from "./EditGroupDialog";
 
 const GroupCard = (props) => {
   const { group, tournament, deleteGroup } = props;
@@ -29,11 +26,7 @@ const GroupCard = (props) => {
     return group.teams.map((team) => (
       <Box
         key={team.id}
-        sx={{
-          display: "flex",
-          justifyContent: "space-between",
-          alignItems: "center",
-        }}
+        sx={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}
       >
         <p>{team?.team?.name}</p>
         <p>
@@ -89,9 +82,9 @@ const GroupCard = (props) => {
         <Divider />
         {tournament.teamFormat === "TEAM_VS" ? teams() : participants()}
       </Card>
-      <Dialog fullWidth maxWidth="md" onClose={handleDialogClose} open={isDialogOpen}>
-        {isDialogOpen && <EditGroupDialog group={group} closeModal={handleDialogClose} />}
-      </Dialog>
+      {/*<Dialog fullWidth maxWidth="md" onClose={handleDialogClose} open={isDialogOpen}>*/}
+      {/*  {isDialogOpen && <EditGroupDialog group={group} closeModal={handleDialogClose} />}*/}
+      {/*</Dialog>*/}
     </>
   );
 };

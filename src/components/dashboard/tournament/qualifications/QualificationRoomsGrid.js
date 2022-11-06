@@ -1,49 +1,29 @@
 import { Box, Button } from "@mui/material";
-import GroupCard from "./GroupCard";
 import AddIcon from "@mui/icons-material/Add";
 import PropTypes from "prop-types";
 import { useState } from "react";
-import { groupApi } from "../../../../api/groupApi";
 import { useDispatch } from "../../../../store";
-import { createGroup, setGroups } from "../../../../slices/tournament";
-import toast from "react-hot-toast";
-import { notifyOnError } from "../../../../utils/error-response";
+import QualificationRoomCard from "./QualificationRoomCard";
 
-const GroupsGrid = (props) => {
+const QualificationRoomsGrid = (props) => {
   const { tournament } = props;
   const [isLoading, setIsLoading] = useState(false);
   const dispatch = useDispatch();
 
   const handleCreateGroupButton = () => {
     setIsLoading(true);
-    groupApi
-      .createGroup(tournament.id)
-      .then((response) => {
-        dispatch(createGroup(response.data));
-        toast.success(`Group ${response.data.symbol} created`);
-      })
-      .catch((error) => console.error(error))
-      .finally(() => setIsLoading(false));
   };
 
   const handleDeleteGroupButton = (groupId) => {
     setIsLoading(true);
-    return groupApi
-      .deleteGroup(groupId, tournament.id)
-      .then((response) => {
-        dispatch(setGroups(response.data));
-        toast.success("Group deleted successfully");
-      })
-      .catch((error) => notifyOnError(error))
-      .finally(() => setIsLoading(false));
   };
 
   return (
     <Box sx={{ display: "flex", flexWrap: "wrap" }}>
-      {tournament.groups.map((group) => (
-        <GroupCard
-          key={group.id}
-          group={group}
+      {tournament.qualificationRooms.map((room) => (
+        <QualificationRoomCard
+          key={room.id}
+          group={room}
           tournament={tournament}
           deleteGroup={handleDeleteGroupButton}
         />
@@ -72,14 +52,14 @@ const GroupsGrid = (props) => {
           };
         }}
       >
-        Create group
+        Create room
       </Button>
     </Box>
   );
 };
 
-GroupsGrid.propTypes = {
+QualificationRoomsGrid.propTypes = {
   tournament: PropTypes.object.isRequired,
 };
 
-export default GroupsGrid;
+export default QualificationRoomsGrid;

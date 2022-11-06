@@ -19,6 +19,7 @@ const initialState = {
     teams: [],
     matches: [],
     groups: [],
+    qualificationRooms: [],
     owner: null,
   },
 };
@@ -127,6 +128,23 @@ const slice = createSlice({
         (group) => group.id !== action.payload
       );
     },
+    addQualificationRoom(state, action) {
+      state.tournament.qualificationRooms = [
+        ...state.tournament.qualificationRooms,
+        action.payload,
+      ];
+    },
+    removeQualificationRoom(state, action) {
+      state.tournament.qualificationRooms = state.tournament.qualificationRooms.filter(
+        (room) => room.id !== action.payload
+      );
+    },
+    replaceQualificationRoom(state, action) {
+      const roomIndex = state.tournament.qualificationRooms.findIndex(
+        (room) => room.id === action.payload.id
+      );
+      state.tournament.qualificationRooms[roomIndex] = action.payload;
+    },
   },
 });
 
@@ -220,6 +238,18 @@ export const updateGroup = (group) => async (dispatch) => {
 
 export const removeGroup = (groupId) => async (dispatch) => {
   dispatch(slice.actions.removeGroup(groupId));
+};
+
+export const addQualificationRoom = (room) => async (dispatch) => {
+  dispatch(slice.actions.addQualificationRoom(room));
+};
+
+export const removeQualificationRoom = (roomId) => async (dispatch) => {
+  dispatch(slice.actions.removeQualificationRoom(roomId));
+};
+
+export const updateQualificationRoom = (room) => async (dispatch) => {
+  dispatch(slice.actions.replaceQualificationRoom(room));
 };
 
 export default slice;
