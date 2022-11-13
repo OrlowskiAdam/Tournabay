@@ -1,13 +1,15 @@
-import { Box, Button } from "@mui/material";
+import { Box, Button, Dialog } from "@mui/material";
 import AddIcon from "@mui/icons-material/Add";
 import PropTypes from "prop-types";
 import { useState } from "react";
 import { useDispatch } from "../../../../store";
 import QualificationRoomCard from "./QualificationRoomCard";
+import CreateQualificationRoomDialog from "./CreateQualificationRoomDialog";
 
 const QualificationRoomsGrid = (props) => {
   const { tournament } = props;
   const [isLoading, setIsLoading] = useState(false);
+  const [isDialogOpen, setIsDialogOpen] = useState(false);
   const dispatch = useDispatch();
 
   const handleCreateGroupButton = () => {
@@ -18,20 +20,27 @@ const QualificationRoomsGrid = (props) => {
     setIsLoading(true);
   };
 
+  const handleDialogClose = () => {
+    setIsDialogOpen(false);
+  };
+
+  const handleDialogOpen = () => {
+    setIsDialogOpen(true);
+  };
+
   return (
     <Box sx={{ display: "flex", flexWrap: "wrap" }}>
       {tournament.qualificationRooms.map((room) => (
         <QualificationRoomCard
           key={room.id}
-          group={room}
+          room={room}
           tournament={tournament}
-          deleteGroup={handleDeleteGroupButton}
+          deleteRoom={handleDeleteGroupButton}
         />
       ))}
       <Button
         startIcon={<AddIcon />}
-        onClick={handleCreateGroupButton}
-        disabled={isLoading}
+        onClick={handleDialogOpen}
         sx={(theme) => {
           return {
             p: 2,
@@ -54,6 +63,9 @@ const QualificationRoomsGrid = (props) => {
       >
         Create room
       </Button>
+      <Dialog fullWidth maxWidth="sm" onClose={handleDialogClose} open={isDialogOpen}>
+        {isDialogOpen && <CreateQualificationRoomDialog closeModal={handleDialogClose} />}
+      </Dialog>
     </Box>
   );
 };

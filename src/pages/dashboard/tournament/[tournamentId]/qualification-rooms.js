@@ -9,11 +9,12 @@ import QualificationRoomsGrid from "../../../../components/dashboard/tournament/
 
 const QualificationsPage = () => {
   const { tournament } = useTournament();
+  console.log(tournament.qualificationRooms);
 
   return (
     <>
       <Head>
-        <title>Groups | {tournament.name}</title>
+        <title>Qualification rooms | {tournament.name}</title>
       </Head>
       <Box
         component="main"

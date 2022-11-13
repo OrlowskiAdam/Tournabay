@@ -3,15 +3,16 @@ import PropTypes from "prop-types";
 import DeleteForeverIcon from "@mui/icons-material/DeleteForever";
 import EditIcon from "@mui/icons-material/Edit";
 import { useState } from "react";
+import { parseDate } from "../../../../utils/date-time-utils";
 
-const GroupCard = (props) => {
-  const { group, tournament, deleteGroup } = props;
+const QualificationRoomCard = (props) => {
+  const { room, tournament, deleteRoom } = props;
   const [isLoading, setIsLoading] = useState(false);
   const [isDialogOpen, setIsDialogOpen] = useState(false);
 
-  const handleDeleteGroupButton = () => {
+  const handleDeleteRoomButton = () => {
     setIsLoading(true);
-    deleteGroup(group.id).finally(() => setIsLoading(false));
+    deleteRoom(room.id).finally(() => setIsLoading(false));
   };
 
   const handleDialogClose = () => {
@@ -23,7 +24,7 @@ const GroupCard = (props) => {
   };
 
   const teams = () => {
-    return group.teams.map((team) => (
+    return room.teams.map((team) => (
       <Box
         key={team.id}
         sx={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}
@@ -37,7 +38,7 @@ const GroupCard = (props) => {
   };
 
   const participants = () => {
-    return group.participants.map((participant) => (
+    return room.participants.map((participant) => (
       <p key={participant.id}>{participant?.participant?.user.username}</p>
     ));
   };
@@ -65,14 +66,15 @@ const GroupCard = (props) => {
         }}
       >
         <Box sx={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
-          <h3>GROUP {group.symbol}</h3>
+          <h3>ROOM {room.symbol}</h3>
+          <h5>{parseDate(room.startDate)}</h5>
           <Box>
             <IconButton color="primary" disabled={isLoading} onClick={handleDialogOpen}>
               <EditIcon fontSize="small" />
             </IconButton>
             <IconButton
               color="error"
-              onClick={() => handleDeleteGroupButton(group.id)}
+              onClick={() => handleDeleteRoomButton(room.id)}
               disabled={isLoading}
             >
               <DeleteForeverIcon fontSize="small" />
@@ -89,10 +91,10 @@ const GroupCard = (props) => {
   );
 };
 
-GroupCard.propTypes = {
-  group: PropTypes.object.isRequired,
+QualificationRoomCard.propTypes = {
+  room: PropTypes.object.isRequired,
   tournament: PropTypes.object.isRequired,
-  deleteGroup: PropTypes.func.isRequired,
+  deleteRoom: PropTypes.func.isRequired,
 };
 
-export default GroupCard;
+export default QualificationRoomCard;
