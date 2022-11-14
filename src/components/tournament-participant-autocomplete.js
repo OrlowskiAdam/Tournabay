@@ -7,7 +7,7 @@ import Dialog from "@mui/material/Dialog";
 import AddParticipantForm from "./dashboard/tournament/participants/AddParticipantForm";
 
 const TournamentParticipantAutocomplete = (props) => {
-  const { tournament, label, value, handleParticipantChange } = props;
+  const { tournament, label, value, handleParticipantChange, multiple = false } = props;
   const [open, toggleOpen] = useState(false);
 
   const handleClose = () => {
@@ -22,7 +22,12 @@ const TournamentParticipantAutocomplete = (props) => {
         selectOnFocus
         clearOnBlur
         handleHomeEndKeys
+        multiple={multiple}
         value={value}
+        isOptionEqualToValue={(option, value) => {
+          console.log({ option }, { value });
+          return option.id === value.id;
+        }}
         onChange={(event, newValue) => {
           if (newValue?.user?.username === "Add new participant") {
             setTimeout(() => {
@@ -65,7 +70,7 @@ const TournamentParticipantAutocomplete = (props) => {
             {option.user.username}
           </li>
         )}
-        sx={{ mt: 1 }}
+        sx={{ my: 2 }}
         renderInput={(params) => <TextField {...params} label={label} />}
         options={tournament.participants}
       />
@@ -83,6 +88,7 @@ TournamentParticipantAutocomplete.propTypes = {
   label: PropTypes.string.isRequired,
   value: PropTypes.array.isRequired,
   handleParticipantChange: PropTypes.func.isRequired,
+  multiple: PropTypes.bool,
 };
 
 export default TournamentParticipantAutocomplete;
