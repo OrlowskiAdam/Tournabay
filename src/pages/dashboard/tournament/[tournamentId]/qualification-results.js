@@ -4,10 +4,9 @@ import { DashboardLayout } from "../../../../components/dashboard-layout";
 import Head from "next/head";
 import { Box, Container } from "@mui/material";
 import useTournament from "../../../../hooks/useTournament";
-import GroupsGrid from "../../../../components/dashboard/tournament/groups/GroupsGrid";
-import QualificationRoomsGrid from "../../../../components/dashboard/tournament/qualifications/QualificationRoomsGrid";
+import QualificationResultsTable from "../../../../components/dashboard/tournament/qualifications/QualificationResultsTable";
 
-const QualificationsPage = () => {
+const QualificationResultsPage = () => {
   const { tournament } = useTournament();
 
   return (
@@ -23,14 +22,14 @@ const QualificationsPage = () => {
         }}
       >
         <Container maxWidth={false}>
-          <QualificationRoomsGrid tournament={tournament} />
+          <QualificationResultsTable tournament={tournament} />
         </Container>
       </Box>
     </>
   );
 };
 
-QualificationsPage.getLayout = (page) => (
+QualificationResultsPage.getLayout = (page) => (
   <TournamentData>
     <TournamentGuard>
       <DashboardLayout>{page}</DashboardLayout>
@@ -38,4 +37,4 @@ QualificationsPage.getLayout = (page) => (
   </TournamentData>
 );
 
-export default QualificationsPage;
+export default QualificationResultsPage;

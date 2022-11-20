@@ -9,12 +9,11 @@ import { Users as UsersIcon } from "../icons/users";
 import AdminPanelSettingsIcon from "@mui/icons-material/AdminPanelSettings";
 import GppGoodIcon from "@mui/icons-material/GppGood";
 import PersonIcon from "@mui/icons-material/Person";
-import DragIndicatorIcon from "@mui/icons-material/DragIndicator";
-import PoolIcon from "@mui/icons-material/Pool";
 import ViewModuleIcon from "@mui/icons-material/ViewModule";
 import EqualizerIcon from "@mui/icons-material/Equalizer";
 import AddTaskIcon from "@mui/icons-material/AddTask";
 import CasinoIcon from "@mui/icons-material/Casino";
+import MapIcon from "@mui/icons-material/Map";
 import { Logo } from "./logo";
 import { NavItem } from "./nav-item";
 import useTournament from "../hooks/useTournament";
@@ -64,7 +63,7 @@ const items = (tournament) => {
     },
     {
       href: `/dashboard/tournament/${tournament.id}/mappool`,
-      icon: <PoolIcon fontSize="small" />,
+      icon: <MapIcon fontSize="small" />,
       title: "Mappool",
     },
     {

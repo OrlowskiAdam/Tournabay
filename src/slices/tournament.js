@@ -20,6 +20,8 @@ const initialState = {
     matches: [],
     groups: [],
     qualificationRooms: [],
+    qualificationResults: [],
+    qualificationResultsDto: [],
     owner: null,
   },
 };
@@ -128,6 +130,9 @@ const slice = createSlice({
         (group) => group.id !== action.payload
       );
     },
+    setQualificationRooms(state, action) {
+      state.tournament.qualificationRooms = action.payload;
+    },
     addQualificationRoom(state, action) {
       state.tournament.qualificationRooms = [
         ...state.tournament.qualificationRooms,
@@ -144,6 +149,32 @@ const slice = createSlice({
         (room) => room.id === action.payload.id
       );
       state.tournament.qualificationRooms[roomIndex] = action.payload;
+    },
+    setQualificationResults(state, action) {
+      state.tournament.qualificationResults = action.payload;
+    },
+    addQualificationResult(state, action) {
+      state.tournament.qualificationResults = [
+        ...state.tournament.qualificationResults,
+        action.payload,
+      ];
+    },
+    removeQualificationResult(state, action) {
+      state.tournament.qualificationResults = state.tournament.qualificationResults.filter(
+        (result) => result.id !== action.payload
+      );
+    },
+    replaceQualificationResult(state, action) {
+      const resultIndex = state.tournament.qualificationResults.findIndex(
+        (result) => result.id === action.payload.id
+      );
+      state.tournament.qualificationResults[resultIndex] = action.payload;
+    },
+    pushQualificationResults(state, action) {
+      state.tournament.qualificationResults.push(...action.payload);
+    },
+    setQualificationResultsDto(state, action) {
+      state.tournament.qualificationResultsDto = action.payload;
     },
   },
 });
@@ -250,6 +281,15 @@ export const removeQualificationRoom = (roomId) => async (dispatch) => {
 
 export const updateQualificationRoom = (room) => async (dispatch) => {
   dispatch(slice.actions.replaceQualificationRoom(room));
+};
+
+export const setQualificationRooms = (rooms) => async (dispatch) => {
+  dispatch(slice.actions.setQualificationRooms(rooms));
+};
+
+export const setQualificationResultsDto = (result) => async (dispatch) => {
+  const qualificationResults = result.sort((a, b) => b.qualificationPoints - a.qualificationPoints);
+  dispatch(slice.actions.setQualificationResultsDto(qualificationResults));
 };
 
 export default slice;

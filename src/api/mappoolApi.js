@@ -39,6 +39,10 @@ class MappoolApi {
   concealMappool(tournamentId, mappoolId) {
     return request.put(`${API_URL}/mappool/${mappoolId}/${tournamentId}/conceal`);
   }
+
+  getQualifierBeatmaps(tournamentId) {
+    return request.get(`${API_URL}/beatmap/qualifiers/tournament/${tournamentId}`);
+  }
 }
 
 export const mappoolApi = new MappoolApi();

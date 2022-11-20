@@ -1,18 +1,41 @@
-import { Box, Card, Dialog, Divider, IconButton } from "@mui/material";
+import { Avatar, Box, Card, Dialog, Divider, IconButton, Link, Typography } from "@mui/material";
 import PropTypes from "prop-types";
 import DeleteForeverIcon from "@mui/icons-material/DeleteForever";
 import EditIcon from "@mui/icons-material/Edit";
 import { useState } from "react";
 import { parseDate } from "../../../../utils/date-time-utils";
+import { qualificationsApi } from "../../../../api/qualificationsApi";
+import toast from "react-hot-toast";
+import { notifyOnError } from "../../../../utils/error-response";
+import { useDispatch } from "react-redux";
+import { removeQualificationRoom, setQualificationRooms } from "../../../../slices/tournament";
+import EditQualificationRoomDialog from "./EditQualificationRoomDialog";
+import { getInitials } from "../../../../utils/get-initials";
+import KeyboardCapslockIcon from "@mui/icons-material/KeyboardCapslock";
 
 const QualificationRoomCard = (props) => {
-  const { room, tournament, deleteRoom } = props;
+  const { room, tournament } = props;
   const [isLoading, setIsLoading] = useState(false);
   const [isDialogOpen, setIsDialogOpen] = useState(false);
+  const dispatch = useDispatch();
 
   const handleDeleteRoomButton = () => {
+    const toastLoadingId = toast.loading("Creating qualification room");
     setIsLoading(true);
-    deleteRoom(room.id).finally(() => setIsLoading(false));
+    qualificationsApi
+      .deleteQualificationRoom(room.id, tournament.id)
+      .then((response) => {
+        dispatch(setQualificationRooms(response.data));
+        setIsLoading(false);
+        toast.success("Room deleted successfully!");
+      })
+      .catch((error) => {
+        notifyOnError(error);
+      })
+      .finally(() => {
+        setIsLoading(false);
+        toast.remove(toastLoadingId);
+      });
   };
 
   const handleDialogClose = () => {
@@ -24,23 +47,43 @@ const QualificationRoomCard = (props) => {
   };
 
   const teams = () => {
-    return room.teams.map((team) => (
-      <Box
-        key={team.id}
-        sx={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}
-      >
-        <p>{team?.team?.name}</p>
-        <p>
-          {team.wins} : {team.losses}
-        </p>
+    return (
+      <Box sx={{ py: 2 }}>
+        {room.teams.map((team) => (
+          <Box
+            key={team.id}
+            sx={{
+              display: "flex",
+              alignItems: "center",
+            }}
+          >
+            <Typography variant="subtitle1" gutterBottom>
+              {team?.name}
+            </Typography>
+          </Box>
+        ))}
       </Box>
-    ));
+    );
   };
 
   const participants = () => {
-    return room.participants.map((participant) => (
-      <p key={participant.id}>{participant?.participant?.user.username}</p>
-    ));
+    return (
+      <Box sx={{ py: 2 }}>
+        {room.participants.map((participant) => (
+          <Box
+            key={participant.id}
+            sx={{
+              display: "flex",
+              alignItems: "center",
+            }}
+          >
+            <Typography variant="subtitle1" gutterBottom>
+              {participant?.user?.username}
+            </Typography>
+          </Box>
+        ))}
+      </Box>
+    );
   };
 
   return (
@@ -50,6 +93,7 @@ const QualificationRoomCard = (props) => {
           return {
             p: 2,
             pt: 0,
+            pb: 2,
             m: 1,
             minHeight: 200,
             width: "calc(100% / 4 - 16px)",
@@ -83,10 +127,49 @@ const QualificationRoomCard = (props) => {
         </Box>
         <Divider />
         {tournament.teamFormat === "TEAM_VS" ? teams() : participants()}
+        {room.staffMembers.length > 0 && (
+          <>
+            <Divider />
+            <Box
+              sx={{
+                display: "flex",
+                flexDirection: "column",
+                alignItems: "center",
+                justifyContent: "center",
+                mt: 2,
+              }}
+            >
+              {room.staffMembers.map((staffMember) => (
+                <Box
+                  key={staffMember.id}
+                  sx={{
+                    display: "flex",
+                    alignItems: "center",
+                    alignContent: "center",
+                  }}
+                >
+                  <Avatar
+                    src={staffMember.user.avatarUrl}
+                    sx={{
+                      height: 18,
+                      width: 18,
+                      mr: 1,
+                    }}
+                  >
+                    {getInitials(staffMember.user.username)}
+                  </Avatar>
+                  <Link href={`https://osu.ppy.sh/users/${staffMember.user.osuId}`} target="_blank">
+                    {staffMember.user.username}
+                  </Link>
+                </Box>
+              ))}
+            </Box>
+          </>
+        )}
       </Card>
-      {/*<Dialog fullWidth maxWidth="md" onClose={handleDialogClose} open={isDialogOpen}>*/}
-      {/*  {isDialogOpen && <EditGroupDialog group={group} closeModal={handleDialogClose} />}*/}
-      {/*</Dialog>*/}
+      <Dialog fullWidth maxWidth="sm" onClose={handleDialogClose} open={isDialogOpen}>
+        {isDialogOpen && <EditQualificationRoomDialog room={room} closeModal={handleDialogClose} />}
+      </Dialog>
     </>
   );
 };
@@ -94,7 +177,6 @@ const QualificationRoomCard = (props) => {
 QualificationRoomCard.propTypes = {
   room: PropTypes.object.isRequired,
   tournament: PropTypes.object.isRequired,
-  deleteRoom: PropTypes.func.isRequired,
 };
 
 export default QualificationRoomCard;

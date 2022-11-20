@@ -38,7 +38,7 @@ const CreateQualificationRoomDialog = (props) => {
       });
   };
 
-  const handleStartDateChange = (e, v) => {
+  const handleStartDateChange = (v) => {
     setStartDate(v);
   };
 

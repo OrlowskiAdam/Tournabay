@@ -93,22 +93,24 @@ const BeatmapCard = (props) => {
             }}
           >
             <SeverityPill color="primary">
-              <PanoramaFishEyeIcon fontSize="small" /> AR: {modAttributes?.ar}
+              <PanoramaFishEyeIcon fontSize="small" /> AR:{" "}
+              {parseFloat(modAttributes?.ar.toFixed(2))}
             </SeverityPill>
             <SeverityPill color="primary">
-              <CircleIcon fontSize="small" /> CS: {modAttributes?.cs}
+              <CircleIcon fontSize="small" /> CS: {parseFloat(modAttributes?.cs.toFixed(2))}
             </SeverityPill>
             <SeverityPill color="primary">
-              <FavoriteBorderIcon fontSize="small" /> HP: {modAttributes?.hp}
+              <FavoriteBorderIcon fontSize="small" /> HP: {parseFloat(modAttributes?.hp.toFixed(2))}
             </SeverityPill>
             <SeverityPill color="primary">
-              <BubbleChartIcon fontSize="small" /> AC: {modAttributes?.accuracy}
+              <BubbleChartIcon fontSize="small" /> AC:{" "}
+              {parseFloat(modAttributes?.accuracy.toFixed(2))}
             </SeverityPill>
             <SeverityPill color="warning">
-              <StarIcon fontSize="small" /> {modAttributes?.stars}
+              <StarIcon fontSize="small" /> {parseFloat(modAttributes?.stars.toFixed(2))}
             </SeverityPill>
             <SeverityPill color="warning">
-              <ClockIcon fontSize="small" /> {minutes}:{seconds}
+              <ClockIcon fontSize="small" /> {minutes}:{seconds < 10 ? "0" + seconds : seconds}
             </SeverityPill>
           </Box>
         </Box>
