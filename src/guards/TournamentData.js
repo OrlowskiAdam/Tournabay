@@ -19,6 +19,7 @@ const TournamentData = ({ children }) => {
       tournamentApi
         .getTournamentById(tournamentId)
         .then((response) => {
+          console.log(response.data);
           dispatch(setTournament(response.data));
         })
         .catch((error) => {
