@@ -2,6 +2,7 @@ import PropTypes from "prop-types";
 import {
   Box,
   Button,
+  CircularProgress,
   Divider,
   IconButton,
   Table,
@@ -42,9 +43,9 @@ const EditQualificationResult = (props) => {
 
   if (requestLoading) {
     return (
-      <>
-        <h1>Loading data</h1>
-      </>
+      <Box sx={{ display: "flex", alignItems: "center", justifyContent: "center", my: 5 }}>
+        <CircularProgress />
+      </Box>
     );
   }
 
