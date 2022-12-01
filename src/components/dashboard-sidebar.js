@@ -32,9 +32,9 @@ const items = (tournament) => {
       title: "Staff",
     },
     {
-      href: `/dashboard/tournament/${tournament.id}/access`,
+      href: `/dashboard/tournament/${tournament.id}/permissions`,
       icon: <GppGoodIcon fontSize="small" />,
-      title: "Access",
+      title: "Permissions",
     },
     {
       href: `/dashboard/tournament/${tournament.id}/participants`,
