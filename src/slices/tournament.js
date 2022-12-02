@@ -14,7 +14,7 @@ const initialState = {
     maxStage: null,
     roles: [],
     staffMembers: [],
-    permission: null,
+    permissions: [],
     participants: [],
     teams: [],
     matches: [],
@@ -68,8 +68,8 @@ const slice = createSlice({
       state.tournament.roles[action.payload.role1Index] = role2;
       state.tournament.roles[action.payload.role2Index] = role1;
     },
-    updatePermission(state, action) {
-      state.tournament.permission = action.payload;
+    updatePermissions(state, action) {
+      state.tournament.permissions = action.payload;
     },
     addParticipant(state, action) {
       state.tournament.participants = [...state.tournament.participants, action.payload];
@@ -215,8 +215,8 @@ export const replaceRolesPosition = (role1Index, role2Index) => async (dispatch)
   dispatch(slice.actions.changeRolesPosition({ role1Index, role2Index }));
 };
 
-export const updatePermission = (permission) => async (dispatch) => {
-  dispatch(slice.actions.updatePermission(permission));
+export const updatePermissions = (permission) => async (dispatch) => {
+  dispatch(slice.actions.updatePermissions(permission));
 };
 
 export const addParticipant = (participant) => async (dispatch) => {
