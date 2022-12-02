@@ -3,7 +3,7 @@ import NextLink from "next/link";
 import { Box, Button, Container, Typography } from "@mui/material";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 
-const NotFound = () => (
+const Forbidden = () => (
   <>
     <Head>
       <title>403 | Tournabay</title>
@@ -56,4 +56,4 @@ const NotFound = () => (
   </>
 );
 
-export default NotFound;
+export default Forbidden;
