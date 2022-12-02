@@ -6,21 +6,16 @@ const TournamentGuard = ({ children }) => {
   const { tournament } = useTournament();
   const { user } = useOsuAuth();
 
-  console.log("is owner", tournament.owner.id === user.id);
   if (tournament.owner.id === user.id) return children;
 
   const staffMember =
     user && tournament.staffMembers.find((staffMember) => staffMember.user.id === user.id);
-
-  console.log("staff member object", staffMember);
 
   if (!staffMember) return <NotFound />;
 
   const b = tournament.staffMembers.some(
     (tournamentStaffMember) => tournamentStaffMember.id === staffMember.id
   );
-
-  console.log("is in staff member list", b);
 
   if (
     tournament.staffMembers.some(
