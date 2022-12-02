@@ -28,18 +28,6 @@ const Forbidden = () => (
           <Typography align="center" color="textPrimary" variant="h1">
             403: You do not have permission to access this page.
           </Typography>
-          <Box sx={{ textAlign: "center" }}>
-            <img
-              alt="Under development"
-              src="/static/images/undraw_page_not_found_su7k.svg"
-              style={{
-                marginTop: 50,
-                display: "inline-block",
-                maxWidth: "100%",
-                width: 560,
-              }}
-            />
-          </Box>
           <NextLink href="/" passHref>
             <Button
               component="a"
