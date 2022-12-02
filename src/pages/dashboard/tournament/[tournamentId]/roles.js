@@ -7,6 +7,7 @@ import { Link as RouterLink } from "react-router-dom";
 import AddIcon from "@mui/icons-material/Add";
 import RolesTable from "../../../../components/dashboard/tournament/roles/RolesTable";
 import TournamentGuard from "../../../../guards/TournamentGuard";
+import PermissionGuard from "../../../../guards/PermissionGuard";
 
 const TournamentRoles = () => {
   const { tournament } = useTournament();
@@ -33,7 +34,9 @@ const TournamentRoles = () => {
 TournamentRoles.getLayout = (page) => (
   <TournamentData>
     <TournamentGuard>
-      <DashboardLayout>{page}</DashboardLayout>
+      <PermissionGuard permissionName={"Roles"}>
+        <DashboardLayout>{page}</DashboardLayout>
+      </PermissionGuard>
     </TournamentGuard>
   </TournamentData>
 );
