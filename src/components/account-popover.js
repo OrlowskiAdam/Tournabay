@@ -1,5 +1,5 @@
 import NextLink from "next/link";
-import { useRouter } from "next/router";
+import Router, { useRouter } from "next/router";
 import PropTypes from "prop-types";
 import {
   Avatar,
@@ -17,6 +17,9 @@ import { UserCircle as UserCircleIcon } from "../icons/user-circle";
 import useOsuAuth from "../hooks/useOsuAuth";
 import { useDispatch } from "../store";
 import { logout } from "../slices/user";
+import { DiscordIcon } from "../icons/discord-icon";
+import { OSU_AUTH_URL } from "../constants/constants";
+import { discordApi } from "../api/discordApi";
 
 export const AccountPopover = (props) => {
   const { anchorEl, onClose, open, ...other } = props;
@@ -72,7 +75,22 @@ export const AccountPopover = (props) => {
             <ListItemIcon>
               <UserCircleIcon fontSize="small" />
             </ListItemIcon>
-            <ListItemText primary={<Typography variant="body1">Profile</Typography>} />
+            <ListItemText primary={<Typography variant="body1">Account</Typography>} />
+          </MenuItem>
+        </NextLink>
+        <NextLink href="" passHref>
+          <MenuItem
+            component="button"
+            onClick={() => {
+              discordApi.discordVerification().then((response) => {
+                Router.push(response.data);
+              });
+            }}
+          >
+            <ListItemIcon>
+              <DiscordIcon fontSize="small" />
+            </ListItemIcon>
+            <ListItemText primary={<Typography variant="body1">Link Discord</Typography>} />
           </MenuItem>
         </NextLink>
         <NextLink href="#" passHref>

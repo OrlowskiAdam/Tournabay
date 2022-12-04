@@ -12,6 +12,7 @@ const initialState = {
     roles: [],
     isInitialized: false,
     isAuthenticated: false,
+    discordData: [],
   },
 };
 

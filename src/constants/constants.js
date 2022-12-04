@@ -10,8 +10,7 @@ export const OSU_OAUTH2_REDIRECT_URI = isDevelopment
 export const DISCORD_OAUTH2_REDIRECT_URI = "http://localhost:8080/discord-oauth2-redirect";
 export const OSU_AUTH_URL =
   BASE_API_URL + "/oauth2/authorize/osu?redirect_uri=" + OSU_OAUTH2_REDIRECT_URI;
-export const DISCORD_AUTH_URL =
-  BASE_API_URL + "/oauth2/authorize/discord?redirect_uri=" + DISCORD_OAUTH2_REDIRECT_URI;
+export const DISCORD_AUTH_URL = BASE_API_URL + "/discord-verification";
 export const DISCORD_OAUTH =
   "https://discord.com/api/oauth2/authorize?client_id=871122673407770676&redirect_uri=" +
   API_URL +

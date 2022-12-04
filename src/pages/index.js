@@ -5,6 +5,7 @@ import Head from "next/head";
 
 const HomePage = () => {
   const { user } = useOsuAuth();
+  console.log(user);
 
   return (
     <>

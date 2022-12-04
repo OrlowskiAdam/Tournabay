@@ -3,9 +3,11 @@ import NextLink from "next/link";
 import { AppBar, Avatar, Box, Button, Container, IconButton, Link, Toolbar } from "@mui/material";
 import { Menu as MenuIcon } from "../icons/menu";
 import { Logo } from "./logo";
-import { OSU_AUTH_URL } from "../constants/constants";
+import { DISCORD_AUTH_URL, OSU_AUTH_URL } from "../constants/constants";
 import useOsuAuth from "../hooks/useOsuAuth";
 import UserAvatar from "./user-avatar";
+import { discordApi } from "../api/discordApi";
+import Router from "next/router";
 
 export const MainNavbar = (props) => {
   const { onOpenSidebar } = props;
